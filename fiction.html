@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiction — Recusant Crown</title>
+  <style>
+    :root {
+      --bg: #0D0C0B;
+      --surface: #1A1714;
+      --text: #E8E0D5;
+      --crimson: #C23B2A;
+      --gold: #B08D57;
+      --steel: #4A6B7C;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Georgia", "Times New Roman", serif;
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 3px solid var(--gold);
+      box-shadow:
+        0 0 0 5px var(--bg),
+        0 0 0 8px var(--crimson),
+        0 18px 40px rgba(0, 0, 0, 0.65);
+      border-radius: 14px;
+      position: relative;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border: 1px solid rgba(176, 141, 87, 0.4);
+      border-radius: 9px;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    /* Header */
+    header.card {
+      padding: 1.1rem 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+    }
+
+    .brand .title {
+      font-size: 1.55rem;
+      font-weight: bold;
+      letter-spacing: 0.12em;
+      color: var(--crimson);
+      text-transform: uppercase;
+    }
+
+    .brand .subtitle {
+      font-size: 0.95rem;
+      letter-spacing: 0.28em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.4rem;
+    }
+
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--gold);
+    }
+
+    /* Page title + dropdown */
+    .page-title.card {
+      padding: 1.5rem 1.75rem;
+      text-align: center;
+    }
+
+    .page-title h1 {
+      font-size: 1.6rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .page-title p {
+      margin-top: 0.35rem;
+      color: #c9c0b4;
+      font-size: 0.95rem;
+    }
+
+    .chapter-select {
+      margin-top: 1.1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .chapter-select select {
+      background: #141210;
+      color: var(--text);
+      border: 2px solid var(--gold);
+      padding: 0.5rem 1rem;
+      font-family: Georgia, serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      border-radius: 6px;
+      min-width: 220px;
+      cursor: pointer;
+    }
+
+    .chapter-select select:focus {
+      outline: none;
+      border-color: var(--crimson);
+    }
+
+    /* Chapter cards grid */
+    .chapters {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .chapter-card {
+      background: var(--surface);
+      border: 3px solid var(--gold);
+      box-shadow:
+        0 0 0 4px var(--bg),
+        0 0 0 7px var(--crimson),
+        0 12px 28px rgba(0, 0, 0, 0.55);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease;
+      scroll-margin-top: 1.5rem; /* helps with jump positioning */
+    }
+
+    .chapter-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .chapter-title {
+      background: #141210;
+      padding: 0.7rem 0.9rem;
+      font-size: 1.05rem;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      text-align: center;
+      border-bottom: 2px solid var(--crimson);
+    }
+
+    .chapter-art {
+      aspect-ratio: 3 / 2;
+      background: #0f0e0c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5c5349;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid rgba(176, 141, 87, 0.35);
+    }
+
+    .chapter-subtype {
+      background: #141210;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      color: var(--crimson);
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(176, 141, 87, 0.35);
+    }
+
+    .chapter-text {
+      padding: 0.85rem 0.95rem 1.1rem;
+      font-size: 0.9rem;
+      color: #c9c0b4;
+      flex-grow: 1;
+    }
+
+    .chapter-card a {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    footer.card {
+      padding: 0.9rem 1.4rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #8a8175;
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 600px) {
+      header.card {
+        flex-direction: column;
+        text-align: center;
+      }
+      nav {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="card">
+      <div class="brand">
+        <div class="title">Recusant</div>
+        <div class="subtitle">Crown</div>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="fiction.html" class="active">Fiction</a>
+        <a href="cards.html">Card Game</a>
+        <a href="art.html">Art</a>
+      </nav>
+    </header>
+
+    <section class="page-title card">
+      <h1>Fiction</h1>
+      <p>Serial chapters from the Recusant Crown</p>
+
+      <div class="chapter-select">
+        <select id="chapterJump" onchange="jumpToChapter(this.value)">
+          <option value="">Jump to chapter…</option>
+          <option value="chapter-1">Chapter 1 — The First Refusal</option>
+          <option value="chapter-2">Chapter 2 — Collected Pieces</option>
+          <option value="chapter-3">Chapter 3 — Flexible Power</option>
+        </select>
+      </div>
+    </section>
+
+    <div class="chapters">
+
+      <div class="chapter-card" id="chapter-1">
+        <a href="#">
+          <div class="chapter-title">The First Refusal</div>
+          <div class="chapter-art">[ Image ]</div>
+          <div class="chapter-subtype">Chapter 1</div>
+          <div class="chapter-text">
+            A short description of the chapter goes here. This is the rules text zone — keep it brief and atmospheric.
+          </div>
+        </a>
+      </div>
+
+      <div class="chapter-card" id="chapter-2">
+        <a href="#">
+          <div class="chapter-title">Collected Pieces</div>
+          <div class="chapter-art">[ Image ]</div>
+          <div class="chapter-subtype">Chapter 2</div>
+          <div class="chapter-text">
+            Another placeholder description. Later this will hold a real summary or teaser for the chapter.
+          </div>
+        </a>
+      </div>
+
+      <div class="chapter-card" id="chapter-3">
+        <a href="#">
+          <div class="chapter-title">Flexible Power</div>
+          <div class="chapter-art">[ Image ]</div>
+          <div class="chapter-subtype">Chapter 3</div>
+          <div class="chapter-text">
+            Third example card. The structure is ready — we just replace the title, image, number, and text when real chapters exist.
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+    <footer class="card">
+      Recusant Crown · Fiction
+    </footer>
+
+  </div>
+
+  <script>
+    function jumpToChapter(id) {
+      if (!id) return;
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      // reset dropdown so the same chapter can be selected again later
+      document.getElementById("chapterJump").value = "";
+    }
+  </script>
+</body>
+</html>

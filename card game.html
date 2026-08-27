@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Game — Recusant Crown</title>
+  <style>
+    :root {
+      --bg: #0D0C0B;
+      --surface: #1A1714;
+      --text: #E8E0D5;
+      --crimson: #C23B2A;
+      --gold: #B08D57;
+      --steel: #4A6B7C;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Georgia", "Times New Roman", serif;
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 3px solid var(--gold);
+      box-shadow:
+        0 0 0 5px var(--bg),
+        0 0 0 8px var(--crimson),
+        0 18px 40px rgba(0, 0, 0, 0.65);
+      border-radius: 14px;
+      position: relative;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border: 1px solid rgba(176, 141, 87, 0.4);
+      border-radius: 9px;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    /* Header */
+    header.card {
+      padding: 1.1rem 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+    }
+
+    .brand .title {
+      font-size: 1.55rem;
+      font-weight: bold;
+      letter-spacing: 0.12em;
+      color: var(--crimson);
+      text-transform: uppercase;
+    }
+
+    .brand .subtitle {
+      font-size: 0.95rem;
+      letter-spacing: 0.28em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.4rem;
+    }
+
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--gold);
+    }
+
+    /* Page title */
+    .page-title.card {
+      padding: 1.5rem 1.75rem;
+      text-align: center;
+    }
+
+    .page-title h1 {
+      font-size: 1.6rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .page-title p {
+      margin-top: 0.35rem;
+      color: #c9c0b4;
+      font-size: 0.95rem;
+    }
+
+    /* Section styling */
+    .section.card {
+      padding: 1.6rem 1.5rem 1.8rem;
+    }
+
+    .section h2 {
+      font-size: 1.25rem;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(176, 141, 87, 0.35);
+    }
+
+    .section p {
+      color: #c9c0b4;
+      margin-bottom: 0.9rem;
+      font-size: 0.98rem;
+    }
+
+    .section ul {
+      margin: 0.6rem 0 1rem 1.3rem;
+      color: #c9c0b4;
+    }
+
+    .section li {
+      margin-bottom: 0.35rem;
+    }
+
+    /* Spoiler card gallery */
+    .spoiler-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1.1rem;
+      margin-top: 0.5rem;
+    }
+
+    .spoiler-card {
+      background: #141210;
+      border: 2px solid var(--gold);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+      transition: transform 0.2s ease;
+    }
+
+    .spoiler-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .spoiler-art {
+      aspect-ratio: 2.5 / 3.5;
+      background: #0f0e0c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5c5349;
+      font-size: 0.78rem;
+      text-align: center;
+      padding: 0.5rem;
+      border-bottom: 1px solid rgba(176, 141, 87, 0.3);
+    }
+
+    .spoiler-name {
+      padding: 0.45rem 0.5rem;
+      font-size: 0.78rem;
+      color: var(--gold);
+      text-align: center;
+      letter-spacing: 0.03em;
+    }
+
+    /* Blog entries */
+    .blog-entry {
+      background: #141210;
+      border: 1px solid rgba(176, 141, 87, 0.35);
+      border-radius: 8px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .blog-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .blog-date {
+      font-size: 0.78rem;
+      color: var(--crimson);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+
+    .blog-title {
+      font-size: 1.05rem;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .blog-body {
+      font-size: 0.92rem;
+      color: #c9c0b4;
+    }
+
+    footer.card {
+      padding: 0.9rem 1.4rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #8a8175;
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 600px) {
+      header.card {
+        flex-direction: column;
+        text-align: center;
+      }
+      nav {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <header class="card">
+      <div class="brand">
+        <div class="title">Recusant</div>
+        <div class="subtitle">Crown</div>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="fiction.html">Fiction</a>
+        <a href="cards.html" class="active">Card Game</a>
+        <a href="art.html">Art</a>
+      </nav>
+    </header>
+
+    <!-- Page title -->
+    <section class="page-title card">
+      <h1>Card Game</h1>
+      <p>Growing flexibility over raw numbers</p>
+    </section>
+
+    <!-- Rules Section -->
+    <section class="section card" id="rules">
+      <h2>Rules</h2>
+      <p>
+        The core idea is simple: power comes from options, not just bigger numbers.
+        Collecting cards increases your flexibility — the more pieces you have, the more ways you can respond.
+      </p>
+      <p>
+        Full rules are still being refined. Here’s the current high-level shape:
+      </p>
+      <ul>
+        <li>A lane based anime combat game. Deploy minions, push lanes, gather energy and strike with powerful spells and technics!</li>
+        <li>Gather Clarity from playing minions of your preferred faction.</li>
+        <li>Clash in a massive burst of violence.</li>
+        <li>Use the resources gathered from these clashes to pull off stylish combos, flashy spells, and might summons.</li>
+      </ul>
+      <p style="margin-bottom: 0; font-size: 0.9rem; color: #8a8175;">
+        Detailed rules will appear here as they stabilize.
+      </p>
+    </section>
+
+    <!-- Spoiler Cards Section -->
+    <section class="section card" id="spoilers">
+      <h2>Spoiler Cards</h2>
+      <p>
+        Early looks at cards currently in design. Nothing here is final — these exist so you can theorize, speculate, and see the direction the game is taking.
+      </p>
+
+      <div class="spoiler-grid">
+        <div class="spoiler-card">
+          <div class="spoiler-art">[ Card Art ]</div>
+          <div class="spoiler-name">Placeholder One</div>
+        </div>
+        <div class="spoiler-card">
+          <div class="spoiler-art">[ Card Art ]</div>
+          <div class="spoiler-name">Placeholder Two</div>
+        </div>
+        <div class="spoiler-card">
+          <div class="spoiler-art">[ Card Art ]</div>
+          <div class="spoiler-name">Placeholder Three</div>
+        </div>
+        <div class="spoiler-card">
+          <div class="spoiler-art">[ Card Art ]</div>
+          <div class="spoiler-name">Placeholder Four</div>
+        </div>
+        <div class="spoiler-card">
+          <div class="spoiler-art">[ Card Art ]</div>
+          <div class="spoiler-name">Placeholder Five</div>
+        </div>
+        <div class="spoiler-card">
+          <div class="spoiler-art">[ Card Art ]</div>
+          <div class="spoiler-name">Placeholder Six</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Developer Blog Section -->
+    <section class="section card" id="blog">
+      <h2>Developer Blog</h2>
+      <p style="margin-bottom: 1.2rem;">
+        Notes on where the game currently stands — design decisions, progress, and what is still in flux.
+      </p>
+
+      <div class="blog-entry">
+        <div class="blog-date">August 2026</div>
+        <div class="blog-title">Starting Point</div>
+        <div class="blog-body">
+          The core fantasy is locked: flexibility through collection rather than pure numerical power.
+          Early card frameworks are being tested. Rules are intentionally still loose while the fiction and the game talk to each other.
+        </div>
+      </div>
+
+      <div class="blog-entry">
+        <div class="blog-date">Coming Soon</div>
+        <div class="blog-title">Next Steps</div>
+        <div class="blog-body">
+          More concrete card examples, clearer win conditions, and the first real playtest notes will land here.
+        </div>
+      </div>
+    </section>
+
+    <footer class="card">
+      Recusant Crown · Card Game
+    </footer>
+
+  </div>
+</body>
+</html>

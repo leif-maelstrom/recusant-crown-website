@@ -4,216 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Art — Recusant Crown</title>
-  <style>
-    :root {
-      --bg: #0D0C0B;
-      --surface: #1A1714;
-      --text: #E8E0D5;
-      --crimson: #C23B2A;
-      --gold: #B08D57;
-      --steel: #4A6B7C;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: "Georgia", "Times New Roman", serif;
-      line-height: 1.5;
-      min-height: 100vh;
-      padding: 1.5rem 1rem 3rem;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 3px solid var(--gold);
-      box-shadow:
-        0 0 0 5px var(--bg),
-        0 0 0 8px var(--crimson),
-        0 18px 40px rgba(0, 0, 0, 0.65);
-      border-radius: 14px;
-      position: relative;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 7px;
-      border: 1px solid rgba(176, 141, 87, 0.4);
-      border-radius: 9px;
-      pointer-events: none;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1.75rem;
-    }
-
-    /* Header */
-    header.card {
-      padding: 1.1rem 1.6rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .brand {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.05;
-    }
-
-    .brand .title {
-      font-size: 1.55rem;
-      font-weight: bold;
-      letter-spacing: 0.12em;
-      color: var(--crimson);
-      text-transform: uppercase;
-    }
-
-    .brand .subtitle {
-      font-size: 0.95rem;
-      letter-spacing: 0.28em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-top: 2px;
-    }
-
-    nav {
-      display: flex;
-      gap: 1.4rem;
-    }
-
-    nav a {
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.9rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    nav a:hover,
-    nav a.active {
-      color: var(--gold);
-    }
-
-    /* Page title */
-    .page-title.card {
-      padding: 1.5rem 1.75rem;
-      text-align: center;
-    }
-
-    .page-title h1 {
-      font-size: 1.6rem;
-      letter-spacing: 0.12em;
-      color: var(--gold);
-      text-transform: uppercase;
-    }
-
-    .page-title p {
-      margin-top: 0.35rem;
-      color: #c9c0b4;
-      font-size: 0.95rem;
-    }
-
-    /* Section */
-    .section.card {
-      padding: 1.5rem 1.4rem 1.7rem;
-    }
-
-    .section h2 {
-      font-size: 1.2rem;
-      color: var(--gold);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 0.4rem;
-    }
-
-    .section .section-desc {
-      color: #c9c0b4;
-      font-size: 0.92rem;
-      margin-bottom: 1.2rem;
-    }
-
-    /* Gallery grid */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 1.1rem;
-    }
-
-    .art-piece {
-      background: #141210;
-      border: 2px solid var(--gold);
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
-      transition: transform 0.2s ease;
-    }
-
-    .art-piece:hover {
-      transform: translateY(-4px);
-    }
-
-    .art-image {
-      aspect-ratio: 1 / 1;
-      background: #0f0e0c;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #5c5349;
-      font-size: 0.8rem;
-      text-align: center;
-      padding: 0.6rem;
-      border-bottom: 1px solid rgba(176, 141, 87, 0.3);
-    }
-
-    .art-caption {
-      padding: 0.5rem 0.6rem 0.65rem;
-      font-size: 0.8rem;
-      color: var(--gold);
-      text-align: center;
-      letter-spacing: 0.03em;
-    }
-
-    .art-note {
-      font-size: 0.72rem;
-      color: #8a8175;
-      margin-top: 0.15rem;
-    }
-
-    footer.card {
-      padding: 0.9rem 1.4rem;
-      text-align: center;
-      font-size: 0.8rem;
-      color: #8a8175;
-      letter-spacing: 0.04em;
-    }
-
-    @media (max-width: 600px) {
-      header.card {
-        flex-direction: column;
-        text-align: center;
-      }
-      nav {
-        justify-content: center;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
   <div class="container">
 
-    <!-- Header -->
     <header class="card">
       <div class="brand">
         <div class="title">Recusant</div>
@@ -227,104 +22,73 @@
       </nav>
     </header>
 
-    <!-- Page title -->
     <section class="page-title card">
       <h1>Art</h1>
       <p>Concept work, characters, and world design</p>
     </section>
 
-    <!-- Character Art -->
     <section class="section card">
       <h2>Character Art</h2>
       <p class="section-desc">Key figures and early character exploration.</p>
       <div class="gallery">
         <div class="art-piece">
-          <div class="art-image">[ Character ]</div>
+          <img src="assets/art/characters/little-rose-red.jpg" alt="Little Rose Red">
           <div class="art-caption">
-            Character Study
-            <div class="art-note">Early concept</div>
+            Little Rose Red
+            <div class="art-note">Character</div>
           </div>
         </div>
         <div class="art-piece">
-          <div class="art-image">[ Character ]</div>
+          <img src="assets/art/characters/adult-rose-red.jpg" alt="Adult Rose Red">
           <div class="art-caption">
-            Character Study
-            <div class="art-note">Early concept</div>
+            Adult Rose Red
+            <div class="art-note">Character</div>
           </div>
         </div>
         <div class="art-piece">
-          <div class="art-image">[ Character ]</div>
+          <img src="assets/art/characters/the-wicked-queen.jpg" alt="The Wicked Queen">
           <div class="art-caption">
-            Character Study
-            <div class="art-note">Early concept</div>
+            The Wicked Queen
+            <div class="art-note">Character</div>
+          </div>
+        </div>
+        <div class="art-piece">
+          <img src="assets/art/characters/gon-doreo.jpg" alt="Gon D'oreo">
+          <div class="art-caption">
+            Gon D'oreo
+            <div class="art-note">Character</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- World Design -->
     <section class="section card">
-      <h2>World Design</h2>
-      <p class="section-desc">Locations, architecture, and environmental pieces.</p>
+      <h2>Illustrations</h2>
+      <p class="section-desc">Standalone pieces and key art.</p>
       <div class="gallery">
         <div class="art-piece">
-          <div class="art-image">[ World ]</div>
+          <img src="assets/art/illustrations/nocturne-of-shadow.jpg" alt="Nocturne of Shadow">
           <div class="art-caption">
-            Environment
-            <div class="art-note">Concept</div>
+            Nocturne of Shadow
+            <div class="art-note">Illustration</div>
           </div>
         </div>
         <div class="art-piece">
-          <div class="art-image">[ World ]</div>
+          <img src="assets/art/illustrations/card-back-alpha.jpg" alt="Card Back Alpha">
           <div class="art-caption">
-            Architecture
-            <div class="art-note">Concept</div>
-          </div>
-        </div>
-        <div class="art-piece">
-          <div class="art-image">[ World ]</div>
-          <div class="art-caption">
-            Location Study
-            <div class="art-note">Early work</div>
+            Card Back Alpha
+            <div class="art-note">Card back design</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Concept & Process -->
     <section class="section card">
-      <h2>Concept & Process</h2>
+      <h2>Concept &amp; Process</h2>
       <p class="section-desc">Sketches, thumbnails, and early ideation.</p>
-      <div class="gallery">
-        <div class="art-piece">
-          <div class="art-image">[ Sketch ]</div>
-          <div class="art-caption">
-            Thumbnail
-            <div class="art-note">Process</div>
-          </div>
-        </div>
-        <div class="art-piece">
-          <div class="art-image">[ Sketch ]</div>
-          <div class="art-caption">
-            Rough Concept
-            <div class="art-note">Process</div>
-          </div>
-        </div>
-        <div class="art-piece">
-          <div class="art-image">[ Sketch ]</div>
-          <div class="art-caption">
-            Ideation
-            <div class="art-note">Process</div>
-          </div>
-        </div>
-        <div class="art-piece">
-          <div class="art-image">[ Sketch ]</div>
-          <div class="art-caption">
-            Exploration
-            <div class="art-note">Process</div>
-          </div>
-        </div>
-      </div>
+      <p style="margin-bottom: 0; color: #8a8175; font-size: 0.9rem;">
+        Coming soon — sketches and process work will land here as they're produced.
+      </p>
     </section>
 
     <footer class="card">

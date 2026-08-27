@@ -4,207 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recusant Crown</title>
-  <style>
-    :root {
-      --bg: #0D0C0B;
-      --surface: #1A1714;
-      --text: #E8E0D5;
-      --crimson: #C23B2A;
-      --gold: #B08D57;
-      --steel: #4A6B7C;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: "Georgia", "Times New Roman", serif;
-      line-height: 1.5;
-      min-height: 100vh;
-      padding: 1.5rem 1rem 3rem;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 3px solid var(--gold);
-      box-shadow:
-        0 0 0 5px var(--bg),
-        0 0 0 8px var(--crimson),
-        0 18px 40px rgba(0, 0, 0, 0.65);
-      border-radius: 14px;
-      position: relative;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 7px;
-      border: 1px solid rgba(176, 141, 87, 0.4);
-      border-radius: 9px;
-      pointer-events: none;
-    }
-
-    .container {
-      max-width: 880px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1.75rem;
-    }
-
-    /* Header */
-    header.card {
-      padding: 1.1rem 1.6rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .brand {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.05;
-    }
-
-    .brand .title {
-      font-size: 1.55rem;
-      font-weight: bold;
-      letter-spacing: 0.12em;
-      color: var(--crimson);
-      text-transform: uppercase;
-    }
-
-    .brand .subtitle {
-      font-size: 0.95rem;
-      letter-spacing: 0.28em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-top: 2px;
-    }
-
-    nav {
-      display: flex;
-      gap: 1.4rem;
-    }
-
-    nav a {
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.9rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    nav a:hover {
-      color: var(--gold);
-    }
-
-    /* Hero */
-    .hero.card {
-      padding: 2.75rem 1.75rem;
-      text-align: center;
-    }
-
-    .hero h1 {
-      font-size: 2.1rem;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.4rem;
-    }
-
-    .hero h1 .red {
-      color: var(--crimson);
-    }
-
-    .hero h1 .gold {
-      color: var(--gold);
-      display: block;
-      font-size: 1.35rem;
-      letter-spacing: 0.35em;
-      margin-top: 0.15rem;
-    }
-
-    .hero p {
-      max-width: 28rem;
-      margin: 1.1rem auto 0;
-      color: #c9c0b4;
-      font-size: 1.02rem;
-    }
-
-    /* Panels */
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-
-    @media (max-width: 680px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-      header.card {
-        flex-direction: column;
-        text-align: center;
-      }
-      nav {
-        justify-content: center;
-      }
-    }
-
-    .panel.card {
-      padding: 1.6rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      min-height: 210px;
-    }
-
-    .panel h2 {
-      font-size: 1.25rem;
-      color: var(--gold);
-      letter-spacing: 0.07em;
-      margin-bottom: 0.55rem;
-      text-transform: uppercase;
-    }
-
-    .panel p {
-      color: #c9c0b4;
-      flex-grow: 1;
-      margin-bottom: 1.2rem;
-      font-size: 0.95rem;
-    }
-
-    .btn {
-      display: inline-block;
-      align-self: flex-start;
-      padding: 0.5rem 1.2rem;
-      border: 2px solid var(--crimson);
-      color: var(--text);
-      text-decoration: none;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      border-radius: 3px;
-      transition: 0.2s ease;
-    }
-
-    .btn:hover {
-      background: var(--crimson);
-      color: var(--bg);
-    }
-
-    footer.card {
-      padding: 0.9rem 1.4rem;
-      text-align: center;
-      font-size: 0.8rem;
-      color: #8a8175;
-      letter-spacing: 0.04em;
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
   <div class="container">
@@ -215,9 +15,10 @@
         <div class="subtitle">Crown</div>
       </div>
       <nav>
-        <a href="#fiction">Fiction</a>
-        <a href="#cards">Card Game</a>
-        <a href="#art">Art</a>
+        <a href="index.html" class="active">Home</a>
+        <a href="fiction.html">Fiction</a>
+        <a href="cards.html">Card Game</a>
+        <a href="art.html">Art</a>
       </nav>
     </header>
 
@@ -232,20 +33,20 @@
     </section>
 
     <div class="grid">
-      <div class="panel card" id="fiction">
+      <div class="panel card">
         <h2>Fiction</h2>
         <p>
           Serial chapters and the living story. Watch the options expand — and the cost of every new piece.
         </p>
-        <a href="#" class="btn">Enter Chapters</a>
+        <a href="fiction.html" class="btn">Enter Chapters</a>
       </div>
 
-      <div class="panel card" id="cards">
+      <div class="panel card">
         <h2>Card Game</h2>
         <p>
           Flexibility over raw strength. Build, adapt, and outmaneuver. The rules are still being written.
         </p>
-        <a href="#" class="btn">View the Game</a>
+        <a href="cards.html" class="btn">View the Game</a>
       </div>
     </div>
 

@@ -476,3 +476,68 @@ footer.card {
     justify-content: center;
   }
 }
+
+/* Chapter reading page (chapters/) */
+.chapter-header.card {
+  padding: 1.5rem 1.75rem;
+  text-align: center;
+}
+
+.chapter-header h1 {
+  font-size: 1.6rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.chapter-header .chapter-tag {
+  margin-top: 0.4rem;
+  color: var(--crimson);
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.chapter-hero {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 3px solid var(--gold);
+  box-shadow: 0 0 0 5px var(--bg), 0 0 0 8px var(--crimson);
+}
+
+.chapter-hero img {
+  width: 100%;
+  display: block;
+  max-height: 60vh;
+  object-fit: cover;
+}
+
+.chapter-body {
+  padding: 2rem 1.75rem;
+  font-size: 1.02rem;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+.chapter-body p {
+  margin-bottom: 1.15rem;
+}
+
+.chapter-body p:last-child {
+  margin-bottom: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.chapter-nav .btn {
+  align-self: auto;
+}
+
+.chapter-nav .btn.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}

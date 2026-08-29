@@ -32,28 +32,28 @@
       <p class="section-desc">Key figures and early character exploration.</p>
       <div class="gallery">
         <div class="art-piece">
-          <img src="assets/art/characters/little-rose-red.jpg" alt="Little Rose Red">
+          <img src="assets/art/characters/little-rose-red.jpg" alt="Little Rose Red" data-lightbox data-lightbox-src="assets/art/characters/little-rose-red.jpg" data-lightbox-caption="Little Rose Red" data-lightbox-note="Character">
           <div class="art-caption">
             Little Rose Red
             <div class="art-note">Character</div>
           </div>
         </div>
         <div class="art-piece">
-          <img src="assets/art/characters/adult-rose-red.jpg" alt="Adult Rose Red">
+          <img src="assets/art/characters/adult-rose-red.jpg" alt="Adult Rose Red" data-lightbox data-lightbox-src="assets/art/characters/adult-rose-red.jpg" data-lightbox-caption="Adult Rose Red" data-lightbox-note="Character">
           <div class="art-caption">
             Adult Rose Red
             <div class="art-note">Character</div>
           </div>
         </div>
         <div class="art-piece">
-          <img src="assets/art/characters/the-wicked-queen.jpg" alt="The Wicked Queen">
+          <img src="assets/art/characters/the-wicked-queen.jpg" alt="The Wicked Queen" data-lightbox data-lightbox-src="assets/art/characters/the-wicked-queen.jpg" data-lightbox-caption="The Wicked Queen" data-lightbox-note="Character">
           <div class="art-caption">
             The Wicked Queen
             <div class="art-note">Character</div>
           </div>
         </div>
         <div class="art-piece">
-          <img src="assets/art/characters/gon-doreo.jpg" alt="Gon D'oreo">
+          <img src="assets/art/characters/gon-doreo.jpg" alt="Gon D'oreo" data-lightbox data-lightbox-src="assets/art/characters/gon-doreo.jpg" data-lightbox-caption="Gon D'oreo" data-lightbox-note="Character">
           <div class="art-caption">
             Gon D'oreo
             <div class="art-note">Character</div>
@@ -67,17 +67,24 @@
       <p class="section-desc">Standalone pieces and key art.</p>
       <div class="gallery">
         <div class="art-piece">
-          <img src="assets/art/illustrations/nocturne-of-shadow.jpg" alt="Nocturne of Shadow">
+          <img src="assets/art/illustrations/nocturne-of-shadow.jpg" alt="Nocturne of Shadow" data-lightbox data-lightbox-src="assets/art/illustrations/nocturne-of-shadow.jpg" data-lightbox-caption="Nocturne of Shadow" data-lightbox-note="Illustration">
           <div class="art-caption">
             Nocturne of Shadow
             <div class="art-note">Illustration</div>
           </div>
         </div>
         <div class="art-piece">
-          <img src="assets/art/illustrations/card-back-alpha.jpg" alt="Card Back Alpha">
+          <img src="assets/art/illustrations/card-back-alpha.jpg" alt="Card Back Alpha" data-lightbox data-lightbox-src="assets/art/illustrations/card-back-alpha.jpg" data-lightbox-caption="Card Back Alpha" data-lightbox-note="Card back design">
           <div class="art-caption">
             Card Back Alpha
             <div class="art-note">Card back design</div>
+          </div>
+        </div>
+        <div class="art-piece">
+          <img src="assets/art/illustrations/leon-garo.jpg" alt="Leon Garo facing the darkness" data-lightbox data-lightbox-src="assets/art/illustrations/leon-garo.jpg" data-lightbox-caption="Leon Garo" data-lightbox-note="Prologue illustration">
+          <div class="art-caption">
+            Leon Garo
+            <div class="art-note">Prologue illustration</div>
           </div>
         </div>
       </div>
@@ -96,5 +103,22 @@
     </footer>
 
   </div>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+    <div class="lightbox-zoom-controls">
+      <button class="lightbox-zoom-btn" id="zoomIn" aria-label="Zoom in">+</button>
+      <button class="lightbox-zoom-btn" id="zoomOut" aria-label="Zoom out">&minus;</button>
+      <button class="lightbox-zoom-btn" id="zoomReset" aria-label="Reset zoom">Reset</button>
+      <span class="lightbox-zoom-label" id="zoomLabel">100%</span>
+    </div>
+    <div class="lightbox-stage" id="lightboxStage">
+      <img id="lightboxImg" src="" alt="">
+    </div>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+    <div class="lightbox-note" id="lightboxNote"></div>
+  </div>
+
+  <script src="assets/js/lightbox.js"></script>
 </body>
 </html>

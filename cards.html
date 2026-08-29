@@ -55,39 +55,39 @@
 
       <div class="spoiler-grid">
         <div class="spoiler-card">
-          <img src="assets/spoiler-cards/3-as-above-so-below.jpg" alt="As Above So Below">
+          <img src="assets/spoiler-cards/3-as-above-so-below.jpg" alt="As Above So Below" data-lightbox data-lightbox-src="assets/spoiler-cards/3-as-above-so-below.jpg" data-lightbox-caption="As Above So Below" data-lightbox-note="Spoiler card">
           <div class="spoiler-name">As Above So Below</div>
         </div>
         <div class="spoiler-card">
-          <img src="assets/spoiler-cards/16-raid-consciousness.jpg" alt="Raid Consciousness">
+          <img src="assets/spoiler-cards/16-raid-consciousness.jpg" alt="Raid Consciousness" data-lightbox data-lightbox-src="assets/spoiler-cards/16-raid-consciousness.jpg" data-lightbox-caption="Raid Consciousness" data-lightbox-note="Spoiler card">
           <div class="spoiler-name">Raid Consciousness</div>
         </div>
         <div class="spoiler-card">
-          <img src="assets/spoiler-cards/21-snapcasters-wand.jpg" alt="Snapcaster's Wand">
+          <img src="assets/spoiler-cards/21-snapcasters-wand.jpg" alt="Snapcaster's Wand" data-lightbox data-lightbox-src="assets/spoiler-cards/21-snapcasters-wand.jpg" data-lightbox-caption="Snapcaster's Wand" data-lightbox-note="Spoiler card">
           <div class="spoiler-name">Snapcaster's Wand</div>
         </div>
         <div class="spoiler-card">
-          <img src="assets/spoiler-cards/61-dwarf-miner.jpg" alt="Dwarf Miner">
+          <img src="assets/spoiler-cards/61-dwarf-miner.jpg" alt="Dwarf Miner" data-lightbox data-lightbox-src="assets/spoiler-cards/61-dwarf-miner.jpg" data-lightbox-caption="Dwarf Miner" data-lightbox-note="Spoiler card">
           <div class="spoiler-name">Dwarf Miner</div>
         </div>
         <div class="spoiler-card">
-          <img src="assets/spoiler-cards/62-brave-squire.jpg" alt="Brave Squire">
+          <img src="assets/spoiler-cards/62-brave-squire.jpg" alt="Brave Squire" data-lightbox data-lightbox-src="assets/spoiler-cards/62-brave-squire.jpg" data-lightbox-caption="Brave Squire" data-lightbox-note="Spoiler card">
           <div class="spoiler-name">Brave Squire</div>
         </div>
         <div class="spoiler-card">
-          <img src="assets/spoiler-cards/70-fairfavor-princess.jpg" alt="Fairfavor Princess">
+          <img src="assets/spoiler-cards/70-fairfavor-princess.jpg" alt="Fairfavor Princess" data-lightbox data-lightbox-src="assets/spoiler-cards/70-fairfavor-princess.jpg" data-lightbox-caption="Fairfavor Princess" data-lightbox-note="Spoiler card">
           <div class="spoiler-name">Fairfavor Princess</div>
         </div>
         <div class="spoiler-card">
-          <img src="assets/spoiler-cards/81-nocturn-of-shadow.jpg" alt="Nocturn of Shadow">
+          <img src="assets/spoiler-cards/81-nocturn-of-shadow.jpg" alt="Nocturn of Shadow" data-lightbox data-lightbox-src="assets/spoiler-cards/81-nocturn-of-shadow.jpg" data-lightbox-caption="Nocturn of Shadow" data-lightbox-note="Spoiler card">
           <div class="spoiler-name">Nocturn of Shadow</div>
         </div>
         <div class="spoiler-card">
-          <img src="assets/spoiler-cards/87-barrel-of-mishchief.jpg" alt="Barrel of Mishchief">
+          <img src="assets/spoiler-cards/87-barrel-of-mishchief.jpg" alt="Barrel of Mishchief" data-lightbox data-lightbox-src="assets/spoiler-cards/87-barrel-of-mishchief.jpg" data-lightbox-caption="Barrel of Mishchief" data-lightbox-note="Spoiler card">
           <div class="spoiler-name">Barrel of Mishchief</div>
         </div>
         <div class="spoiler-card">
-          <img src="assets/spoiler-cards/93-armored-shade.jpg" alt="Armored Shade">
+          <img src="assets/spoiler-cards/93-armored-shade.jpg" alt="Armored Shade" data-lightbox data-lightbox-src="assets/spoiler-cards/93-armored-shade.jpg" data-lightbox-caption="Armored Shade" data-lightbox-note="Spoiler card">
           <div class="spoiler-name">Armored Shade</div>
         </div>
       </div>
@@ -122,5 +122,22 @@
     </footer>
 
   </div>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+    <div class="lightbox-zoom-controls">
+      <button class="lightbox-zoom-btn" id="zoomIn" aria-label="Zoom in">+</button>
+      <button class="lightbox-zoom-btn" id="zoomOut" aria-label="Zoom out">&minus;</button>
+      <button class="lightbox-zoom-btn" id="zoomReset" aria-label="Reset zoom">Reset</button>
+      <span class="lightbox-zoom-label" id="zoomLabel">100%</span>
+    </div>
+    <div class="lightbox-stage" id="lightboxStage">
+      <img id="lightboxImg" src="" alt="">
+    </div>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+    <div class="lightbox-note" id="lightboxNote"></div>
+  </div>
+
+  <script src="assets/js/lightbox.js"></script>
 </body>
 </html>

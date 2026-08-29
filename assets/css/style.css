@@ -541,3 +541,99 @@ footer.card {
   opacity: 0.4;
   pointer-events: none;
 }
+
+/* Lightbox stage, close, zoom (shared) */
+.lightbox-stage {
+  max-width: 90vw;
+  max-height: 80vh;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.lightbox-stage img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border: 3px solid var(--gold);
+  border-radius: 8px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+  transition: transform 0.2s ease;
+  transform-origin: center center;
+  cursor: grab;
+}
+
+.lightbox-stage img:active {
+  cursor: grabbing;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  background: none;
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  font-size: 1.8rem;
+  line-height: 1;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s ease;
+}
+
+.lightbox-close:hover {
+  background: var(--crimson);
+  border-color: var(--crimson);
+  color: var(--bg);
+}
+
+.lightbox-zoom-controls {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(20, 18, 16, 0.9);
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  padding: 0.4rem 0.6rem;
+  z-index: 1100;
+}
+
+.lightbox-zoom-btn {
+  background: none;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-size: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s ease;
+}
+
+.lightbox-zoom-btn:hover {
+  background: var(--gold);
+  color: var(--bg);
+}
+
+.lightbox-zoom-label {
+  color: var(--gold);
+  font-size: 0.8rem;
+  min-width: 3.2rem;
+  text-align: center;
+  letter-spacing: 0.04em;
+}

@@ -28,7 +28,7 @@
     </section>
 
     <div class="chapter-hero">
-      <img src="../assets/art/illustrations/leon-garo.jpg" alt="Leon Garo facing the darkness">
+      <img src="../assets/art/illustrations/leon-garo.jpg" alt="Leon Garo facing the darkness" data-lightbox data-lightbox-src="../assets/art/illustrations/leon-garo.jpg" data-lightbox-caption="The Death of Leon Garo" data-lightbox-note="Prologue illustration">
     </div>
 
     <section class="chapter-body card">
@@ -85,5 +85,21 @@
     </footer>
 
   </div>
+<div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+    <div class="lightbox-zoom-controls">
+      <button class="lightbox-zoom-btn" id="zoomIn" aria-label="Zoom in">+</button>
+      <button class="lightbox-zoom-btn" id="zoomOut" aria-label="Zoom out">&minus;</button>
+      <button class="lightbox-zoom-btn" id="zoomReset" aria-label="Reset zoom">Reset</button>
+      <span class="lightbox-zoom-label" id="zoomLabel">100%</span>
+    </div>
+    <div class="lightbox-stage" id="lightboxStage">
+      <img id="lightboxImg" src="" alt="">
+    </div>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+    <div class="lightbox-note" id="lightboxNote"></div>
+  </div>
+
+  <script src="../assets/js/lightbox.js"></script>
 </body>
 </html>

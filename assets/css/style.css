@@ -463,6 +463,61 @@ footer.card {
   letter-spacing: 0.04em;
 }
 
+
+/* Contact section (index.html) */
+.contact.card {
+  margin-top: 1.5rem;
+  padding: 1.6rem 1.5rem;
+}
+
+.contact h2 {
+  font-size: 1.25rem;
+  color: var(--gold);
+  letter-spacing: 0.07em;
+  margin-bottom: 0.55rem;
+  text-transform: uppercase;
+}
+
+.contact p {
+  color: var(--muted);
+  margin-bottom: 1.2rem;
+  font-size: 0.95rem;
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.contact-item {
+  display: inline-block;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(176, 141, 87, 0.3);
+  border-radius: 3px;
+  transition: 0.2s ease;
+}
+
+a.contact-item:hover {
+  border-color: var(--crimson);
+  color: var(--crimson);
+}
+
+footer.card a {
+  color: var(--dim);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201, 192, 180, 0.3);
+  transition: 0.2s ease;
+}
+
+footer.card a:hover {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
 /* Responsive */
 @media (max-width: 680px) {
   .grid {

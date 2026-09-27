@@ -28,6 +28,10 @@
       <div class="chapter-tag">Fairy Tale</div>
     </section>
 
+    <div class="chapter-hero">
+      <img src="../assets/art/illustrations/the-mirror-of-everything.jpg" alt="A king stands before the Mirror of Everything" data-lightbox data-lightbox-src="../assets/art/illustrations/the-mirror-of-everything.jpg" data-lightbox-caption="The Mirror of Everything" data-lightbox-note="Fairy tale illustration">
+    </div>
+
     <section class="chapter-body card">
       <p>Once upon a time, there was a king who had everything a king could want, which was, as it turned out, the problem.</p>
 
@@ -269,5 +273,21 @@
     </footer>
 
   </div>
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+    <div class="lightbox-zoom-controls">
+      <button class="lightbox-zoom-btn" id="zoomIn" aria-label="Zoom in">+</button>
+      <button class="lightbox-zoom-btn" id="zoomOut" aria-label="Zoom out">&minus;</button>
+      <button class="lightbox-zoom-btn" id="zoomReset" aria-label="Reset zoom">Reset</button>
+      <span class="lightbox-zoom-label" id="zoomLabel">100%</span>
+    </div>
+    <div class="lightbox-stage" id="lightboxStage">
+      <img id="lightboxImg" src="" alt="">
+    </div>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+    <div class="lightbox-note" id="lightboxNote"></div>
+  </div>
+
+  <script src="../assets/js/lightbox.js"></script>
 </body>
 </html>

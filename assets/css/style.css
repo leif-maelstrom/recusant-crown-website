@@ -719,6 +719,12 @@ footer.card a:hover {
   border-bottom-color: var(--gold);
 }
 
+footer.card .footer-license {
+  margin-top: 0.5rem;
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
 /* Responsive */
 @media (max-width: 680px) {
   .grid {

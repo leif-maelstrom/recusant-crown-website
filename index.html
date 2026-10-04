@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recusant Crown</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -23,14 +26,18 @@
       </nav>
     </header>
 
-    <section class="hero card">
-      <h1>
-        <span class="red">Recusant</span>
-        <span class="gold">Crown</span>
-      </h1>
-      <p>
-        A dark world of growing flexibility, collected power, and those who refuse the place they were given.
-      </p>
+    <section class="hero card rc-intro" id="rc-intro" aria-label="The Recusant Crown">
+      <div class="rc-mark" role="img" aria-label="The Recusant Sigil: an X with a crown resting on one stroke">
+        <div class="rc-x"></div>
+        <div class="rc-crown"></div>
+      </div>
+      <div class="rc-verb" aria-hidden="true"><span id="rc-verb"></span></div>
+      <h1 class="rc-title">The Recusant Crown</h1>
+      <div class="rc-outro">
+        <p>What is a dream when every dream is real? And who rules them?</p>
+        <a href="tales.html" class="btn">Start with a fairy tale?</a>
+      </div>
+      <button class="rc-replay" id="rc-replay" type="button">Replay</button>
     </section>
 
     <div class="grid">
@@ -66,5 +73,6 @@
     </footer>
 
   </div>
+  <script src="assets/js/intro.js"></script>
 </body>
 </html>

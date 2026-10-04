@@ -164,22 +164,166 @@ nav a.active {
   text-align: center;
 }
 
-.hero h1 {
-  font-size: 2.1rem;
-  letter-spacing: 0.08em;
-  margin-bottom: 0.4rem;
+/* Recusant sigil intro (index hero). The sigil images are masks,
+   so these colors repaint the drawings directly. */
+.hero.rc-intro {
+  --rc-sigil: #ECE6D6;
+  --rc-crown: #D6B25E;
+  --rc-text: #ECE6D6;
+  --rc-crown-width: 30%;
+  --rc-crown-left: 71%;
+  --rc-crown-top: -33%;
+  --rc-crown-tilt: -4deg;
+
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.25rem, 4vh, 2.5rem);
+  padding-top: 6.5rem;
+  padding-bottom: 3.5rem;
+  color: var(--rc-text);
+  font-family: "IM Fell English SC", Georgia, "Times New Roman", serif;
 }
 
-.hero h1 .red {
-  color: var(--crimson);
+.rc-mark {
+  position: relative;
+  width: min(70vw, 440px);
+  aspect-ratio: 1000 / 567;
 }
 
-.hero h1 .gold {
-  color: var(--gold);
-  display: block;
-  font-size: 1.35rem;
-  letter-spacing: 0.35em;
-  margin-top: 0.15rem;
+.rc-x, .rc-crown {
+  position: absolute;
+  -webkit-mask-size: contain; mask-size: contain;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: center; mask-position: center;
+}
+
+.rc-x {
+  inset: 0;
+  background: var(--rc-sigil);
+  -webkit-mask-image: url("../art/sigil/sigil-x.png");
+  mask-image: url("../art/sigil/sigil-x.png");
+}
+
+.rc-crown {
+  width: var(--rc-crown-width);
+  aspect-ratio: 1000 / 608;
+  left: var(--rc-crown-left);
+  top: var(--rc-crown-top);
+  transform: rotate(var(--rc-crown-tilt));
+  background: var(--rc-crown);
+  -webkit-mask-image: url("../art/sigil/sigil-crown.png");
+  mask-image: url("../art/sigil/sigil-crown.png");
+}
+
+.rc-verb {
+  height: 1.2em;
+  font-size: clamp(2rem, 7vw, 3.4rem);
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-align: center;
+  min-width: 6em;
+}
+
+.rc-verb span { display: inline-block; }
+
+.rc-title {
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(1.1rem, 3.2vw, 1.6rem);
+  letter-spacing: 0.22em;
+  opacity: 0.88;
+}
+
+.rc-outro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.hero .rc-outro p {
+  margin: 0 auto;
+  font-style: italic;
+}
+
+.rc-outro .btn {
+  align-self: center;
+}
+
+.rc-replay {
+  position: absolute;
+  right: 1rem;
+  bottom: 0.9rem;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--rc-text);
+  background: transparent;
+  border: 1px solid rgba(236, 230, 214, 0.35);
+  border-radius: 2px;
+  padding: 0.3em 0.8em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+
+.rc-replay:focus-visible { outline: 2px solid var(--rc-crown); outline-offset: 3px; }
+.rc-done .rc-replay { opacity: 0.6; }
+.rc-done .rc-replay:hover { opacity: 1; }
+
+/* Animation (only when it's allowed to play) */
+.rc-play .rc-x     { opacity: 0; animation: rc-x-in 1.5s cubic-bezier(.2,.7,.2,1) 0.3s forwards; }
+.rc-play .rc-crown { opacity: 0; animation: rc-crown-in 1s cubic-bezier(.25,1.4,.4,1) 1.7s forwards; }
+.rc-play .rc-title { opacity: 0; }
+.rc-play.rc-titled .rc-title { animation: rc-fade 1.8s ease forwards; }
+.rc-play .rc-outro { opacity: 0; visibility: hidden; }
+.rc-play.rc-titled .rc-outro { visibility: visible; animation: rc-fade-full 1.8s ease 0.6s forwards; }
+
+@keyframes rc-x-in {
+  from { opacity: 0; transform: scale(1.08); filter: blur(10px); }
+  to   { opacity: 1; transform: scale(1);    filter: blur(0); }
+}
+
+@keyframes rc-crown-in {
+  from { opacity: 0; transform: translateY(-60%) rotate(calc(var(--rc-crown-tilt) - 14deg)); }
+  to   { opacity: 1; transform: translateY(0)    rotate(var(--rc-crown-tilt)); }
+}
+
+@keyframes rc-fade { from { opacity: 0; } to { opacity: 0.88; } }
+@keyframes rc-fade-full { from { opacity: 0; } to { opacity: 1; } }
+
+/* each flashing verb: a hard snap in, a shiver, gone */
+.rc-flash { animation: rc-flash var(--rc-dur, 260ms) steps(1, end) forwards, rc-shiver var(--rc-dur, 260ms) linear; }
+
+@keyframes rc-flash {
+  0%   { opacity: 1; }
+  82%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes rc-shiver {
+  0%   { transform: translateX(var(--rc-jx, 0)) scaleY(1.08); text-shadow: 0 0 14px var(--rc-crown); }
+  30%  { transform: translateX(0) scaleY(1); }
+  100% { transform: translateX(0); text-shadow: none; }
+}
+
+/* the final word settles instead of flashing */
+.rc-settle { animation: rc-settle 1.4s ease-out forwards; }
+
+@keyframes rc-settle {
+  0%   { opacity: 0; filter: blur(6px); letter-spacing: 0.3em; }
+  100% { opacity: 1; filter: blur(0);   letter-spacing: 0.04em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rc-play .rc-x, .rc-play .rc-crown, .rc-play .rc-title, .rc-play .rc-outro {
+    animation: none !important;
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 .hero p {

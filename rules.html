@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rules — Recusant Crown</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="container">
+
+    <header class="card">
+      <div class="brand">
+        <div class="title">Recusant</div>
+        <div class="subtitle">Crown</div>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="fiction.html">Fiction</a>
+        <a href="tales.html">Tales</a>
+        <a href="cards.html" class="active">Card Game</a>
+        <a href="art.html">Art</a>
+      </nav>
+    </header>
+
+    <section class="page-title card">
+      <h1>Player Rulebook</h1>
+      <p>How to play Recusant Crown</p>
+    </section>
+
+    <section class="section card rules-contents">
+      <h2>Contents</h2>
+      <nav class="rules-toc" aria-label="Contents">
+<h3>Start Here</h3>
+<ul>
+<li><a href="#how-to-win">How to Win</a></li>
+<li><a href="#learn-to-play-a-sample-game">Learn to Play: A Sample Game</a></li>
+</ul>
+<h3><a href="#full-rules">Full Rules</a></h3>
+<ul>
+<li><a href="#setup">Setup</a></li>
+<li><a href="#your-turn">Your Turn</a></li>
+<li><a href="#resources-casting">Resources &amp; Casting</a></li>
+<li><a href="#creatures">Creatures</a></li>
+<li><a href="#lanes">Lanes</a></li>
+<li><a href="#combat-pushing">Combat: Pushing</a></li>
+<li><a href="#dream-anchors">Dream Anchors</a></li>
+<li><a href="#card-types">Card Types</a></li>
+<li><a href="#keywords">Keywords</a></li>
+<li><a href="#match-play-deck-building">Match Play &amp; Deck Building</a></li>
+<li><a href="#glossary">Glossary</a></li>
+</ul>
+</nav>
+      <p class="rules-back"><a href="cards.html">&larr; Back to the Card Game</a></p>
+    </section>
+
+    <section class="section card rules-section" id="how-to-win">
+      <h2>How to Win</h2>
+      <p><strong>The first player to reach 7 Majesty wins.</strong></p>
+      <p>Recusant Crown is a duel between two dreamers. Each of you defends a dream held together by <strong>Dream Anchors</strong>: nine cards from the top of your deck, set face-down at your end of the three lanes, three per lane. Your creatures stand in the lanes in front of them.</p>
+      <p><strong>Break anchors to gain Majesty.</strong> When you push into a lane and your damage gets past every one of your opponent's creatures there, the leftover damage breaks one of their anchors in that lane. Each broken anchor is worth <strong>1 Majesty</strong> to you. A few cards grant Majesty in other ways.</p>
+      <p><strong>Or ring them out.</strong> If a player takes damage in a lane that has no anchors left, they <strong>Awaken</strong>. The game ends immediately, the Awakened player <strong>loses 1 Majesty</strong>, and the higher score wins. So Awakening usually loses the game, but not always: a player at 5 Majesty who Awakens against an opponent at 3 still wins, 4 to 3.</p>
+      <p>If the final score is tied, the game is a tie.</p>
+      <figure class="rules-figure"><svg class="rules-diagram" viewBox="0 0 760 540" role="img" aria-label="Each lane is a battlefront with anchors guarding each end" font-size="13" xmlns="http://www.w3.org/2000/svg">
+<text x="24" y="30" font-size="15" font-weight="600" fill="var(--dg-ink)">Each lane is a battlefront with anchors guarding each end</text>
+<rect x="24" y="70" width="712" height="30" rx="8" fill="var(--dg-tint)" stroke="var(--dg-edge)" stroke-width="1.25"/><text x="380" y="89" text-anchor="middle" fill="var(--dg-ink)">Opponent’s Reserve</text>
+<g><rect x="24" y="108" width="226" height="352" rx="8" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="36" y="114" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="84" y="114" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="132" y="114" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="36" y="160" width="120" height="28" rx="6" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="36" y="198" width="120" height="28" rx="6" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="36" y="236" width="120" height="28" rx="6" fill="var(--dg-accent)" fill-opacity="0.12" stroke="var(--dg-accent)" stroke-width="2"/><rect x="36" y="300" width="120" height="28" rx="6" fill="var(--dg-accent)" fill-opacity="0.12" stroke="var(--dg-accent)" stroke-width="2"/><rect x="36" y="338" width="120" height="28" rx="6" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="36" y="376" width="120" height="28" rx="6" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="36" y="422" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="84" y="422" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="132" y="422" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/></g><text x="137" y="60" text-anchor="middle" font-weight="600" fill="var(--dg-ink)">Left lane</text><text x="184" y="133" font-size="11.5" fill="var(--dg-quiet)">anchors</text><text x="168" y="178" font-size="11.5" fill="var(--dg-quiet)">back</text><text x="168" y="254" font-size="11.5" font-weight="600" fill="var(--dg-ink)">Leader</text><text x="168" y="318" font-size="11.5" font-weight="600" fill="var(--dg-ink)">Leader</text><text x="168" y="394" font-size="11.5" fill="var(--dg-quiet)">back</text><text x="184" y="441" font-size="11.5" fill="var(--dg-quiet)">anchors</text>
+<g><rect x="267" y="108" width="226" height="352" rx="8" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="279" y="114" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="327" y="114" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="375" y="114" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="279" y="160" width="120" height="28" rx="6" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="279" y="198" width="120" height="28" rx="6" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="279" y="236" width="120" height="28" rx="6" fill="var(--dg-accent)" fill-opacity="0.12" stroke="var(--dg-accent)" stroke-width="2"/><rect x="279" y="300" width="120" height="28" rx="6" fill="var(--dg-accent)" fill-opacity="0.12" stroke="var(--dg-accent)" stroke-width="2"/><rect x="279" y="338" width="120" height="28" rx="6" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="279" y="376" width="120" height="28" rx="6" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="279" y="422" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="327" y="422" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="375" y="422" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/></g><text x="380" y="60" text-anchor="middle" font-weight="600" fill="var(--dg-ink)">Middle lane</text>
+<g><rect x="510" y="108" width="226" height="352" rx="8" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="522" y="114" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="570" y="114" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="618" y="114" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="522" y="160" width="120" height="28" rx="6" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="522" y="198" width="120" height="28" rx="6" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="522" y="236" width="120" height="28" rx="6" fill="var(--dg-accent)" fill-opacity="0.12" stroke="var(--dg-accent)" stroke-width="2"/><rect x="522" y="300" width="120" height="28" rx="6" fill="var(--dg-accent)" fill-opacity="0.12" stroke="var(--dg-accent)" stroke-width="2"/><rect x="522" y="338" width="120" height="28" rx="6" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="522" y="376" width="120" height="28" rx="6" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><rect x="522" y="422" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="570" y="422" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/><rect x="618" y="422" width="40" height="30" rx="4" fill="var(--dg-anchor)" fill-opacity="0.12" stroke="var(--dg-anchor)" stroke-width="1.25"/></g><text x="623" y="60" text-anchor="middle" font-weight="600" fill="var(--dg-ink)">Right lane</text>
+<line x1="24" x2="736" y1="282" y2="282" stroke="var(--dg-accent)" stroke-width="1.25" stroke-dasharray="4 4"/><text x="728" y="277" text-anchor="end" font-size="11.5" fill="var(--dg-quiet)">the clash</text>
+<rect x="24" y="468" width="712" height="30" rx="8" fill="var(--dg-tint)" stroke="var(--dg-edge)" stroke-width="1.25"/><text x="380" y="487" text-anchor="middle" fill="var(--dg-ink)">Your Reserve</text>
+<text x="24" y="524" font-size="11.5" fill="var(--dg-quiet)">Opponent’s side on top, yours below. Each side’s Leader stands nearest the clash.</text>
+</svg><figcaption>the board · 3 lanes, 2 sides</figcaption></figure>
+      <p>Creatures line up from the front of a lane (nearest the clash) to the back (nearest their anchors). Damage that gets past every creature on one side breaks one of that side's anchors.</p>
+    </section>
+    <section class="section card rules-section" id="learn-to-play-a-sample-game">
+      <h2>Learn to Play: A Sample Game</h2>
+      <p>Ada plays a Dream deck, which runs on <strong>Insight</strong>. Ben plays a Resolve deck, which runs on <strong>Resolve</strong>. Follow along to see the whole game in miniature: building up, a big clash, and the wreckage after.</p>
+      <h3 id="learn-to-play-a-sample-game-setup">Setup</h3>
+      <p>Each player shuffles, sets the top 9 cards face-down as Dream Anchors (3 per lane), and draws 7. Neither player has any resources yet. A random draw says Ada goes first.</p>
+      <h3 id="learn-to-play-a-sample-game-the-opening-one-card-a-turn">The opening: one card a turn</h3>
+      <p>On your turn you take <strong>exactly one action</strong>. Early on, that action is almost always "play a cheap creature." Every creature has a <strong>Cost</strong> and a <strong>Bloom</strong>: you pay the Cost, then gain the Bloom. Most creatures Bloom for more than they cost, so the board you build is also the resource pool you spend.</p>
+      <div class="rules-table"><table><tr><th>Turn</th><th>Player</th><th>Action</th><th>Pool after</th></tr><tr><td>1</td><td>Ada</td><td>Plays <strong>Shieldmage Whisper</strong> (Cost 0, Bloom 1, Power 1) to the left lane</td><td>1 Insight</td></tr><tr><td>1</td><td>Ben</td><td>Plays <strong>Brave Squire</strong> (Cost 0, Bloom 1, Power 2) to the left lane</td><td>1 Resolve</td></tr><tr><td>2</td><td>Ada</td><td>Plays <strong>Well Gazer</strong> (Cost 0, Bloom 1, Power 2) behind the Whisper</td><td>2 Insight</td></tr><tr><td>2</td><td>Ben</td><td>Plays <strong>Willing Volunteer</strong> (Cost 0, Bloom 1, Power 3) behind the Squire</td><td>2 Resolve</td></tr><tr><td>3</td><td>Ada</td><td>Plays <strong>Slippery Shrike</strong> (Cost 2, Bloom 3, Power 2): pays 2, gains 3</td><td>3 Insight</td></tr><tr><td>3</td><td>Ben</td><td>Plays <strong>Loyal Shieldmaiden</strong> (Cost 1, Bloom 2, Power 5, Heroic) at the back</td><td>3 Resolve</td></tr></table></div>
+      <p>The left lane <strong>unlocked</strong> on Ben's first turn, the moment both sides had a creature in it. Only an unlocked lane can be pushed.</p>
+      <h3 id="learn-to-play-a-sample-game-the-clash-ben-pushes-the-left-lane">The clash: Ben pushes the left lane</h3>
+      <p>On turn 4, Ada uses her action to <strong>Meditate</strong>, refilling her hand to 7 cards. Ben uses his action to <strong>push</strong> the left lane. Both lanes now fill their own <strong>Push Damage</strong> pool. Effects and Power go in one creature at a time, alternating sides, front to back, starting with the attacker's front creature (the <strong>Leader</strong>).</p>
+      <ol><li><strong>Ben's Brave Squire</strong> has +1 Power when pushing, so it adds 3. Ben's pool: <strong>3</strong>.</li><li><strong>Ada's Shieldmage Whisper</strong> fires its Strike, "reduce the opposing lane power by 1": Ben's pool drops to <strong>2</strong>. Then it adds its own 1. Ada's pool: <strong>1</strong>.</li><li><strong>Ben's Willing Volunteer</strong> adds 3. Ben's pool: <strong>5</strong>.</li><li><strong>Ada's Well Gazer</strong> fires Terror, reducing Ben's pool by the Power of Ben's Leader (the Squire, at 3): Ben's pool drops to <strong>2</strong>. Then it adds 2. Ada's pool: <strong>3</strong>.</li><li><strong>Ben's Loyal Shieldmaiden</strong> adds 5. Ben's pool: <strong>7</strong>.</li><li><strong>Ada's Slippery Shrike</strong> adds 2. Ada's pool: <strong>5</strong>. Its Strike has <strong>Flying</strong>, so Ada could fire it whenever she liked during the push; she uses it to fade 5 cards off the top of Ben's deck.</li></ol>
+      <p>Now each side deals its pool to the other, and <strong>the side taking damage decides how to spread it</strong>.</p>
+      <ul><li>Ada takes <strong>7</strong>. Her creatures have 5 Power in total, and a creature <strong>Shatters</strong> when it takes damage equal to its Power, so all three Shatter and 2 damage is left over. Leftover damage breaks one of Ada's anchors in that lane. <strong>Ben gains 1 Majesty.</strong></li><li>Ben takes <strong>5</strong>. His Shieldmaiden is <strong>Heroic</strong>, so damage must go to her first. Exactly 5 Shatters her.</li></ul>
+      <p>Shattering a creature pays its <strong>Bounty</strong> to whoever shattered it, usually in <strong>Essence</strong>, the wildcard resource. Ben collects 1 Essence from each of Ada's three creatures. Ada collects 2 Essence for the Shieldmaiden.</p>
+      <h3 id="learn-to-play-a-sample-game-the-broken-anchor">The broken anchor</h3>
+      <p>Ada turns her broken anchor face-up. It's <strong>Laughing Crowd</strong>, a creature with Cost 3 and Power 7. A broken anchor can be cast on the spot for its Cost, so Ada pays 3 Insight and drops a 7-Power wall of jeering dreamlings straight into the left lane. If she hadn't wanted to (or couldn't pay), it would have gone to her hand instead.</p>
+      <p>At the end of the turn, the shattered creatures Fade (go to the discard pile), all damage clears, and the turn passes.</p>
+      <h3 id="learn-to-play-a-sample-game-what-this-push-taught">What this push taught</h3>
+      <p>Ben scored first, but it cost him his best defender, and Ada's anchor handed her a bigger creature than any she'd played. Every push is a bet for <strong>both</strong> players: if the defending side's pool wipes out your pushing creatures, the leftover breaks <strong>your</strong> anchors. Push when your lane's Strikes will do real work, and never push carelessly into a lane you can't read.</p>
+    </section>
+    <section class="page-title card rules-part" id="full-rules">
+      <h1>Full Rules</h1>
+    </section>
+    <section class="section card rules-section" id="setup">
+      <h2>Setup</h2>
+      <ol><li><strong>Bring a deck.</strong> Your deck is called your <strong>Dream</strong>: at least 60 cards (see Deck Building).</li><li><strong>Lay out the board.</strong> Each player has three lanes in front of them, facing the opponent's three lanes. Each lane is one battlefront with two sides, yours and theirs. Behind your end of the lanes is your <strong>Reserve</strong>, where equipment and some other cards are played.</li><li><strong>Set your anchors.</strong> Shuffle your Dream. Without looking, take the top 9 cards and place them face-down as your <strong>Dream Anchors</strong>, 3 at your end of each lane. You don't choose them.</li><li><strong>Draw your hand.</strong> Draw 7 cards.</li><li><strong>Mulligan if you want.</strong> You may put back any number of cards from your hand and draw that many.</li><li><strong>Pick the first player.</strong> In a single game, choose at random. In match play, the loser of the previous game goes first.</li></ol>
+      <p>Both players start with no resources. You'll build them by playing creatures.</p>
+    </section>
+    <section class="section card rules-section" id="your-turn">
+      <h2>Your Turn</h2>
+      <p><strong>On your turn you take exactly one action.</strong> That is the whole turn. Then your opponent takes theirs.</p>
+      <div class="rules-table"><table><tr><th>Action</th><th>What it does</th></tr><tr><td><strong>Play a card</strong></td><td>Play 1 card from your hand. Setting a trap counts as playing a card.</td></tr><tr><td><strong>Push</strong></td><td>Choose an unlocked lane and attack it (see Combat). Pushing does not exhaust your creatures.</td></tr><tr><td><strong>Maneuver</strong></td><td>Move any number of your creatures from one lane to one other lane. You can only move creatures you own, not ones you merely control.</td></tr><tr><td><strong>Meditate</strong></td><td>Refill your hand to 7 cards. You can't Meditate with a full hand.</td></tr><tr><td><strong>Recover</strong></td><td>Turn all your exhausted creatures upright again. You may choose to leave some exhausted.</td></tr></table></div>
+      <p><strong>There is no drawing step.</strong> You draw new cards by Meditating or through card effects. Your hand size is normally 7.</p>
+      <p><strong>There is no passing.</strong> You must take one of the actions above. You pass only if you have no legal action at all.</p>
+      <h3 id="your-turn-things-that-don-t-use-your-action">Things that don&#x27;t use your action</h3>
+      <ul><li><strong>Chain.</strong> A card with Chain lets you play one more card the same turn, as long as it shares at least one keyword with the Chain card.</li><li><strong>Broken anchors.</strong> When one of your anchors breaks, you may cast it immediately (see Dream Anchors).</li><li><strong>Exhaust abilities.</strong> Abilities that say "Exhaust:" can be used at any point during your turn, including in the middle of a push.</li><li><strong>Flying effects and traps</strong> fire when their timing comes up, on either player's turn (see Combat and Card Types).</li></ul>
+    </section>
+    <section class="section card rules-section" id="resources-casting">
+      <h2>Resources &amp; Casting</h2>
+      <p><strong>Clarity</strong> is the name for all of the factions' resources together. Each faction has its own:</p>
+      <div class="rules-table"><table><tr><th>Faction</th><th>Resource</th></tr><tr><td>Dream</td><td>Insight</td></tr><tr><td>Resolve</td><td>Resolve</td></tr><tr><td>Dark</td><td>Ink</td></tr><tr><td>Light</td><td>Light</td></tr><tr><td>Essence</td><td>Essence</td></tr></table></div>
+      <p>You can hold several kinds at once. Resources stay in your pool until you spend them.</p>
+      <h3 id="resources-casting-bloom-your-creatures-are-your-mana">Bloom: your creatures are your mana</h3>
+      <p>Every creature has a <strong>Cost</strong> and a <strong>Bloom</strong>. When you play it, you pay the Cost, then gain the Bloom in that faction's resource. Most creatures Bloom for more than they cost, so playing creatures grows your pool. Cheap creatures with Cost 0 and Bloom 1 are how every deck gets started.</p>
+      <h3 id="resources-casting-paying-for-cards">Paying for cards</h3>
+      <ul><li><strong>Conjurations</strong> (creatures and equipment) cost only their own faction's resource. A Dream creature costs Insight.</li><li><strong>All other spells</strong> cost <strong>1 Clarity of any faction, plus the Essence printed on the card</strong>. A spell with a printed cost of 0 costs just 1 Clarity.</li></ul>
+      <h3 id="resources-casting-essence-and-coloring">Essence and coloring</h3>
+      <p><strong>Essence</strong> is pure dream stuff. You mostly earn it from Bounties when you shatter creatures. Besides paying for spells, Essence can stand in for any faction's resource by being <strong>colored</strong>: to pay a cost of X of a faction's resource, pay <strong>1 of that resource plus X − 1 Essence</strong>. One Clarity colors any amount of Essence.</p>
+      <p><em>Example:</em> Passwall Panther costs 3 Insight. You can pay 3 Insight, or 1 Insight + 2 Essence. If you need only 1, just pay the 1 Insight.</p>
+    </section>
+    <section class="section card rules-section" id="creatures">
+      <h2>Creatures</h2>
+      <p>Every creature card has four numbers:</p>
+      <div class="rules-table"><table><tr><th>Stat</th><th>Meaning</th></tr><tr><td><strong>Cost</strong></td><td>What you pay to play it, in its faction's resource.</td></tr><tr><td><strong>Bloom</strong></td><td>What you gain back right after you play it.</td></tr><tr><td><strong>Power</strong></td><td>The damage it adds in combat, <strong>and</strong> how much damage it takes to Shatter it.</td></tr><tr><td><strong>Bounty</strong></td><td>The reward for shattering it, usually Essence.</td></tr></table></div>
+      <h3 id="creatures-shatter">Shatter</h3>
+      <p>A creature <strong>Shatters</strong> when it takes damage equal to its Power. A shattered creature is <strong>immediately exhausted</strong> (turned sideways) and adds nothing more that turn. It stays on the lane until the <strong>end of the turn</strong>, then <strong>Fades</strong> to your discard pile (the Fade).</p>
+      <p><strong>Damage doesn't last.</strong> At the end of each turn, all damage on surviving creatures clears. A creature either Shatters this turn or heals.</p>
+      <h3 id="creatures-bounty">Bounty</h3>
+      <p>Whoever's effect shatters a creature collects its <strong>Bounty</strong>, not the creature's owner. Shatter your opponent's big creatures to fund your own spells.</p>
+      <p>Removing a creature <strong>without</strong> shattering it, such as fading it directly or Obliterating it (removing it from the game), means nobody collects its Bounty. Rivals are the one exception (see Card Types).</p>
+      <h3 id="creatures-power-counters">Power Counters</h3>
+      <p>Some effects place <strong>-1 Power Counters</strong> instead of normal damage. Each one permanently lowers the creature's Power by 1, so it adds less damage and Shatters more easily. A creature reduced to <strong>0 Power Fades immediately</strong>. It doesn't Shatter, so nobody collects its Bounty.</p>
+      <h3 id="creatures-exhaust-and-recover">Exhaust and Recover</h3>
+      <p>An <strong>exhausted</strong> creature is turned sideways and adds no Power or effects in combat, but it is still on its lane. Some cards exhaust creatures, and some abilities exhaust their own creature as a cost ("Exhaust: ..."). Exhausted creatures stand back up only when you take the <strong>Recover</strong> action. Firing an Exhaust ability mid-push never takes back Power already added, but that creature adds nothing after.</p>
+    </section>
+    <section class="section card rules-section" id="lanes">
+      <h2>Lanes</h2>
+      <p>The battlefield has three lanes. Each lane has your side and your opponent's side. Your creatures stand in a line on your side, from the <strong>front</strong> (closest to the opponent) to the <strong>back</strong> (closest to your anchors). When you play a creature, you choose where in the lane it goes, unless its card says otherwise.</p>
+      <h3 id="lanes-the-leader">The Leader</h3>
+      <p>The creature at the front of your side of a lane is that lane's <strong>Leader</strong>. Some effects target the Leader, and <strong>Leader</strong> abilities work only while their creature is in front. A Fortification can stand in front but can never be the Leader; a lane with a Fortification in front has no Leader at all.</p>
+      <h3 id="lanes-locked-and-unlocked-lanes">Locked and unlocked lanes</h3>
+      <ul><li>A lane is <strong>unlocked</strong> while both sides have creatures in it. Only an unlocked lane can be pushed.</li><li>A lane <strong>locks</strong> as soon as either side has no creatures left. The other lanes aren't affected.</li><li>A locked lane <strong>unlocks</strong> again the moment creatures arrive on the empty side, whether they're played there or moved in by Maneuver.</li><li>An exhausted creature still counts as being on its lane, and so does a shattered one until it Fades at the end of the turn.</li></ul>
+      <p>This gives you a real choice. Keep your creatures out of a lane and it can't be attacked. Move everything out of a threatened lane and it locks. But a lane you abandon is also a lane you can't push from.</p>
+    </section>
+    <section class="section card rules-section" id="combat-pushing">
+      <h2>Combat: Pushing</h2>
+      <p>To attack, use your action to <strong>push</strong> an unlocked lane. Your side of that lane attacks; your opponent's side defends. Pushing doesn't exhaust your creatures, so the same lane can be pushed again and again on later turns for as long as creatures survive.</p>
+      <h3 id="combat-pushing-two-damage-pools">Two damage pools</h3>
+      <p>A push is a clash, not a one-way attack. <strong>Both sides build a Push Damage pool.</strong> The attacker's pool is dealt to the defenders, and the defender's pool is dealt to the attackers.</p>
+      <p>Each creature contributes in turn: first its effect (its <strong>Strike</strong>), then its Power is added to its side's pool. Effects happen the moment they resolve, so a creature shattered or removed before its turn adds nothing.</p>
+      <h3 id="combat-pushing-the-resolution-order">The resolution order</h3>
+      <ol><li><strong>Auras.</strong> Any Aura effects on creatures in this lane apply first, before anything else. Auras change how the whole combat works. If two Auras clash, the attacker's applies first and the defender's applies second, overriding it.</li><li><strong>Vanguard.</strong> Creatures with Vanguard resolve next, wherever they stand in the lane. If both sides have Vanguards, they alternate, attacker first.</li><li><strong>Everyone else, front to back.</strong> The attacker's Leader resolves, then the defender's Leader, then back and forth down both lanes. If one side runs out of creatures, the other side finishes in order.</li><li><strong>Rearguard.</strong> Creatures with Rearguard resolve last, wherever they stand. If both sides have them, they alternate, attacker first.</li></ol>
+      <p><strong>Flying</strong> effects sit outside this order. A player may fire a Flying effect at any point in the push, even before the Auras. The attacker gets the first chance, then the defender. A Flying effect slots in between other effects; it never interrupts one, and nobody can respond to it.</p>
+      <p>Exhausted creatures add nothing.</p>
+      <figure class="rules-figure"><svg class="rules-diagram" viewBox="0 0 760 324" role="img" aria-label="A push resolves in four tiers, then each side takes its damage" font-size="13" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="push-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--dg-edge)"/></marker></defs>
+<text x="24" y="30" font-size="15" font-weight="600" fill="var(--dg-ink)">A push resolves in four tiers, then each side takes its damage</text>
+<rect x="24" y="48" width="712" height="40" rx="8" fill="var(--dg-accent)" fill-opacity="0.12" stroke="var(--dg-accent)" stroke-width="2"/><text x="380" y="72" text-anchor="middle" fill="var(--dg-ink)">Flying: may slot in at any point, even before Auras. Attacker gets first chance.</text>
+<g fill="none" stroke="var(--dg-edge)" stroke-width="1.25"><path d="M184 144H208" marker-end="url(#push-arrow)"/><path d="M368 144H392" marker-end="url(#push-arrow)"/><path d="M552 144H576" marker-end="url(#push-arrow)"/><path d="M656 180V228" marker-end="url(#push-arrow)"/><path d="M576 264H552" marker-end="url(#push-arrow)"/></g>
+<rect x="24" y="108" width="160" height="72" rx="8" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><text x="36" y="132" font-weight="600" fill="var(--dg-ink)">1. Auras</text><text x="36" y="152" font-size="11.5" fill="var(--dg-quiet)">apply before all else</text><text x="36" y="168" font-size="11.5" fill="var(--dg-quiet)">defender wins clashes</text>
+<rect x="208" y="108" width="160" height="72" rx="8" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><text x="220" y="132" font-weight="600" fill="var(--dg-ink)">2. Vanguard</text><text x="220" y="152" font-size="11.5" fill="var(--dg-quiet)">wherever it stands</text><text x="220" y="168" font-size="11.5" fill="var(--dg-quiet)">attacker first</text>
+<rect x="392" y="108" width="160" height="72" rx="8" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><text x="404" y="132" font-weight="600" fill="var(--dg-ink)">3. Front to back</text><text x="404" y="152" font-size="11.5" fill="var(--dg-quiet)">Leaders first, then</text><text x="404" y="168" font-size="11.5" fill="var(--dg-quiet)">alternating sides</text>
+<rect x="576" y="108" width="160" height="72" rx="8" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><text x="588" y="132" font-weight="600" fill="var(--dg-ink)">4. Rearguard</text><text x="588" y="152" font-size="11.5" fill="var(--dg-quiet)">resolves last</text><text x="588" y="168" font-size="11.5" fill="var(--dg-quiet)">attacker first</text>
+<rect x="576" y="228" width="160" height="72" rx="8" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><text x="588" y="252" font-weight="600" fill="var(--dg-ink)">Take damage</text><text x="588" y="272" font-size="11.5" fill="var(--dg-quiet)">each side spreads</text><text x="588" y="288" font-size="11.5" fill="var(--dg-quiet)">what it receives</text>
+<rect x="392" y="228" width="160" height="72" rx="8" fill="none" stroke="var(--dg-edge)" stroke-width="1.25"/><text x="404" y="252" font-weight="600" fill="var(--dg-ink)">Break through</text><text x="404" y="272" font-size="11.5" fill="var(--dg-quiet)">leftover damage</text><text x="404" y="288" font-size="11.5" fill="var(--dg-quiet)">breaks an anchor</text>
+<text x="556" y="216" text-anchor="middle" font-size="11.5" fill="var(--dg-quiet)">if a side is wiped out</text>
+</svg><figcaption>push resolution order · 4 tiers, then damage</figcaption></figure>
+      <p>In every tier the attacker goes first. Each creature fires its Strike, then adds its Power to its side's pool.</p>
+      <h3 id="combat-pushing-dealing-the-damage">Dealing the damage</h3>
+      <p>Once every creature has resolved, each side takes the opposing pool, and <strong>the side taking damage chooses how to spread it</strong> among its own creatures. Some effects override that choice: damage must go to a <strong>Heroic</strong> creature first, for example.</p>
+      <h3 id="combat-pushing-breaking-through">Breaking through</h3>
+      <p>If every creature on one side Shatters and damage is left over, the leftover breaks one <strong>Dream Anchor</strong> on that side of the lane, and the opposing player gains <strong>1 Majesty</strong>. This works in both directions: a push that goes badly can break the attacker's own anchor.</p>
+      <p>If that side has no anchors left in that lane, its player <strong>Awakens</strong> instead, and the game ends (see How to Win).</p>
+      <h3 id="combat-pushing-after-the-push">After the push</h3>
+      <p>At the end of the turn, shattered creatures Fade, damage clears from survivors, and any lane left with an empty side locks.</p>
+    </section>
+    <section class="section card rules-section" id="dream-anchors">
+      <h2>Dream Anchors</h2>
+      <p>Your 9 anchors are the foundation of your dream: 3 face-down cards at your end of each lane. Breaking an anchor is worth <strong>1 Majesty</strong> to the opponent, always exactly 1.</p>
+      <h3 id="dream-anchors-when-an-anchor-breaks">When an anchor breaks</h3>
+      <p>The owner turns it face-up. It's a real card from their deck, and they get to use it:</p>
+      <ul><li>They may <strong>cast it immediately by paying its normal cost</strong>. This doesn't use their action, even on the opponent's turn.</li><li>If it has <strong>Snap</strong>, they may cast it immediately for <strong>free</strong>.</li><li>If they don't cast it, it goes to their <strong>hand</strong>.</li></ul>
+      <p>So breaking an anchor is a risk. The card underneath might be a bomb your opponent gets to play right away.</p>
+      <h3 id="dream-anchors-other-anchor-rules">Other anchor rules</h3>
+      <ul><li><strong>No restoration.</strong> Broken anchors never come back, and new anchors are never added, unless a card says so.</li><li><strong>Direct damage.</strong> Some cards damage a player directly. When you damage your opponent directly, they break one of their Dream Anchors and you gain 1 Majesty.</li><li><strong>Anchors as a resource.</strong> Some cards let you look at, swap, add to, or spend your anchors. These are covered on the cards themselves.</li></ul>
+    </section>
+    <section class="section card rules-section" id="card-types">
+      <h2>Card Types</h2>
+      <div class="rules-table"><table><tr><th>Type</th><th>What it is</th></tr><tr><td><strong>Conjurations</strong></td><td>Creatures and equipment. Cost their faction's resource only.</td></tr><tr><td><strong>Spells</strong></td><td>Magical, often complex one-shot effects. Cost 1 Clarity + printed Essence. Arcane is a kind of Dream spell.</td></tr><tr><td><strong>Technics</strong></td><td>Physical combat moves: blocks, strikes, maneuvers. Played to a lane. Simple, and often have Chain.</td></tr><tr><td><strong>Summons</strong></td><td>Large payoff plays.</td></tr><tr><td><strong>Equipment</strong></td><td>A Conjuration usually played to your Reserve. Gives an ongoing effect or an Exhaust ability.</td></tr><tr><td><strong>Battlegrounds</strong></td><td>Played to a lane and change it until destroyed or replaced. One per lane; a new one replaces the old.</td></tr><tr><td><strong>Figments</strong></td><td>Creatures and objects created by other cards' effects.</td></tr><tr><td><strong>Traps</strong></td><td>Played face-down; spring when their condition is met.</td></tr><tr><td><strong>Fortifications</strong></td><td>Built defenses: traps, defenders or emplacements.</td></tr><tr><td><strong>Rivals</strong></td><td>Powerful bosses you give to your opponent.</td></tr></table></div>
+      <h3 id="card-types-traps">Traps</h3>
+      <ul><li><strong>Setting</strong> a trap uses your action. Play it face-down where its card says: some go to a lane, some to your Reserve. You pay nothing yet.</li><li><strong>Springing</strong> it: when its condition is met, on either player's turn, you may flip it and <strong>pay its cost then</strong>. Its effect slots in right after the effect that triggered it. Springing doesn't use your action.</li><li>Springing is <strong>optional</strong>. If you can't pay or don't want to, the trap stays face-down and waits for its condition to come up again.</li><li>A trap can't cancel an effect that has already happened. After it springs, it goes to the Fade.</li></ul>
+      <h3 id="card-types-fortifications">Fortifications</h3>
+      <p>A Fortification with a <strong>Power</strong> number works like a creature: it holds its lane open, takes damage, can Shatter, and pays a Bounty if one is printed. It can stand at the front of a lane, but it is <strong>never the Leader</strong>, so a lane with a Fortification in front has no Leader.</p>
+      <h3 id="card-types-rivals">Rivals</h3>
+      <p>A Rival is a boss you play onto your <strong>opponent's</strong> side. It's huge, often changes how the game works, and gives your opponent a boon. When it falls, <strong>you</strong> collect its reward.</p>
+      <ul><li><strong>Placement.</strong> You choose the lane and the spot on the opponent's side, including the front, which makes it their Leader. Putting it on an empty side unlocks that lane if you have creatures across from it.</li><li><strong>Control.</strong> Your opponent controls it: they can push with it, choose where damage on it goes (unless it's Heroic), and use its effects. They can't Maneuver it, because they don't own it.</li><li><strong>Reward.</strong> A Rival's Bounty is its reward. It is paid to the Rival's <strong>owner</strong> whenever the Rival Fades, however it got there: shattered, withered to 0 Power, or faded by an effect. The only way to deny it is <strong>Obliteration</strong>.</li><li><strong>Afterward.</strong> A defeated Rival goes to its owner's Fade.</li></ul>
+      <p>Some Rivals affect the whole battlefield, not just their lane, while they're in play.</p>
+    </section>
+    <section class="section card rules-section" id="keywords">
+      <h2>Keywords</h2>
+      <p>If a card's own text disagrees with this table, the card wins.</p>
+      <div class="rules-table"><table><tr><th>Keyword</th><th>What it does</th></tr><tr><td><strong>Aura</strong></td><td>Applies at the very start of a push in this lane, before any other effect. Changes how that combat works.</td></tr><tr><td><strong>Battlebloom</strong></td><td>You gain this card's Bloom each time it is in combat.</td></tr><tr><td><strong>Berserk</strong></td><td>Instead of adding its Power to the pool, this creature deals its Power as damage to a random opposing creature.</td></tr><tr><td><strong>Chain</strong></td><td>You may play one more card this turn if it shares at least one keyword with this card.</td></tr><tr><td><strong>Dash</strong></td><td>When this enters a lane, it deals its Power as damage to the opposing Leader.</td></tr><tr><td><strong>Deathbloom</strong></td><td>When this Fades, you gain its Bloom.</td></tr><tr><td><strong>Defender</strong></td><td>Adds its Power only when defending, never when pushing.</td></tr><tr><td><strong>Defiance</strong></td><td>Gains 1 Power for each creature on the opposing side of its lane.</td></tr><tr><td><strong>Echo</strong></td><td>This card stays in play as long as you keep paying its Echo cost. If you don't, it Fades.</td></tr><tr><td><strong>Exhaust</strong></td><td>An exhausted card is turned sideways and adds no Power or effects. "Exhaust:" abilities exhaust the card as their cost.</td></tr><tr><td><strong>Flying</strong></td><td>This effect resolves whenever its controller chooses during a push. It slots in between effects and can't be responded to.</td></tr><tr><td><strong>Heroic</strong></td><td>Damage in a push must go to this creature first.</td></tr><tr><td><strong>Illusive</strong></td><td>Can't be targeted, chosen or searched for.</td></tr><tr><td><strong>Leader</strong></td><td>This ability works only while the creature is its lane's Leader.</td></tr><tr><td><strong>Lingering</strong></td><td>Doesn't Fade after it Shatters; it returns each turn, and its reward is paid each time it Shatters.</td></tr><tr><td><strong>Madness</strong></td><td>Each Madness reduces your hand size by 1. Meditating removes it.</td></tr><tr><td><strong>Natural</strong></td><td>Resolves in normal front-to-back order. Every effect without a timing keyword is Natural.</td></tr><tr><td><strong>Overload</strong></td><td>If Overload damage shatters a target, the rest carries on to a new target until it is all dealt.</td></tr><tr><td><strong>Pitch</strong></td><td>A creature with a Pitch token can't add its Power during a push.</td></tr><tr><td><strong>Rearguard</strong></td><td>Resolves last in a push, wherever the creature stands.</td></tr><tr><td><strong>Reinforce</strong></td><td>As its effect, you may play a creature to the back of this lane.</td></tr><tr><td><strong>Reserve</strong></td><td>This card is played to your Reserve, behind your anchors.</td></tr><tr><td><strong>Rush</strong></td><td>When this enters a lane, that lane immediately pushes.</td></tr><tr><td><strong>Slippery</strong></td><td>When this would Shatter, flip a coin. On heads, move it to another lane instead.</td></tr><tr><td><strong>Snap</strong></td><td>When revealed as a broken anchor, you may play it immediately for free.</td></tr><tr><td><strong>Sneaky</strong></td><td>When this lane is pushed, you may pay 2 Resolve to move this to another lane.</td></tr><tr><td><strong>Steadfast</strong></td><td>Can't Shatter.</td></tr><tr><td><strong>Steal</strong></td><td>Your opponent picks one of their anchors and turns it over; it leaves its lane. You gain 1 Majesty and may cast that card, paying its printed cost in Ink. If you don't, it goes to the Fade.</td></tr><tr><td><strong>Strike</strong></td><td>This creature's effect in combat. It resolves in the creature's turn in the push, just before its Power is added.</td></tr><tr><td><strong>Vanguard</strong></td><td>Resolves first in a push (after Auras), wherever the creature stands.</td></tr><tr><td><strong>Volley</strong></td><td>Deals damage equal to this card's Power to a target you choose.</td></tr></table></div>
+    </section>
+    <section class="section card rules-section" id="match-play-deck-building">
+      <h2>Match Play &amp; Deck Building</h2>
+      <h3 id="match-play-deck-building-matches">Matches</h3>
+      <p>A match is <strong>3 games</strong> by default. Longer sets are an optional format. The winner is the player with the most <strong>total Majesty across all the games</strong>, not the most games won. Each game's final score counts, including any -1 for Awakening, so you can lose every game and still win the match.</p>
+      <p>Game 1's first player is chosen at random. After that, <strong>the loser of the previous game goes first</strong>.</p>
+      <p>Single games mostly end by ring-out (Awakening), with Majesty as the backup. A tie is a tie.</p>
+      <h3 id="match-play-deck-building-building-your-dream">Building your Dream</h3>
+      <ul><li><strong>At least 60 cards.</strong> There's no maximum, as long as you can shuffle it in your hands.</li><li><strong>Up to 4 copies</strong> of any one card. Some cards change this; for example, any number of some Exart creatures are allowed.</li><li><strong>Cheap creatures first.</strong> Most decks want 13 to 20 creatures with Cost 0 and Bloom 1. They're how you build your first resources.</li></ul>
+    </section>
+    <section class="section card rules-section" id="glossary">
+      <h2>Glossary</h2>
+      <div class="rules-table"><table><tr><th>Term</th><th>Meaning</th></tr><tr><td><strong>Awaken</strong></td><td>Take damage in a lane with no anchors left. The game ends and you lose 1 Majesty.</td></tr><tr><td><strong>Bloom</strong></td><td>The resource a creature gives back when you play it.</td></tr><tr><td><strong>Bounty</strong></td><td>The reward, usually Essence, for shattering a creature.</td></tr><tr><td><strong>Clarity</strong></td><td>All the factions' resources together: Insight, Resolve, Ink, Light and Essence.</td></tr><tr><td><strong>Control / Own</strong></td><td>You own the cards you brought. You control the cards on your side. A Rival is owned by one player and controlled by the other.</td></tr><tr><td><strong>Dream</strong></td><td>Your deck.</td></tr><tr><td><strong>Dream Anchor</strong></td><td>One of the 9 face-down cards at your end of the lanes. Breaking one gives your opponent 1 Majesty.</td></tr><tr><td><strong>Entity</strong></td><td>A creature, or anything else with Power on a lane.</td></tr><tr><td><strong>Fade</strong></td><td>Your discard pile. To fade a card is to put it there.</td></tr><tr><td><strong>Focus</strong></td><td>Another word for your hand, used on cards and in story text.</td></tr><tr><td><strong>Leader</strong></td><td>The creature at the front of your side of a lane.</td></tr><tr><td><strong>Locked</strong></td><td>A lane with no creatures on one side. It can't be pushed.</td></tr><tr><td><strong>Majesty</strong></td><td>Your score. First to 7 wins.</td></tr><tr><td><strong>Oblivion / Obliterate</strong></td><td>Removed from the game entirely. An Obliterated card pays no Bounty.</td></tr><tr><td><strong>Push</strong></td><td>The combat action. Both sides build a Push Damage pool and deal it to each other.</td></tr><tr><td><strong>Reserve</strong></td><td>The space behind your anchors, for equipment and Reserve cards.</td></tr><tr><td><strong>Shatter</strong></td><td>Take damage equal to Power. The creature is exhausted and Fades at the end of the turn.</td></tr></table></div>
+    </section>
+
+    <footer class="card">
+      Recusant Crown · Player Rulebook · <a href="mailto:magi.wildcard@gmail.com">magi.wildcard@gmail.com</a>
+      <p class="footer-license">
+        &copy; 2026 Magi. Recusant Crown stories, art, and game content are licensed under
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license">CC BY-SA 4.0</a>.
+        The Recusant Crown name and sigil are not covered by this <a href="license.html">license</a>.
+      </p>
+    </footer>
+
+  </div>
+</body>
+</html>

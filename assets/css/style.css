@@ -118,13 +118,13 @@ header.card {
   display: block;
   aspect-ratio: 1000 / 608;
   background: #D6B25E;
-  transform: rotate(-8deg);
+  transform: rotate(15deg);
   transform-origin: 50% 100%;
   -webkit-mask: url("../art/sigil/sigil-crown.png") center / contain no-repeat;
   mask: url("../art/sigil/sigil-crown.png") center / contain no-repeat;
 }
 
-.brand:hover .brand-crown-inner {
+.brand-crown-inner.is-bouncing {
   animation: brand-crown-bounce 0.7s ease-out;
 }
 
@@ -134,16 +134,16 @@ header.card {
 }
 
 @keyframes brand-crown-bounce {
-  0%   { transform: translateY(0) rotate(-8deg); }
-  30%  { transform: translateY(-45%) rotate(-14deg); }
-  55%  { transform: translateY(0) rotate(-6deg); }
-  75%  { transform: translateY(-15%) rotate(-10deg); }
-  100% { transform: translateY(0) rotate(-8deg); }
+  0%   { transform: translateY(0) rotate(15deg); }
+  30%  { transform: translateY(-45%) rotate(9deg); }
+  55%  { transform: translateY(0) rotate(17deg); }
+  75%  { transform: translateY(-15%) rotate(13deg); }
+  100% { transform: translateY(0) rotate(15deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .brand-crown,
-  .brand:hover .brand-crown-inner { animation: none; }
+  .brand-crown-inner.is-bouncing { animation: none; }
 }
 
 nav {

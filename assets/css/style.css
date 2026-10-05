@@ -64,8 +64,24 @@ header.card {
 
 .brand {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
   line-height: 1.05;
+}
+
+.brand-words {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The X sigil, painted through its PNG as a mask */
+.brand-x {
+  flex: none;
+  width: 4.2rem;
+  aspect-ratio: 1000 / 567;
+  background: #ECE6D6;
+  -webkit-mask: url("../art/sigil/sigil-x.png") center / contain no-repeat;
+  mask: url("../art/sigil/sigil-x.png") center / contain no-repeat;
 }
 
 .brand .title {
@@ -77,11 +93,57 @@ header.card {
 }
 
 .brand .subtitle {
+  position: relative;
+  align-self: flex-end;
+  margin-right: -1.6rem;   /* "Crown" sticks out past "Recusant" */
   font-size: 0.95rem;
   letter-spacing: 0.28em;
   color: var(--gold);
   text-transform: uppercase;
   margin-top: 2px;
+}
+
+/* The crown hangs on the end of "Crown". The outer span falls in on
+   load; the inner span holds the tilt and bounces on hover. */
+.brand-crown {
+  position: absolute;
+  right: -0.2rem;
+  bottom: 78%;
+  width: 1.8rem;
+  pointer-events: none;
+  animation: brand-crown-fall 0.9s cubic-bezier(.25, 1.4, .4, 1) 0.25s both;
+}
+
+.brand-crown-inner {
+  display: block;
+  aspect-ratio: 1000 / 608;
+  background: #D6B25E;
+  transform: rotate(-8deg);
+  transform-origin: 50% 100%;
+  -webkit-mask: url("../art/sigil/sigil-crown.png") center / contain no-repeat;
+  mask: url("../art/sigil/sigil-crown.png") center / contain no-repeat;
+}
+
+.brand:hover .brand-crown-inner {
+  animation: brand-crown-bounce 0.7s ease-out;
+}
+
+@keyframes brand-crown-fall {
+  from { opacity: 0; transform: translateY(-160%) rotate(-16deg); }
+  to   { opacity: 1; transform: translateY(0) rotate(0); }
+}
+
+@keyframes brand-crown-bounce {
+  0%   { transform: translateY(0) rotate(-8deg); }
+  30%  { transform: translateY(-45%) rotate(-14deg); }
+  55%  { transform: translateY(0) rotate(-6deg); }
+  75%  { transform: translateY(-15%) rotate(-10deg); }
+  100% { transform: translateY(0) rotate(-8deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-crown,
+  .brand:hover .brand-crown-inner { animation: none; }
 }
 
 nav {

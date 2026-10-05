@@ -604,6 +604,14 @@ nav a.active {
   border-bottom-color: rgba(176, 141, 87, 0.6);
 }
 
+.section .back-to-top {
+  margin: 1.2rem 0 0;
+  text-align: right;
+  font-size: 0.85rem;
+}
+
+.section .back-to-top a { border-bottom: none; }
+
 .rules-figure {
   margin: 1.2rem 0 1.4rem;
   padding: 0.8rem;

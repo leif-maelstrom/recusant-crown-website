@@ -107,7 +107,7 @@ header.card {
    load; the inner span holds the tilt and bounces on hover. */
 .brand-crown {
   position: absolute;
-  right: -0.2rem;
+  right: -0.425rem;
   bottom: 78%;
   width: 1.8rem;
   pointer-events: none;

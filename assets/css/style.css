@@ -1105,6 +1105,20 @@ footer.card .footer-license {
   margin-bottom: 0;
 }
 
+.chapter-body .scene-break {
+  border: none;
+  margin: 2.2rem 0;
+  text-align: center;
+  overflow: visible;
+}
+
+.chapter-body .scene-break::before {
+  content: "\2726  \2726  \2726";
+  color: var(--gold);
+  font-size: 0.8rem;
+  letter-spacing: 0.6em;
+}
+
 .chapter-nav {
   display: flex;
   justify-content: space-between;

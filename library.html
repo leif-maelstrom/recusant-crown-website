@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Library — Recusant Crown</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="container">
+
+    <header class="card">
+      <div class="brand">
+        <span class="brand-x" aria-hidden="true"></span>
+        <div class="brand-words">
+          <div class="title">Recusant</div>
+          <div class="subtitle">Crown<span class="brand-crown" aria-hidden="true"><span class="brand-crown-inner"></span></span></div>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="fiction.html">Fiction</a>
+        <a href="tales.html">Tales</a>
+        <a href="cards.html" class="active">Card Game</a>
+        <a href="art.html">Art</a>
+      </nav>
+    </header>
+
+    <section class="page-title card">
+      <h1>The Library</h1>
+      <p>Every finished card, free to view, download, and print at home</p>
+    </section>
+
+    <!-- Hero art (Skal and Lumiere in the library) goes here. When it's
+         ready, replace the placeholder div with:
+         <img src="assets/art/illustrations/the-library.jpg" alt="..."
+              data-lightbox data-lightbox-caption="The Library" data-lightbox-note="Illustration"> -->
+    <div class="chapter-hero library-hero">
+      <div class="library-hero-placeholder" aria-hidden="true">
+        <span class="library-hero-crown"></span>
+        <span>Hero art coming soon</span>
+      </div>
+    </div>
+
+    <section class="section card" id="library">
+      <h2>All Cards</h2>
+      <p class="section-desc">
+        Tap a card to see it up close. Download any card, or build a print sheet:
+        add the cards you want, then print. Cards come out at standard size
+        (2.5 &times; 3.5 in), nine to a page, on Letter or A4.
+      </p>
+
+      <div class="library-toolbar">
+        <input type="search" id="librarySearch" class="library-search" placeholder="Search by name or number" aria-label="Search cards">
+        <span class="library-count" id="libraryCount" aria-live="polite"></span>
+      </div>
+
+      <div class="library-grid" id="libraryGrid"></div>
+      <p class="library-empty" id="libraryEmpty" hidden>No cards match that search.</p>
+    </section>
+
+    <section class="section card" id="print-sheet">
+      <h2>Print Sheet</h2>
+      <p class="section-desc" id="printSummary">No cards on the sheet yet. Use the + buttons on the cards above.</p>
+      <div class="print-actions">
+        <button type="button" class="btn" id="printAddAll">Add One of Each</button>
+        <button type="button" class="btn" id="printClear">Clear Sheet</button>
+        <button type="button" class="btn btn-primary" id="printGo" disabled>Print Sheet</button>
+      </div>
+      <p class="print-tip">
+        In the print dialog, set scale to <strong>100%</strong> (or &ldquo;Actual size&rdquo;) so cards
+        come out at true size. To get a PDF instead, choose &ldquo;Save as PDF&rdquo; as the printer.
+      </p>
+    </section>
+
+    <footer class="card">
+      Recusant Crown · The Library · <a href="mailto:magi.wildcard@gmail.com">magi.wildcard@gmail.com</a>
+      <p class="footer-license">
+        &copy; 2026 Magi. Recusant Crown stories, art, and game content are licensed under
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license">CC BY-SA 4.0</a>.
+        The Recusant Crown name and sigil are not covered by this <a href="license.html">license</a>.
+      </p>
+    </footer>
+
+  </div>
+
+  <script src="assets/js/card-data.js"></script>
+  <script src="assets/js/library.js"></script>
+  <script src="assets/js/lightbox.js"></script>
+  <script src="assets/js/brand.js"></script>
+</body>
+</html>

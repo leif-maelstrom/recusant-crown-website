@@ -45,58 +45,14 @@
         <div class="carousel" id="spoilerCarousel">
           <button class="carousel-btn carousel-prev" type="button" aria-label="Previous cards">&#8249;</button>
           <div class="spoiler-grid carousel-track" tabindex="0" aria-label="Spoiler cards">
-            <div class="spoiler-card">
-              <img src="assets/spoiler-cards/3-as-above-so-below.jpg" alt="As Above So Below" data-lightbox data-lightbox-src="assets/spoiler-cards/3-as-above-so-below.jpg" data-lightbox-caption="As Above So Below" data-lightbox-note="Spoiler card">
-              <div class="spoiler-name">As Above So Below</div>
-            </div>
-            <div class="spoiler-card">
-              <img src="assets/spoiler-cards/16-raid-consciousness.jpg" alt="Raid Consciousness" data-lightbox data-lightbox-src="assets/spoiler-cards/16-raid-consciousness.jpg" data-lightbox-caption="Raid Consciousness" data-lightbox-note="Spoiler card">
-              <div class="spoiler-name">Raid Consciousness</div>
-            </div>
-            <div class="spoiler-card">
-              <img src="assets/spoiler-cards/21-snapcasters-wand.jpg" alt="Snapcaster's Wand" data-lightbox data-lightbox-src="assets/spoiler-cards/21-snapcasters-wand.jpg" data-lightbox-caption="Snapcaster's Wand" data-lightbox-note="Spoiler card">
-              <div class="spoiler-name">Snapcaster's Wand</div>
-            </div>
-            <div class="spoiler-card">
-              <img src="assets/spoiler-cards/61-dwarf-miner.jpg" alt="Dwarf Miner" data-lightbox data-lightbox-src="assets/spoiler-cards/61-dwarf-miner.jpg" data-lightbox-caption="Dwarf Miner" data-lightbox-note="Spoiler card">
-              <div class="spoiler-name">Dwarf Miner</div>
-            </div>
-            <div class="spoiler-card">
-              <img src="assets/spoiler-cards/62-brave-squire.jpg" alt="Brave Squire" data-lightbox data-lightbox-src="assets/spoiler-cards/62-brave-squire.jpg" data-lightbox-caption="Brave Squire" data-lightbox-note="Spoiler card">
-              <div class="spoiler-name">Brave Squire</div>
-            </div>
-            <div class="spoiler-card">
-              <img src="assets/spoiler-cards/70-fairfavor-princess.jpg" alt="Fairfavor Princess" data-lightbox data-lightbox-src="assets/spoiler-cards/70-fairfavor-princess.jpg" data-lightbox-caption="Fairfavor Princess" data-lightbox-note="Spoiler card">
-              <div class="spoiler-name">Fairfavor Princess</div>
-            </div>
-            <div class="spoiler-card">
-              <img src="assets/spoiler-cards/81-nocturn-of-shadow.jpg" alt="Nocturn of Shadow" data-lightbox data-lightbox-src="assets/spoiler-cards/81-nocturn-of-shadow.jpg" data-lightbox-caption="Nocturn of Shadow" data-lightbox-note="Spoiler card">
-              <div class="spoiler-name">Nocturn of Shadow</div>
-            </div>
-            <div class="spoiler-card">
-              <img src="assets/spoiler-cards/87-barrel-of-mishchief.jpg" alt="Barrel of Mishchief" data-lightbox data-lightbox-src="assets/spoiler-cards/87-barrel-of-mishchief.jpg" data-lightbox-caption="Barrel of Mishchief" data-lightbox-note="Spoiler card">
-              <div class="spoiler-name">Barrel of Mishchief</div>
-            </div>
-            <div class="spoiler-card">
-              <img src="assets/spoiler-cards/93-armored-shade.jpg" alt="Armored Shade" data-lightbox data-lightbox-src="assets/spoiler-cards/93-armored-shade.jpg" data-lightbox-caption="Armored Shade" data-lightbox-note="Spoiler card">
-              <div class="spoiler-name">Armored Shade</div>
-            </div>
-            <div class="spoiler-card">
-              <img src="assets/spoiler-cards/133-glow-harvest.png" alt="Glow Harvest" data-lightbox data-lightbox-src="assets/spoiler-cards/133-glow-harvest.png" data-lightbox-caption="Glow Harvest" data-lightbox-note="Spoiler card">
-              <div class="spoiler-name">Glow Harvest</div>
-            </div>
-            <div class="spoiler-card">
-              <img src="assets/spoiler-cards/159-ivory-unicorn.png" alt="Ivory Unicorn" data-lightbox data-lightbox-src="assets/spoiler-cards/159-ivory-unicorn.png" data-lightbox-caption="Ivory Unicorn" data-lightbox-note="Spoiler card">
-              <div class="spoiler-name">Ivory Unicorn</div>
-            </div>
-            <div class="spoiler-card">
-              <img src="assets/spoiler-cards/160-archivist-of-ash.png" alt="Archivist of Ash" data-lightbox data-lightbox-src="assets/spoiler-cards/160-archivist-of-ash.png" data-lightbox-caption="Archivist of Ash" data-lightbox-note="Spoiler card">
-              <div class="spoiler-name">Archivist of Ash</div>
-            </div>
+            <!-- Filled in by spoilers.js with 12 random cards from card-data.js -->
           </div>
           <button class="carousel-btn carousel-next" type="button" aria-label="Next cards">&#8250;</button>
         </div>
         <div class="carousel-status" id="spoilerStatus" aria-live="polite"></div>
+        <div class="spoiler-library-link">
+          <a href="library.html" class="btn">Browse the Full Library</a>
+        </div>
       </section>
 
       <aside class="section card rules-card" id="rules">
@@ -191,8 +147,10 @@
 
   </div>
 
-  <script src="assets/js/lightbox.js"></script>
+  <script src="assets/js/card-data.js"></script>
+  <script src="assets/js/spoilers.js"></script>
   <script src="assets/js/carousel.js"></script>
+  <script src="assets/js/lightbox.js"></script>
   <script src="assets/js/brand.js"></script>
 </body>
 </html>

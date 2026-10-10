@@ -5,9 +5,6 @@
 // freely toward the pointer. Drag, or use the arrow keys, to move around in
 // any direction. "Fit" returns to the whole image.
 (function () {
-  var triggers = document.querySelectorAll('[data-lightbox]');
-  if (!triggers.length) return;
-
   var ZOOM_STEP = 1.5;
   var MAX_ZOOM = 8;          // relative to the fitted size
   var PAD = 16;              // breathing room around the fitted image
@@ -142,16 +139,18 @@
     if (lastFocus) lastFocus.focus();
   }
 
-  triggers.forEach(function (el) {
-    el.addEventListener('click', function (e) {
-      e.preventDefault();
-      open(
-        el.getAttribute('data-lightbox-src') || el.currentSrc || el.src || el.getAttribute('href'),
-        el.getAttribute('data-lightbox-alt') || el.alt || '',
-        el.getAttribute('data-lightbox-caption') || '',
-        el.getAttribute('data-lightbox-note') || ''
-      );
-    });
+  // One listener for the whole page, so images added later (like the
+  // cards the carousel and Library draw from the card list) work too.
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest && e.target.closest('[data-lightbox]');
+    if (!el || box.contains(el)) return;
+    e.preventDefault();
+    open(
+      el.getAttribute('data-lightbox-src') || el.currentSrc || el.src || el.getAttribute('href'),
+      el.getAttribute('data-lightbox-alt') || el.alt || '',
+      el.getAttribute('data-lightbox-caption') || '',
+      el.getAttribute('data-lightbox-note') || ''
+    );
   });
 
   closeBtn.addEventListener('click', close);

@@ -1294,3 +1294,310 @@ footer.card .footer-license {
 @media (prefers-reduced-motion: reduce) {
   .lightbox-img.is-animating { transition: opacity 0.2s ease; }
 }
+
+/* Buttons that are <button>s rather than links */
+button.btn {
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+
+.btn-primary {
+  background: var(--crimson);
+  color: var(--text);
+}
+
+.btn-primary:hover {
+  background: #a83223;
+  border-color: #a83223;
+  color: var(--text);
+}
+
+/* Link from the spoiler carousel to the Library (cards.html) */
+.spoiler-library-link {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.spoiler-library-link .btn {
+  align-self: center;
+}
+
+/* The Library (library.html) */
+.library-hero {
+  aspect-ratio: 16 / 7;
+}
+
+.library-hero img {
+  height: 100%;
+  max-height: none;
+}
+
+.library-hero-placeholder {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  background:
+    radial-gradient(ellipse at center, rgba(176, 141, 87, 0.12), transparent 65%),
+    #141210;
+  color: var(--dim);
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.library-hero-crown {
+  width: 4.5rem;
+  aspect-ratio: 1000 / 608;
+  background: var(--gold);
+  opacity: 0.35;
+  -webkit-mask: url("../art/sigil/sigil-crown.png") center / contain no-repeat;
+  mask: url("../art/sigil/sigil-crown.png") center / contain no-repeat;
+}
+
+.library-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.library-search {
+  flex: 1 1 16rem;
+  max-width: 24rem;
+  padding: 0.55rem 0.8rem;
+  background: #141210;
+  border: 1px solid rgba(176, 141, 87, 0.5);
+  border-radius: 6px;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.library-search:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.library-count {
+  color: var(--dim);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+}
+
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 1.2rem;
+}
+
+.library-card {
+  display: flex;
+  flex-direction: column;
+  background: #141210;
+  border: 2px solid var(--gold);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.library-card.on-sheet {
+  border-color: var(--crimson);
+  box-shadow: 0 0 0 1px var(--crimson), 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.library-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2.5 / 3.5;
+  object-fit: cover;
+  border-bottom: 1px solid rgba(176, 141, 87, 0.3);
+}
+
+.library-card-info {
+  padding: 0.5rem 0.6rem 0.2rem;
+  text-align: center;
+}
+
+.library-card-number {
+  color: var(--crimson);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.library-card-name {
+  color: var(--gold);
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+}
+
+.library-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  padding: 0.5rem 0.6rem 0.65rem;
+  margin-top: auto;
+}
+
+.library-download {
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201, 192, 180, 0.35);
+}
+
+.library-download:hover {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+.library-qty {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.library-qty-label {
+  color: var(--dim);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.library-qty button {
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  background: none;
+  color: var(--gold);
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.library-qty button:hover:not(:disabled) {
+  background: var(--gold);
+  color: var(--bg);
+}
+
+.library-qty button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.library-qty-value {
+  min-width: 1rem;
+  text-align: center;
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.library-empty {
+  margin-top: 1rem;
+  color: var(--dim);
+}
+
+.print-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.section .print-tip {
+  margin: 1rem 0 0;
+  font-size: 0.85rem;
+  color: var(--dim);
+}
+
+.print-tip strong { color: var(--muted); }
+
+@media (max-width: 560px) {
+  .library-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+  }
+
+  .library-card-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+/* The print sheet only exists for the printer */
+.print-sheet { display: none; }
+
+@media print {
+  @page { margin: 0.24in; }   /* Letter: 11in - 3 x 3.5in leaves 0.25in top and bottom */
+
+  html, body {
+    background: #fff !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+  }
+
+  body > *:not(.print-sheet) {
+    display: none !important;
+  }
+
+  .print-sheet {
+    display: block;
+  }
+
+  /* Each page is a plain block that starts on a fresh sheet; the 3 x 3
+     grid sits inside it. */
+  .print-page {
+    display: block;
+    break-inside: avoid;
+  }
+
+  .print-page + .print-page {
+    break-before: page;
+  }
+
+  .print-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 2.5in);
+    grid-auto-rows: 3.5in;
+    justify-content: center;
+  }
+
+  .print-slot {
+    position: relative;
+    width: 2.5in;
+    height: 3.5in;
+  }
+
+  /* Hairline cut guides, drawn inside each card so they never spill
+     across a page break. */
+  .print-slot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 0.25pt solid #999;
+  }
+
+  .print-card {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

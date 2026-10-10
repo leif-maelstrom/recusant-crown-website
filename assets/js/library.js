@@ -95,11 +95,23 @@
   });
 
   // ---- Search ----
+  // Punctuation and spacing are ignored, so "snapcaster's wand" finds
+  // "Snapcasters Wand" and "as above so below" finds "As Above, So Below".
+  function simplify(text) {
+    return text.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+
   function filter() {
-    var q = search.value.trim().toLowerCase().replace(/^#/, '');
+    var raw = search.value.trim().replace(/^#/, '');
+    var q = simplify(raw);
+    var qTight = q.replace(/ /g, '');
     var shown = 0;
     tiles.forEach(function (t) {
-      var hit = !q || t.card.name.toLowerCase().indexOf(q) !== -1 || String(t.card.number) === q;
+      var name = simplify(t.card.name);
+      var hit = !q ||
+        name.indexOf(q) !== -1 ||
+        name.replace(/ /g, '').indexOf(qTight) !== -1 ||
+        String(t.card.number) === raw;
       t.el.hidden = !hit;
       if (hit) shown++;
     });

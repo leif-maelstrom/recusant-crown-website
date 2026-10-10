@@ -1,0 +1,6 @@
+#!/bin/sh
+# Refresh the ?v= version tags on CSS and JS links before every commit, so
+# browsers never mix a new page with an old cached stylesheet or script.
+# Enable once per clone with:  git config core.hooksPath .githooks
+python3 tools/stamp-versions.py >/dev/null || exit 1
+git add -u -- '*.html'

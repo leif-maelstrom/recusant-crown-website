@@ -1105,6 +1105,25 @@ footer.card .footer-license {
   margin-bottom: 0;
 }
 
+/* Illustrations set into the chapter text */
+.chapter-figure {
+  margin: 2rem 0;
+  border: 3px solid var(--gold);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 0 4px var(--bg), 0 0 0 6px var(--crimson), 0 10px 24px rgba(0, 0, 0, 0.5);
+}
+
+.chapter-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.chapter-body .chapter-figure:last-child {
+  margin-bottom: 0.5rem;
+}
+
 .chapter-body .scene-break {
   border: none;
   margin: 2.2rem 0;

@@ -18,9 +18,10 @@
 
   var PER_PAGE = 9;
   var MAX_COPIES = 9;
-  var STORE = 'rc-print-sheet';
+  var STORE = 'rc-print-sheet-v2';   // v1 was keyed by card number
 
-  // How many copies of each card (by number) are on the print sheet.
+  // How many copies of each card are on the print sheet, keyed by image
+  // path: always unique, unlike card numbers while the set is in flux.
   var sheet = {};
   try { sheet = JSON.parse(localStorage.getItem(STORE)) || {}; } catch (e) { sheet = {}; }
 
@@ -81,8 +82,8 @@
     qty.addEventListener('click', function (e) {
       var b = e.target.closest('button');
       if (!b) return;
-      var n = (sheet[card.number] || 0) + Number(b.getAttribute('data-step'));
-      setCopies(card.number, n);
+      var n = (sheet[card.image] || 0) + Number(b.getAttribute('data-step'));
+      setCopies(card.image, n);
     });
 
     actions.appendChild(dl);
@@ -123,9 +124,9 @@
   search.addEventListener('input', filter);
 
   // ---- Print sheet ----
-  function setCopies(number, n) {
+  function setCopies(key, n) {
     n = Math.max(0, Math.min(MAX_COPIES, n));
-    if (n) sheet[number] = n; else delete sheet[number];
+    if (n) sheet[key] = n; else delete sheet[key];
     save();
     updateSheet();
   }
@@ -133,14 +134,14 @@
   function sheetList() {
     var list = [];
     cards.forEach(function (card) {
-      for (var i = 0; i < (sheet[card.number] || 0); i++) list.push(card);
+      for (var i = 0; i < (sheet[card.image] || 0); i++) list.push(card);
     });
     return list;
   }
 
   function updateSheet() {
     tiles.forEach(function (t) {
-      var n = sheet[t.card.number] || 0;
+      var n = sheet[t.card.image] || 0;
       t.qty.querySelector('.library-qty-value').textContent = n;
       t.qty.querySelector('[data-step="-1"]').disabled = !n;
       t.qty.querySelector('[data-step="1"]').disabled = n >= MAX_COPIES;
@@ -158,7 +159,7 @@
 
   btnAll.addEventListener('click', function () {
     cards.forEach(function (card) {
-      if (!sheet[card.number]) sheet[card.number] = 1;
+      if (!sheet[card.image]) sheet[card.image] = 1;
     });
     save();
     updateSheet();

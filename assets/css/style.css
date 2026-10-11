@@ -905,6 +905,21 @@ nav a.active {
   overflow: hidden;
 }
 
+.chapter-art-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background:
+    radial-gradient(ellipse at center, rgba(176, 141, 87, 0.12), transparent 65%),
+    #141210;
+  color: var(--dim);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
 .chapter-art img {
   width: 100%;
   height: 100%;

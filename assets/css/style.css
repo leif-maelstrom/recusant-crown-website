@@ -795,6 +795,20 @@ nav a.active {
   margin-bottom: 0;
 }
 
+/* Latest-post preview on the front page (index.html) */
+.blog-preview .blog-title a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.blog-preview .blog-title a:hover {
+  color: var(--text);
+}
+
+.blog-preview-actions {
+  margin-top: 1.2rem;
+}
+
 .blog-body a,
 .license-page a {
   color: var(--gold);

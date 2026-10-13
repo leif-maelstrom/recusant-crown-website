@@ -1363,40 +1363,6 @@ button.btn {
 }
 
 /* The Library (library.html) */
-.library-hero {
-  aspect-ratio: 16 / 7;
-}
-
-.library-hero img {
-  height: 100%;
-  max-height: none;
-}
-
-.library-hero-placeholder {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  background:
-    radial-gradient(ellipse at center, rgba(176, 141, 87, 0.12), transparent 65%),
-    #141210;
-  color: var(--dim);
-  font-size: 0.85rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.library-hero-crown {
-  width: 4.5rem;
-  aspect-ratio: 1000 / 608;
-  background: var(--gold);
-  opacity: 0.35;
-  -webkit-mask: url("../art/sigil/sigil-crown.png") center / contain no-repeat;
-  mask: url("../art/sigil/sigil-crown.png") center / contain no-repeat;
-}
-
 .library-toolbar {
   display: flex;
   align-items: center;

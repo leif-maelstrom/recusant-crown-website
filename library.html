@@ -8,7 +8,7 @@
   <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="stylesheet" href="assets/css/style.css?v=feee5ad1">
+  <link rel="stylesheet" href="assets/css/style.css?v=8683d3f6">
   <!-- Visit counter: GoatCounter (no cookies, no personal data) -->
   <script data-goatcounter="https://magiwolfgrimm.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -45,18 +45,50 @@
     <section class="section card" id="library">
       <h2>All Cards</h2>
       <p class="section-desc">
-        Tap a card to see it up close. Download any card, or build a print sheet:
+        Tap a card to see it up close. Search or filter by faction, cost, rarity and more.
+        Download any card, or build a print sheet:
         add the cards you want, then print. Cards come out at standard size
         (2.5 &times; 3.5 in), nine to a page, on Letter or A4.
       </p>
 
       <div class="library-toolbar">
-        <input type="search" id="librarySearch" class="library-search" placeholder="Search by name or number" aria-label="Search cards">
+        <input type="search" id="librarySearch" class="library-search" placeholder="Search names, types and rules text, or a card number" aria-label="Search cards">
         <span class="library-count" id="libraryCount" aria-live="polite"></span>
       </div>
 
+      <div class="library-filters" id="libraryFilters">
+        <label>Faction
+          <select data-filter="faction">
+            <option value="">All</option>
+            <option>Dream</option><option>Iron</option><option>Dark</option><option>Light</option><option>Essence</option>
+          </select>
+        </label>
+        <label>Kind
+          <select data-filter="kind">
+            <option value="">All</option>
+            <option value="Entity">Entities</option><option value="Spell">Spells</option>
+          </select>
+        </label>
+        <label>Cost
+          <select data-filter="cost"><option value="">All</option></select>
+        </label>
+        <label>Rarity
+          <select data-filter="rarity">
+            <option value="">All</option>
+            <option>Common</option><option>Uncommon</option><option>Rare</option><option>Legendary</option>
+          </select>
+        </label>
+        <label>Art
+          <select data-filter="art">
+            <option value="">All cards</option>
+            <option value="yes">Finished art only</option>
+          </select>
+        </label>
+        <button type="button" class="library-clear" id="libraryClear">Clear</button>
+      </div>
+
       <div class="library-grid" id="libraryGrid"></div>
-      <p class="library-empty" id="libraryEmpty" hidden>No cards match that search.</p>
+      <p class="library-empty" id="libraryEmpty" hidden>No cards match that search and those filters.</p>
     </section>
 
     <section class="section card" id="print-sheet">
@@ -84,8 +116,8 @@
 
   </div>
 
-  <script src="assets/js/card-data.js?v=b3fbc274"></script>
-  <script src="assets/js/library.js?v=b670270a"></script>
+  <script src="assets/js/card-data.js?v=a08703ac"></script>
+  <script src="assets/js/library.js?v=88e268fe"></script>
   <script src="assets/js/lightbox.js?v=02718d22"></script>
   <script src="assets/js/brand.js?v=58a0f844"></script>
 </body>

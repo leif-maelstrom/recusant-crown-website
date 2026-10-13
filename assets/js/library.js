@@ -29,7 +29,7 @@
     try { localStorage.setItem(STORE, JSON.stringify(sheet)); } catch (e) { /* private mode */ }
   }
 
-  function pad(n) { return ('00' + n).slice(-3); }
+  function pad(n) { return ('000' + n).slice(-4); }   // 4-digit, as printed on the card
 
   // Report an event to the site's visit counter (GoatCounter), if it has
   // loaded. Blocked or missing, it quietly does nothing.
@@ -63,12 +63,12 @@
     img.loading = 'lazy';
     img.setAttribute('data-lightbox', '');
     img.setAttribute('data-lightbox-caption', card.name);
-    img.setAttribute('data-lightbox-note', 'Card #' + card.number);
+    img.setAttribute('data-lightbox-note', 'Card #' + pad(card.number));
 
     var info = document.createElement('div');
     info.className = 'library-card-info';
     info.innerHTML =
-      '<div class="library-card-number">#' + card.number + '</div>' +
+      '<div class="library-card-number">#' + pad(card.number) + '</div>' +
       '<div class="library-card-name"></div>';
     info.querySelector('.library-card-name').textContent = card.name;
 
@@ -127,7 +127,7 @@
       var hit = !q ||
         name.indexOf(q) !== -1 ||
         name.replace(/ /g, '').indexOf(qTight) !== -1 ||
-        String(t.card.number) === raw;
+        (/^\d+$/.test(raw) && Number(raw) === t.card.number);   // 1, 0001 or #0001
       t.el.hidden = !hit;
       if (hit) shown++;
     });

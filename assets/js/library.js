@@ -31,6 +31,18 @@
 
   function pad(n) { return ('00' + n).slice(-3); }
 
+  // Report an event to the site's visit counter (GoatCounter), if it has
+  // loaded. Blocked or missing, it quietly does nothing.
+  function track(path, title) {
+    try {
+      if (window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({ path: path, title: title || path, event: true });
+      }
+    } catch (e) { /* counting must never break the page */ }
+  }
+
+  function cardKey(card) { return card.number + '-' + slug(card.name); }
+
   function slug(name) {
     return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   }
@@ -69,6 +81,9 @@
     dl.download = 'recusant-crown-' + pad(card.number) + '-' + slug(card.name) + extension(card.image);
     dl.textContent = 'Download';
     dl.setAttribute('aria-label', 'Download ' + card.name);
+    dl.addEventListener('click', function () {
+      track('download/' + cardKey(card), 'Downloaded ' + card.name);
+    });
 
     var qty = document.createElement('div');
     qty.className = 'library-qty';
@@ -210,6 +225,12 @@
     Promise.all(waits).then(function () {
       btnPrint.disabled = false;
       btnPrint.textContent = 'Print Sheet';
+      // One event per print sheet (titled with its size), plus one per
+      // distinct card on it, so the dashboard shows which cards get printed.
+      track('print-sheet', 'Print sheet: ' + list.length + (list.length === 1 ? ' card' : ' cards'));
+      list.filter(function (c, i) { return list.indexOf(c) === i; }).forEach(function (c) {
+        track('print/' + cardKey(c), 'Printed ' + c.name);
+      });
       window.print();
     });
   });

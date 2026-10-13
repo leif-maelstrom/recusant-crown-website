@@ -1,9 +1,10 @@
 // Fill the Card Game page's spoiler carousel with 12 random cards from the
-// card list (card-data.js). Runs before carousel.js so the carousel sees them.
+// card list (card-data.js), choosing only cards whose art is finished.
+// Runs before carousel.js so the carousel sees them.
 (function () {
   var COUNT = 12;
   var track = document.querySelector('#spoilerCarousel .carousel-track');
-  var cards = (window.RC_CARDS || []).slice();
+  var cards = (window.RC_CARDS || []).filter(function (c) { return c.art; });
   if (!track || !cards.length) return;
 
   // Fisher-Yates shuffle, then keep the first COUNT.
@@ -21,7 +22,7 @@
     img.alt = card.name;
     img.setAttribute('data-lightbox', '');
     img.setAttribute('data-lightbox-caption', card.name);
-    img.setAttribute('data-lightbox-note', 'Card #' + card.number);
+    img.setAttribute('data-lightbox-note', 'Card #' + ('000' + card.number).slice(-4));
 
     var name = document.createElement('div');
     name.className = 'spoiler-name';

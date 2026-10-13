@@ -795,6 +795,20 @@ nav a.active {
   margin-bottom: 0;
 }
 
+/* Latest-post preview on the front page (index.html) */
+.blog-preview .blog-title a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.blog-preview .blog-title a:hover {
+  color: var(--text);
+}
+
+.blog-preview-actions {
+  margin-top: 1.2rem;
+}
+
 .blog-body a,
 .license-page a {
   color: var(--gold);
@@ -1349,40 +1363,6 @@ button.btn {
 }
 
 /* The Library (library.html) */
-.library-hero {
-  aspect-ratio: 16 / 7;
-}
-
-.library-hero img {
-  height: 100%;
-  max-height: none;
-}
-
-.library-hero-placeholder {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  background:
-    radial-gradient(ellipse at center, rgba(176, 141, 87, 0.12), transparent 65%),
-    #141210;
-  color: var(--dim);
-  font-size: 0.85rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.library-hero-crown {
-  width: 4.5rem;
-  aspect-ratio: 1000 / 608;
-  background: var(--gold);
-  opacity: 0.35;
-  -webkit-mask: url("../art/sigil/sigil-crown.png") center / contain no-repeat;
-  mask: url("../art/sigil/sigil-crown.png") center / contain no-repeat;
-}
-
 .library-toolbar {
   display: flex;
   align-items: center;
@@ -1415,6 +1395,64 @@ button.btn {
   letter-spacing: 0.04em;
 }
 
+.library-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.6rem 0.9rem;
+  margin: -0.4rem 0 1.2rem;
+}
+
+.library-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: var(--dim);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.library-filters select {
+  min-width: 7rem;
+  padding: 0.4rem 0.5rem;
+  background: #141210;
+  border: 1px solid rgba(176, 141, 87, 0.5);
+  border-radius: 6px;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.88rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.library-filters select:focus,
+.library-clear:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.library-clear {
+  padding: 0.42rem 0.9rem;
+  background: none;
+  border: 1px solid var(--crimson);
+  border-radius: 6px;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.library-clear:hover:not(:disabled) { background: var(--crimson); }
+.library-clear:disabled { opacity: 0.35; cursor: default; }
+
+.library-card-meta {
+  margin-top: 0.15rem;
+  color: var(--dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+}
+
 .library-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -1430,6 +1468,11 @@ button.btn {
   overflow: hidden;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Filtered-out cards: [hidden] alone loses to display: flex above */
+.library-card[hidden] {
+  display: none;
 }
 
 .library-card.on-sheet {

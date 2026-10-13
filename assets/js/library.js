@@ -29,7 +29,19 @@
     try { localStorage.setItem(STORE, JSON.stringify(sheet)); } catch (e) { /* private mode */ }
   }
 
-  function pad(n) { return ('00' + n).slice(-3); }
+  function pad(n) { return ('000' + n).slice(-4); }   // 4-digit, as printed on the card
+
+  // Report an event to the site's visit counter (GoatCounter), if it has
+  // loaded. Blocked or missing, it quietly does nothing.
+  function track(path, title) {
+    try {
+      if (window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({ path: path, title: title || path, event: true });
+      }
+    } catch (e) { /* counting must never break the page */ }
+  }
+
+  function cardKey(card) { return card.number + '-' + slug(card.name); }
 
   function slug(name) {
     return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -51,14 +63,17 @@
     img.loading = 'lazy';
     img.setAttribute('data-lightbox', '');
     img.setAttribute('data-lightbox-caption', card.name);
-    img.setAttribute('data-lightbox-note', 'Card #' + card.number);
+    img.setAttribute('data-lightbox-note', 'Card #' + pad(card.number));
 
     var info = document.createElement('div');
     info.className = 'library-card-info';
     info.innerHTML =
-      '<div class="library-card-number">#' + card.number + '</div>' +
-      '<div class="library-card-name"></div>';
+      '<div class="library-card-number">#' + pad(card.number) + '</div>' +
+      '<div class="library-card-name"></div>' +
+      '<div class="library-card-meta"></div>';
     info.querySelector('.library-card-name').textContent = card.name;
+    info.querySelector('.library-card-meta').textContent =
+      [card.faction, card.kind, card.rarity].filter(Boolean).join(' \u00b7 ');
 
     var actions = document.createElement('div');
     actions.className = 'library-card-actions';
@@ -69,6 +84,9 @@
     dl.download = 'recusant-crown-' + pad(card.number) + '-' + slug(card.name) + extension(card.image);
     dl.textContent = 'Download';
     dl.setAttribute('aria-label', 'Download ' + card.name);
+    dl.addEventListener('click', function () {
+      track('download/' + cardKey(card), 'Downloaded ' + card.name);
+    });
 
     var qty = document.createElement('div');
     qty.className = 'library-qty';
@@ -95,33 +113,76 @@
     return { card: card, el: tile, qty: qty };
   });
 
-  // ---- Search ----
+  // ---- Search and filters ----
   // Punctuation and spacing are ignored, so "snapcaster's wand" finds
-  // "Snapcasters Wand" and "as above so below" finds "As Above, So Below".
+  // "Snapcasters Wand". A bare number (1, 0001 or #0001) finds that card;
+  // anything else searches names, type lines and rules text.
   function simplify(text) {
-    return text.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    return String(text || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+
+  tiles.forEach(function (t) {
+    var c = t.card;
+    t.name = simplify(c.name);
+    t.haystack = ' ' + simplify([c.name, c.type, c.text].join(' ')) + ' ';
+  });
+
+  var selects = Array.prototype.slice.call(document.querySelectorAll('#libraryFilters select'));
+  var clearBtn = document.getElementById('libraryClear');
+
+  // Cost choices come from the cards themselves: 0, 1, 2 ... then X.
+  var costSelect = document.querySelector('[data-filter="cost"]');
+  var costs = [];
+  cards.forEach(function (c) { if (c.cost !== undefined && costs.indexOf(c.cost) === -1) costs.push(c.cost); });
+  costs.sort(function (a, b) {
+    if (a === 'X') return 1;
+    if (b === 'X') return -1;
+    return a - b;
+  }).forEach(function (v) {
+    var o = document.createElement('option');
+    o.value = String(v);
+    o.textContent = String(v);
+    costSelect.appendChild(o);
+  });
+
+  function matchesFilters(c) {
+    return selects.every(function (sel) {
+      var v = sel.value, key = sel.getAttribute('data-filter');
+      if (!v) return true;
+      if (key === 'art') return !!c.art;
+      return String(c[key]) === v;
+    });
   }
 
   function filter() {
     var raw = search.value.trim().replace(/^#/, '');
     var q = simplify(raw);
     var qTight = q.replace(/ /g, '');
+    var isNumber = /^\d+$/.test(raw);
+    var active = !!q || selects.some(function (s) { return s.value; });
     var shown = 0;
     tiles.forEach(function (t) {
-      var name = simplify(t.card.name);
-      var hit = !q ||
-        name.indexOf(q) !== -1 ||
-        name.replace(/ /g, '').indexOf(qTight) !== -1 ||
-        String(t.card.number) === raw;
+      var hit = matchesFilters(t.card) && (
+        !q ||
+        (isNumber ? Number(raw) === t.card.number
+                  : t.haystack.indexOf(' ' + q) !== -1 ||
+                    t.name.replace(/ /g, '').indexOf(qTight) !== -1));
       t.el.hidden = !hit;
       if (hit) shown++;
     });
-    count.textContent = q
+    count.textContent = active
       ? shown + ' of ' + cards.length + ' cards'
       : cards.length + (cards.length === 1 ? ' card' : ' cards');
     empty.hidden = shown > 0;
+    clearBtn.disabled = !active;
   }
   search.addEventListener('input', filter);
+  selects.forEach(function (s) { s.addEventListener('change', filter); });
+  clearBtn.addEventListener('click', function () {
+    search.value = '';
+    selects.forEach(function (s) { s.value = ''; });
+    filter();
+  });
 
   // ---- Print sheet ----
   function setCopies(key, n) {
@@ -210,6 +271,12 @@
     Promise.all(waits).then(function () {
       btnPrint.disabled = false;
       btnPrint.textContent = 'Print Sheet';
+      // One event per print sheet (titled with its size), plus one per
+      // distinct card on it, so the dashboard shows which cards get printed.
+      track('print-sheet', 'Print sheet: ' + list.length + (list.length === 1 ? ' card' : ' cards'));
+      list.filter(function (c, i) { return list.indexOf(c) === i; }).forEach(function (c) {
+        track('print/' + cardKey(c), 'Printed ' + c.name);
+      });
       window.print();
     });
   });

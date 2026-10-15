@@ -1663,3 +1663,34 @@ button.btn {
     print-color-adjust: exact;
   }
 }
+
+/* Concept & Process section (art.html) */
+.process h3 {
+  color: var(--gold);
+  font-size: 0.95rem;
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 1.5rem 0 0.6rem;
+}
+
+.section.process p {
+  line-height: 1.65;
+}
+
+.section.process .process-note {
+  color: var(--dim);
+  font-size: 0.9rem;
+  font-style: italic;
+  margin: 1.5rem 0 0;
+}
+
+.process a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.process a:hover {
+  color: var(--text);
+}

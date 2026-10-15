@@ -12,7 +12,7 @@
   var API = 'https://api.github.com/repos/' + OWNER + '/' + REPO;
   var DATA = 'assets/js/card-data.js';
   var PAGES = ['library.html', 'cards.html'];   // pages that load card-data.js
-  var KEYS = ['number', 'set', 'name', 'image', 'art', 'faction', 'kind', 'cost', 'type', 'rarity', 'bloom', 'power', 'bounty', 'text'];
+  var KEYS = ['number', 'set', 'name', 'image', 'art', 'artist', 'faction', 'factions', 'kind', 'cost', 'type', 'rarity', 'bloom', 'power', 'bounty', 'text'];
   var STORE = 'rc-editor-token';
   var ART_W = 1000, ART_H = 620;
 
@@ -21,7 +21,8 @@
   var token = '';
   var cards = [];          // as last read from GitHub
   var current = null;      // the saved card being edited (null for a new card)
-  var upload = null;       // { dataUrl, base64 } for newly chosen art
+  var upload = null;       // { dataUrl, base64 }: art to save, newly chosen or reframed
+  var frame = null;        // { img, zoom, x, y }: the art being framed (x, y = centre in img pixels)
 
   // ---- GitHub ----
   function gh(path, opts) {
@@ -70,7 +71,11 @@
   function cardLine(c) {
     var keys = KEYS.filter(function (k) { return k in c; })
       .concat(Object.keys(c).filter(function (k) { return KEYS.indexOf(k) === -1; }));
-    return '  {' + keys.map(function (k) { return JSON.stringify(k) + ': ' + JSON.stringify(c[k]); }).join(', ') + '}';
+    return '  {' + keys.map(function (k) { return JSON.stringify(k) + ': ' + value(c[k]); }).join(', ') + '}';
+  }
+  // Written the way the file's other lines are (", " between list items).
+  function value(v) {
+    return Array.isArray(v) ? '[' + v.map(value).join(', ') + ']' : JSON.stringify(v);
   }
 
   // Replace the card numbered oldNumber (or add a new one, or with no card,
@@ -180,6 +185,8 @@
   function edit(card) {
     current = card;
     upload = null;
+    frame = null;
+    if (card) startFraming(window.RC_RENDER.artPath(card), false);
     fill(card || blank());
     $('remove').hidden = !card;
     $('formTitle').textContent = card ? 'Editing #' + pad(card.number) + ' ' + card.name : 'New card';
@@ -196,12 +203,24 @@
     return n;
   }
   function blank() {
-    return { number: nextNumber('Dream'), set: latestSet(), name: '', faction: 'Dream', kind: 'Entity', cost: 0, type: 'Conjure ', rarity: 'Common', bloom: 1, power: 1, bounty: 1, text: '' };
+    return { number: nextNumber('Dream'), set: latestSet(), artist: commonArtist(), name: '', faction: 'Dream', kind: 'Entity', cost: 0, type: 'Conjure ', rarity: 'Common', bloom: 1, power: 1, bounty: 1, text: '' };
   }
+
+  function commonArtist() {
+    var count = {};
+    cards.forEach(function (c) { if (c.artist) count[c.artist] = (count[c.artist] || 0) + 1; });
+    return Object.keys(count).sort(function (a, b) { return count[b] - count[a]; })[0] || '';
+  }
+
+  // Extra factions a multicolor card uses, in Clarity-icon order.
+  var CORNERS = ['Light', 'Dream', 'Resolve', 'Dark'];
 
   function fill(c) {
     var f = form.elements;
-    ['number', 'set', 'name', 'faction', 'kind', 'rarity', 'type', 'text'].forEach(function (k) { f[k].value = c[k] == null ? '' : c[k]; });
+    Array.prototype.forEach.call(form.querySelectorAll('input[name=also]'), function (box) {
+      box.checked = !!c.factions && c.factions.indexOf(box.value) !== -1 && box.value !== c.faction;
+    });
+    ['number', 'set', 'artist', 'name', 'faction', 'kind', 'rarity', 'type', 'text'].forEach(function (k) { f[k].value = c[k] == null ? '' : c[k]; });
     f.cost.value = c.cost;
     f.bloom.value = c.bloom == null ? '' : c.bloom;
     f.power.value = c.power == null ? '' : c.power;
@@ -215,6 +234,10 @@
     var entity = form.elements.kind.value === 'Entity';
     Array.prototype.forEach.call(form.querySelectorAll('.entity'), function (el) { el.hidden = !entity; });
     form.elements.bounty.disabled = form.elements.crown.checked;
+    Array.prototype.forEach.call(form.querySelectorAll('input[name=also]'), function (box) {
+      box.disabled = box.value === form.elements.faction.value;
+      if (box.disabled) box.checked = false;
+    });
   }
 
   // The card as the form describes it, in card-data.js's shape.
@@ -229,12 +252,17 @@
       name: name,
       image: 'assets/cards/' + pad(num) + '-' + slug(name) + '.jpg',
       art: true,
+      artist: f.artist.value.trim(),
       faction: f.faction.value,
       kind: f.kind.value,
       cost: cost,
       type: f.type.value.trim(),
       rarity: f.rarity.value
     };
+    var also = CORNERS.filter(function (x) { return form.querySelector('input[name=also][value=' + x + ']:checked'); });
+    if (also.length) c.factions = [c.faction].concat(also);
+    else delete c.factions;
+    if (!c.artist) delete c.artist;
     if (c.kind === 'Entity') {
       c.bloom = parseInt(f.bloom.value, 10) || 0;
       c.power = parseInt(f.power.value, 10) || 0;
@@ -255,53 +283,126 @@
     if (!c.set) return 'Give the card a set, such as ' + latestSet() + '.';
     if (c.cost !== 'X' && isNaN(c.cost)) return 'Cost must be a number or X.';
     if (!current && !upload) return 'Choose art for the new card.';
+    if (upload && !upload.base64) return 'One moment: the art is still being framed.';
     return '';
   }
 
   var timer;
   form.addEventListener('input', function (e) {
-    if (e.target.name === 'kind' || e.target.name === 'crown') kindChanged();
+    if (e.target.name === 'kind' || e.target.name === 'crown' || e.target.name === 'faction') kindChanged();
+    if (e.target.name === 'zoom' || e.target.name === 'art') return;
     if (e.target.name === 'faction' && !current) form.elements.number.value = nextNumber(form.elements.faction.value);
     clearTimeout(timer);
     timer = setTimeout(preview, 250);
   });
   form.elements.kind.addEventListener('change', kindChanged);
 
+  var drawn = 0;
   function preview() {
-    var c = fromForm();
+    var c = fromForm(), n = ++drawn;
     if (upload) c.artSrc = upload.dataUrl;
     else if (current) c.artSrc = window.RC_RENDER.artPath(current);
     var msg = $('previewMsg');
     if (!upload && !current) {
       msg.textContent = 'Choose art to see the card.';
-      return;
+      return Promise.resolve();
     }
-    window.RC_RENDER.draw(c).then(function (canvas) {
+    return window.RC_RENDER.draw(c).then(function (canvas) {
+      if (n !== drawn) return;   // a newer preview is on its way
       $('preview').getContext('2d').drawImage(canvas, 0, 0);
       msg.textContent = '';
     }).catch(function () { msg.textContent = "Couldn't draw the preview."; });
   }
 
-  // Crop chosen art from the centre to the art window's shape, at the size
-  // the site stores it.
+  // ---- Framing the art ----
+  // The art is stored cropped to the art window's shape at ART_W x ART_H.
+  // New art starts centred and as large as fits; dragging the art in the
+  // preview moves it and the zoom slider enlarges it. Reframing a card's
+  // existing art can only zoom in, since that file is already cropped.
+  var AW = 663, AX = 46, AY = 118, AH = 409;   // the art window on the card
+
+  var framing = 0;
+  function startFraming(src, isNew) {
+    var img = new Image(), n = ++framing;
+    img.onload = function () {
+      if (n !== framing) return;   // another card or file was chosen meanwhile
+      frame = { img: img, zoom: 1, x: img.width / 2, y: img.height / 2 };
+      form.elements.zoom.value = 1;
+      if (isNew) reframe(true);
+    };
+    img.onerror = function () { if (isNew) $('previewMsg').textContent = "That file isn't an image this browser can read."; };
+    img.src = src;
+  }
+
+  function crop() {
+    var img = frame.img;
+    var w = Math.min(img.width, img.height * ART_W / ART_H) / frame.zoom, h = w * ART_H / ART_W;
+    frame.x = Math.min(Math.max(frame.x, w / 2), img.width - w / 2);
+    frame.y = Math.min(Math.max(frame.y, h / 2), img.height - h / 2);
+    var cv = document.createElement('canvas');
+    cv.width = ART_W; cv.height = ART_H;
+    var ctx = cv.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(img, frame.x - w / 2, frame.y - h / 2, w, h, 0, 0, ART_W, ART_H);
+    return { canvas: cv, w: w };
+  }
+
+  // Redraw with the current framing; final (end of a drag) also makes the
+  // JPEG that will be saved.
+  var pending = false;
+  function reframe(final) {
+    if (!frame) return;
+    if (!final) {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(function () {
+        pending = false;
+        upload = { dataUrl: crop().canvas.toDataURL('image/jpeg', 0.7), base64: null };
+        preview();
+      });
+      return;
+    }
+    var dataUrl = crop().canvas.toDataURL('image/jpeg', 0.82);
+    upload = { dataUrl: dataUrl, base64: dataUrl.split(',')[1] };
+    $('saveMsg').textContent = '';
+    preview();
+  }
+
   form.elements.art.addEventListener('change', function () {
     var file = form.elements.art.files[0];
-    if (!file) return;
-    var img = new Image();
-    img.onload = function () {
-      var cv = document.createElement('canvas');
-      cv.width = ART_W; cv.height = ART_H;
-      var s = Math.max(ART_W / img.width, ART_H / img.height), sw = ART_W / s, sh = ART_H / s;
-      cv.getContext('2d').drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, 0, 0, ART_W, ART_H);
-      var dataUrl = cv.toDataURL('image/jpeg', 0.82);
-      upload = { dataUrl: dataUrl, base64: dataUrl.split(',')[1] };
-      $('saveMsg').textContent = '';
-      URL.revokeObjectURL(img.src);
-      preview();
-    };
-    img.onerror = function () { $('previewMsg').textContent = "That file isn't an image this browser can read."; };
-    img.src = URL.createObjectURL(file);
+    if (file) startFraming(URL.createObjectURL(file), true);
   });
+
+  form.elements.zoom.addEventListener('input', function () {
+    if (!frame) return;
+    frame.zoom = parseFloat(form.elements.zoom.value) || 1;
+    reframe(false);
+  });
+  form.elements.zoom.addEventListener('change', function () { reframe(true); });
+
+  var canvasEl = $('preview'), drag = null;
+  function cardPoint(e) {
+    var r = canvasEl.getBoundingClientRect();
+    return { x: (e.clientX - r.left) * 750 / r.width, y: (e.clientY - r.top) * 1050 / r.height };
+  }
+  canvasEl.addEventListener('pointerdown', function (e) {
+    var p = cardPoint(e);
+    if (!frame || p.x < AX || p.x > AX + AW || p.y < AY || p.y > AY + AH) return;
+    drag = { p: p, x: frame.x, y: frame.y, scale: crop().w / AW };
+    canvasEl.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  canvasEl.addEventListener('pointermove', function (e) {
+    var p = cardPoint(e);
+    canvasEl.style.cursor = frame && p.x >= AX && p.x <= AX + AW && p.y >= AY && p.y <= AY + AH ? 'move' : '';
+    if (!drag) return;
+    frame.x = drag.x - (p.x - drag.p.x) * drag.scale;
+    frame.y = drag.y - (p.y - drag.p.y) * drag.scale;
+    reframe(false);
+  });
+  function endDrag() { if (drag) { drag = null; reframe(true); } }
+  canvasEl.addEventListener('pointerup', endDrag);
+  canvasEl.addEventListener('pointercancel', endDrag);
 
   $('newCard').addEventListener('click', function () { edit(null); });
   $('revert').addEventListener('click', function () { edit(current); });

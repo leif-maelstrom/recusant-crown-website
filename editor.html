@@ -8,7 +8,7 @@
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Fira+Sans:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=ec6002c3">
+  <link rel="stylesheet" href="assets/css/style.css?v=85ed1bce">
 </head>
 <body>
   <!-- Private page: not linked from the site. Saving needs a GitHub token
@@ -55,6 +55,12 @@
           <label>Faction
             <select name="faction"><option>Dream</option><option>Resolve</option><option>Dark</option><option>Light</option><option>Essence</option></select>
           </label>
+          <fieldset class="full editor-also"><legend>Also uses (multicolor)</legend>
+            <label class="editor-check"><input name="also" type="checkbox" value="Light"> Light</label>
+            <label class="editor-check"><input name="also" type="checkbox" value="Dream"> Dream</label>
+            <label class="editor-check"><input name="also" type="checkbox" value="Resolve"> Resolve</label>
+            <label class="editor-check"><input name="also" type="checkbox" value="Dark"> Dark</label>
+          </fieldset>
           <label>Kind
             <select name="kind"><option>Entity</option><option>Spell</option></select>
           </label>
@@ -73,8 +79,10 @@
           </label>
           <label class="full">Art
             <input name="art" type="file" accept="image/*">
-            <small>Any size; it's cropped from the centre to fit the art window.</small>
+            <small>Any size. Drag the art in the preview to move it; zoom to enlarge it.</small>
           </label>
+          <label class="wide">Zoom <input name="zoom" type="range" min="1" max="4" step="0.01" value="1"></label>
+          <label class="wide">Artist <input name="artist"></label>
         </div>
         <div class="editor-actions">
           <button type="submit" id="save">Save to site</button>
@@ -93,7 +101,7 @@
 
   </div>
 
-  <script src="assets/js/card-render.js?v=980f6dbc"></script>
-  <script src="assets/js/editor.js?v=8bf49807"></script>
+  <script src="assets/js/card-render.js?v=eb3f1bd3"></script>
+  <script src="assets/js/editor.js?v=5ed066b3"></script>
 </body>
 </html>

@@ -1875,3 +1875,7 @@ button.btn {
 .editor-list > * { flex-shrink: 0; }
 .editor-list > ol { flex-shrink: 1; min-height: 6rem; }
 .editor-list .editor-msg { font-size: 0.85rem; margin-top: 0; }
+.editor-also { border: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; }
+.editor-also legend { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.3rem; }
+.editor-page input[type="range"] { padding: 0; accent-color: var(--gold); }
+.editor-preview canvas { touch-action: none; }

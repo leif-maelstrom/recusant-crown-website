@@ -1,8 +1,10 @@
 // Every card in the current Recusant Crown set, in collector-number order.
 //
-// To add or update a card: put its image in assets/cards/ and add or edit
-// its line below. The Library page and the spoiler carousel on the Card
-// Game page both read this list, so nothing else needs editing.
+// To add or update a card: put its art in assets/card-art/ and add or edit
+// its line below. The site draws every card from this list (see
+// card-render.js), so the Library, downloads, print sheets and the spoiler
+// carousel always show the current text; nothing else needs editing.
+// assets/cards/ holds the older finished images, used only as a fallback.
 //
 // Keep names identical everywhere so a card can always be found:
 //   number  the collector number printed at the bottom of the card
@@ -13,12 +15,15 @@
 //   image   assets/cards/<4-digit number>-<name>.jpg: the name in lower
 //           case, punctuation dropped, spaces as hyphens
 //           e.g. #0029 "Seer's Staff" -> 0029-seers-staff.jpg
+//           The card's art uses the same name in assets/card-art/ (art only,
+//           1000 x 620, cropped to the card's art window). Rename both files
+//           when a card's name changes.
 //   art     true once the card has finished art; only these appear in the
 //           random spoiler carousel (the Library shows every card). Every
 //           card in the illustrated alpha set (Oct 2026) is true.
-//   imagePending  true when the text below has changed since the image was
-//           rendered (Edit Queue rounds 1-4, Oct 2026). The Library marks
-//           these cards; drop the flag once the new render is in place.
+//   imagePending  true when the text below has changed since the old image
+//           file was made (Edit Queue rounds 1-4, Oct 2026). Only matters
+//           when a card can't be drawn and the old image is shown instead.
 //
 // The rest comes from the set spreadsheet (Recusant_Set_1_Draft), matched by
 // collector number, then checked against the illustrated alpha renders

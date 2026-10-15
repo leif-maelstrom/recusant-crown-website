@@ -720,6 +720,8 @@ nav a.active {
 
 .spoiler-card img {
   width: 100%;
+  background: #111;   /* while the card is being drawn */
+  color: transparent;
   display: block;
   aspect-ratio: 2.5 / 3.5;
   object-fit: cover;
@@ -1489,6 +1491,8 @@ button.btn {
 
 .library-card img {
   display: block;
+  background: #111;   /* while the card is being drawn */
+  color: transparent;
   width: 100%;
   aspect-ratio: 2.5 / 3.5;
   object-fit: cover;

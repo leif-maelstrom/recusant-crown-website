@@ -45,20 +45,21 @@
     return s;
   }
 
+  // Essence: the grey circle with its four corners bitten out. Sized to sit
+  // inside the card's border, with the bites set wide to leave room for a
+  // number in the middle.
   function essence() {
-    var r = 46, k = r / R, holes = [[-1, -1], [-1, 1], [1, -1], [1, 1]].map(function (s) {
-      return '<circle cx="' + (50 + s[0] * OFF * k) + '" cy="' + (50 + s[1] * OFF * k) + '" r="' + MOON * k + '" fill="#000"/>';
+    var r = 36, k = r / R, holes = [[-1, -1], [-1, 1], [1, -1], [1, 1]].map(function (s) {
+      return '<circle cx="' + (50 + s[0] * OFF * k * 1.12) + '" cy="' + (50 + s[1] * OFF * k * 1.12) + '" r="' + MOON * k * 0.92 + '" fill="#000"/>';
     }).join('');
     return '<mask id="e"><circle cx="50" cy="50" r="' + r + '" fill="#fff"/>' + holes + '</mask>' +
-      '<rect width="100" height="100" fill="' + COLOR.Essence + '" mask="url(#e)"/>' +
-      '<g mask="url(#e)"><circle cx="50" cy="50" r="' + r + '" fill="none" stroke="#000" stroke-width="4"/>' +
-      holes.replace(/fill="#000"/g, 'fill="none" stroke="#000" stroke-width="4"') + '</g>';
+      '<rect width="100" height="100" fill="' + COLOR.Essence + '" mask="url(#e)"/>';
   }
 
   // A multicolor card's badge carries a circle for each faction it uses.
   function cost(fs) {
     if (fs.length === 1 && fs[0] === 'Essence') return essence();
-    return '<circle cx="50" cy="50" r="' + R + '" fill="' + COLOR.Essence + '" ' + LINE + '/>' +
+    return '<circle cx="50" cy="50" r="' + R + '" fill="' + COLOR.Essence + '"/>' +
       fs.filter(function (f) { return CORNER[f]; }).map(function (f) {
         var c = CORNER[f];
         return moon(f, 50 + c[0] * OFF, 50 + c[1] * OFF);
@@ -76,7 +77,7 @@
       var r = i % 2 ? 20 : (i % 4 === 0 ? 48 : 31);
       pts.push((50 + Math.cos(a) * r * 0.8).toFixed(1) + ',' + (50 + Math.sin(a) * r).toFixed(1));
     }
-    return '<polygon points="' + pts.join(' ') + '" fill="#fbfbf4" ' + LINE + '/>';
+    return '<polygon points="' + pts.join(' ') + '" fill="#fbfbf4"/>';
   }
 
   // Bloom: a four-point starburst whose points curl like a spiral.
@@ -88,9 +89,7 @@
       d += (k ? 'L' : 'M') + pt(a - Math.PI / 4, WAIST) + 'Q' + pt(a - TWIST, TIP * 0.62) + ' ' + pt(a, TIP) +
         'Q' + pt(a + 0.12, TIP * 0.42) + ' ' + pt(a + Math.PI / 4, WAIST);
     }
-    return '<defs><radialGradient id="g"><stop offset="0" stop-color="#fff"/><stop offset="0.35" stop-color="' + BLOOM[f] +
-      '"/><stop offset="1" stop-color="' + BLOOM[f] + '" stop-opacity="0.85"/></radialGradient></defs>' +
-      '<path d="' + d + 'Z" fill="url(#g)" stroke="#000" stroke-width="2.2" stroke-linejoin="round"/>';
+    return '<path d="' + d + 'Z" fill="' + BLOOM[f] + '"/>';
   }
 
   // Majesty: the crown from the site's sigil (assets/art/sigil/sigil-crown.png),
@@ -211,15 +210,12 @@
   }
 
   // A number on an icon: white with a black edge, or the reverse on pale icons.
+  // A number on an icon: plain black on light icons, white on dark ones.
   function number(ctx, v, cx, cy, size, dark) {
     ctx.font = HEAD.replace('{px}', size);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.lineJoin = 'round';
-    ctx.lineWidth = size * 0.14;
-    ctx.strokeStyle = dark ? '#fff' : '#000';
     ctx.fillStyle = dark ? '#111' : '#fff';
-    ctx.strokeText(String(v), cx, cy + size * 0.04);
     ctx.fillText(String(v), cx, cy + size * 0.04);
     ctx.textBaseline = 'alphabetic';
   }
@@ -285,14 +281,14 @@
       credit(ctx, 'Art: ' + (card.artist || 'TBD'), 522, 962, 200);
 
       ctx.drawImage(ic[0], 4, 4, 128, 128);
-      number(ctx, card.cost, 68, 68, 44);
+      number(ctx, card.cost, 68, 68, 44, true);
       if (entity) {
         ctx.drawImage(ic[1], 14, 920, 100, 100);
-        number(ctx, card.bloom, 64, 970, 40, card.faction === 'Light');
+        number(ctx, card.bloom, 64, 970, 40, card.faction === 'Light' || card.faction === 'Essence');
         ctx.drawImage(ic[2], 320, 920, 100, 100);
         number(ctx, card.power, 370, 970, 40, true);
         ctx.drawImage(ic[3], 625, 920, 100, 100);
-        if (card.bounty != null) number(ctx, card.bounty, 675, 970, 40);
+        if (card.bounty != null) number(ctx, card.bounty, 675, 970, 40, true);
       }
       return canvas;
     });

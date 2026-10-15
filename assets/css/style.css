@@ -1880,3 +1880,5 @@ button.btn {
 .editor-also legend { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.3rem; }
 .editor-page input[type="range"] { padding: 0; accent-color: var(--gold); }
 .editor-preview canvas { touch-action: none; }
+.editor-symbols { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.4rem; }
+.editor-page .editor-symbols button { padding: 0.2rem 0.5rem; font-size: 0.8rem; font-weight: normal; }

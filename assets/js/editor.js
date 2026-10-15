@@ -12,7 +12,7 @@
   var API = 'https://api.github.com/repos/' + OWNER + '/' + REPO;
   var DATA = 'assets/js/card-data.js';
   var PAGES = ['library.html', 'cards.html'];   // pages that load card-data.js
-  var KEYS = ['number', 'set', 'name', 'image', 'art', 'artist', 'faction', 'factions', 'kind', 'cost', 'type', 'rarity', 'bloom', 'power', 'bounty', 'text'];
+  var KEYS = ['number', 'set', 'name', 'image', 'art', 'artist', 'faction', 'factions', 'kind', 'cost', 'type', 'rarity', 'bloom', 'power', 'bounty', 'bountyFaction', 'text'];
   var STORE = 'rc-editor-token';
   var ART_W = 1000, ART_H = 620;
 
@@ -226,6 +226,7 @@
     f.power.value = c.power == null ? '' : c.power;
     f.bounty.value = c.bounty == null ? '' : c.bounty;
     f.crown.checked = c.kind === 'Entity' && c.bounty === null;
+    f.bountyFaction.value = c.bountyFaction || '';
     f.art.value = '';
     kindChanged();
   }
@@ -233,7 +234,7 @@
   function kindChanged() {
     var entity = form.elements.kind.value === 'Entity';
     Array.prototype.forEach.call(form.querySelectorAll('.entity'), function (el) { el.hidden = !entity; });
-    form.elements.bounty.disabled = form.elements.crown.checked;
+    form.elements.bounty.disabled = form.elements.bountyFaction.disabled = form.elements.crown.checked;
     Array.prototype.forEach.call(form.querySelectorAll('input[name=also]'), function (box) {
       box.disabled = box.value === form.elements.faction.value;
       if (box.disabled) box.checked = false;
@@ -267,6 +268,7 @@
       c.bloom = parseInt(f.bloom.value, 10) || 0;
       c.power = parseInt(f.power.value, 10) || 0;
       c.bounty = f.crown.checked ? null : (parseInt(f.bounty.value, 10) || 0);
+      if (!f.crown.checked && f.bountyFaction.value) c.bountyFaction = f.bountyFaction.value;
     }
     c.text = f.text.value.trim();
     // Keep the old image and any fields this form doesn't edit.
@@ -403,6 +405,17 @@
   function endDrag() { if (drag) { drag = null; reframe(true); } }
   canvasEl.addEventListener('pointerup', endDrag);
   canvasEl.addEventListener('pointercancel', endDrag);
+
+  // Symbol buttons insert their {token} at the cursor in the rules text.
+  Array.prototype.forEach.call(form.querySelectorAll('[data-insert]'), function (b) {
+    b.addEventListener('click', function () {
+      var t = form.elements.text, at = t.selectionStart, end = t.selectionEnd;
+      t.value = t.value.slice(0, at) + b.getAttribute('data-insert') + t.value.slice(end);
+      t.focus();
+      t.selectionStart = t.selectionEnd = at + b.getAttribute('data-insert').length;
+      t.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  });
 
   $('newCard').addEventListener('click', function () { edit(null); });
   $('revert').addEventListener('click', function () { edit(current); });

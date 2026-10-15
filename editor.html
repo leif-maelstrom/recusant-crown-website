@@ -8,7 +8,7 @@
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Fira+Sans:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=569eca3d">
+  <link rel="stylesheet" href="assets/css/style.css?v=6e7d6632">
 </head>
 <body>
   <!-- Private page: not linked from the site. Saving needs a GitHub token
@@ -72,10 +72,25 @@
           <label class="entity">Bloom <input name="bloom" type="number" min="0"></label>
           <label class="entity">Power <input name="power" type="number" min="0"></label>
           <label class="entity">Bounty <input name="bounty" type="number" min="0"></label>
+          <label class="entity">Bounty gives
+            <select name="bountyFaction"><option value="">Essence</option><option value="Light">Light</option><option value="Dream">Insight</option><option value="Resolve">Resolve</option><option value="Dark">Ink</option></select>
+          </label>
           <label class="entity editor-check"><input name="crown" type="checkbox"> Crown instead of bounty (gives Majesty)</label>
           <label class="full">Rules text
             <textarea name="text" rows="6"></textarea>
-            <small>End with a line in "double quotes" to make it italic flavour text.</small>
+            <span class="editor-symbols" aria-label="Insert a symbol">
+              <button type="button" data-insert="{Light}">Light</button>
+              <button type="button" data-insert="{Insight}">Insight</button>
+              <button type="button" data-insert="{Resolve}">Resolve</button>
+              <button type="button" data-insert="{Ink}">Ink</button>
+              <button type="button" data-insert="{Essence}">Essence only</button>
+              <button type="button" data-insert="{Any}">Any resource</button>
+              <button type="button" data-insert="{Essence Light}">Essence + Light</button>
+              <button type="button" data-insert="{Essence Insight}">Essence + Insight</button>
+              <button type="button" data-insert="{Essence Resolve}">Essence + Resolve</button>
+              <button type="button" data-insert="{Essence Ink}">Essence + Ink</button>
+            </span>
+            <small>End with a line in "double quotes" to make it italic flavour text. The buttons insert symbols, such as {Ink} for the Ink symbol; ⚪ 🔵 🔴 ⚫ work too.</small>
           </label>
           <label class="full">Art
             <input name="art" type="file" accept="image/*">
@@ -101,7 +116,7 @@
 
   </div>
 
-  <script src="assets/js/card-render.js?v=5913ca0e"></script>
-  <script src="assets/js/editor.js?v=82179baa"></script>
+  <script src="assets/js/card-render.js?v=e29068ee"></script>
+  <script src="assets/js/editor.js?v=d349cc2d"></script>
 </body>
 </html>

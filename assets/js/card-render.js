@@ -221,7 +221,7 @@
     }
     return Promise.all([
       load('assets/card-bg/' + BG[card.faction] + '.jpg'),
-      load(artPath(card)),
+      load(card.artSrc || artPath(card)),   // artSrc: the editor's unsaved upload
       Promise.all(icons),
       fonts()
     ]).then(function (got) {

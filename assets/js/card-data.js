@@ -26,6 +26,11 @@
 //           random spoiler carousel (the Library shows every card). Every
 //           card in the illustrated alpha set (Oct 2026) is true. A card
 //           with art false is drawn with an empty "Art to come" window.
+//   text    rules text, then any closing "quotation" as flavour text. Symbols
+//           can go in it: {Light} {Insight} {Resolve} {Ink} (or ⚪ 🔵 🔴 ⚫)
+//           for a faction's own symbol, {Essence} for the Essence symbol,
+//           and {Essence Ink} etc. for the grey circle with that faction's
+//           circle orbiting it.
 //   artist  the art credit printed in the footer ("Art: ..."); left out
 //           when not known yet, which prints "Art: TBD"
 //   factions  only on multicolor cards: every faction the card uses, its

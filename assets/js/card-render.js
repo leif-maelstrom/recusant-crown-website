@@ -56,6 +56,24 @@
       '<rect width="100" height="100" fill="' + COLOR.Essence + '" mask="url(#e)"/>';
   }
 
+  // A faction's own symbol, alone and full size: Light an ivory circle,
+  // Insight blue with a dark pupil, Resolve rust with an X, Ink black. Used
+  // as a creature's cost (the number sits in the middle, so the X stops
+  // short of it) and inline in rules text.
+  var PURE = 42;
+  function pure(f) {
+    var s = '<circle cx="50" cy="50" r="' + PURE + '" fill="' + COLOR[f] + '" stroke="#000" stroke-width="3"/>';
+    if (f === 'Dream') s += '<circle cx="50" cy="50" r="22" fill="#0b1e33"/>';
+    if (f === 'Resolve') {
+      var a = 21 / Math.SQRT2, b = (PURE - 1) / Math.SQRT2;
+      s += [[1, 1], [1, -1], [-1, 1], [-1, -1]].map(function (d) {
+        return '<path d="M' + (50 + d[0] * a) + ' ' + (50 + d[1] * a) + 'L' + (50 + d[0] * b) + ' ' + (50 + d[1] * b) +
+          '" stroke="#2a0d06" stroke-width="7"/>';
+      }).join('');
+    }
+    return s;
+  }
+
   // A multicolor card's badge carries a circle for each faction it uses.
   function cost(fs) {
     if (fs.length === 1 && fs[0] === 'Essence') return essence();
@@ -187,29 +205,100 @@
     return lines;
   }
 
+  // ---- Symbols in rules text ----
+  // {Light} {Insight} {Resolve} {Ink} (or {Dream}, {Dark}) and the emoji
+  // ⚪ 🔵 🔴 ⚫ draw that faction's own symbol; {Essence} the Essence symbol;
+  // {Essence Ink} and the like the grey circle with that faction's circle
+  // orbiting it.
+  var NAMES = { Light: 'Light', Insight: 'Dream', Dream: 'Dream', Resolve: 'Resolve', Ink: 'Dark', Dark: 'Dark' };
+  var EMOJI = { '⚪': 'Light', '🔵': 'Dream', '🔴': 'Resolve', '⚫': 'Dark' };
+  var TOKEN = /\{(Essence|Light|Insight|Dream|Resolve|Ink|Dark)(?: (Light|Insight|Dream|Resolve|Ink|Dark))?\}|⚪|🔵|🔴|⚫/g;
+
+  function tokenKey(m, a, b) {
+    if (EMOJI[m]) return 'pure ' + EMOJI[m];
+    if (a === 'Essence') return b ? 'orbit ' + NAMES[b] : 'essence';
+    return b ? null : 'pure ' + NAMES[a];
+  }
+  function inlineKeys(text) {
+    var keys = [];
+    String(text || '').replace(TOKEN, function (m, a, b) {
+      var k = tokenKey(m, a, b);
+      if (k && keys.indexOf(k) === -1) keys.push(k);
+      return m;
+    });
+    return keys;
+  }
+  function glyph(key) {
+    var p = key.split(' ');
+    return icon(key, p[0] === 'pure' ? pure(p[1]) : p[0] === 'orbit' ? cost([p[1]]) : essence());
+  }
+
+  // Text becomes runs of plain text and symbols; each symbol is one
+  // private-use character standing in for its key.
+  var PUA = 0xE000;
+  function encode(text, keys) {
+    return String(text || '').replace(TOKEN, function (m, a, b) {
+      var k = tokenKey(m, a, b);
+      return k ? String.fromCharCode(PUA + keys.indexOf(k)) : m;
+    });
+  }
+  function isGlyph(ch) { return ch.charCodeAt(0) >= PUA && ch.charCodeAt(0) < PUA + 64; }
+  function pieces(str) { return str.split(/([-])/).filter(Boolean); }
+  function glyphSize(ctx) { return parseFloat(/(\d+(\.\d+)?)px/.exec(ctx.font)[1]) * 1.15; }
+  function measure(ctx, str) {
+    var g = glyphSize(ctx);
+    return pieces(str).reduce(function (w, p) { return w + (isGlyph(p) ? g : ctx.measureText(p).width); }, 0);
+  }
+  function wrapRich(ctx, text, maxW) {
+    var lines = [], cur = '';
+    text.split(/\s+/).forEach(function (word) {
+      var next = cur ? cur + ' ' + word : word;
+      if (cur && measure(ctx, next) > maxW) { lines.push(cur); cur = word; } else cur = next;
+    });
+    if (cur) lines.push(cur);
+    return lines;
+  }
+  function drawRich(ctx, str, cx, y, keys, glyphs) {
+    var g = glyphSize(ctx), x = cx - measure(ctx, str) / 2;
+    ctx.textAlign = 'left';
+    pieces(str).forEach(function (p) {
+      if (isGlyph(p)) {
+        // The Essence and orbit symbols have more room around them in their
+        // boxes than a faction's own circle, so they're drawn larger to match.
+        var key = keys[p.charCodeAt(0) - PUA], img = glyphs[key];
+        var k = key === 'essence' ? 1.25 : /^orbit/.test(key) ? 1.1 : 1, d = g * k;
+        if (img) ctx.drawImage(img, x + (g - d) / 2, y - g * 0.8 - (d - g) / 2, d, d);
+        x += g;
+      } else {
+        ctx.fillText(p, x, y);
+        x += ctx.measureText(p).width;
+      }
+    });
+  }
+
   // Rules text, then any closing quotation as italic flavour text, centred in
   // the box and shrunk until both fit.
-  function rulesText(ctx, text, x, y, w, h) {
+  function rulesText(ctx, text, x, y, w, h, glyphs) {
+    var keys = inlineKeys(text);
+    text = encode(text, keys);
     var m = /^(.*?)\s*("[^"]*")\s*$/.exec(text || '');
     var rules = m ? m[1] : (text || ''), flavor = m ? m[2] : '';
     for (var size = 40; size >= 14; size--) {
       var lh = size * 1.18, gap = rules && flavor ? size * 0.5 : 0;
       ctx.font = BODY.replace('{px}', size);
-      var a = rules ? wrap(ctx, rules, w) : [];
+      var a = rules ? wrapRich(ctx, rules, w) : [];
       ctx.font = ITALIC.replace('{px}', size);
-      var b = flavor ? wrap(ctx, flavor, w) : [];
+      var b = flavor ? wrapRich(ctx, flavor, w) : [];
       var total = (a.length + b.length) * lh + gap;
       if (total <= h || size === 14) break;
     }
     var top = y + (h - total) / 2 + lh * 0.8;
-    ctx.textAlign = 'center';
     ctx.font = BODY.replace('{px}', size);
-    a.forEach(function (l, i) { ctx.fillText(l, x + w / 2, top + i * lh); });
+    a.forEach(function (l, i) { drawRich(ctx, l, x + w / 2, top + i * lh, keys, glyphs || {}); });
     ctx.font = ITALIC.replace('{px}', size);
-    b.forEach(function (l, i) { ctx.fillText(l, x + w / 2, top + (a.length + i) * lh + gap); });
+    b.forEach(function (l, i) { drawRich(ctx, l, x + w / 2, top + (a.length + i) * lh + gap, keys, glyphs || {}); });
   }
 
-  // A number on an icon: white with a black edge, or the reverse on pale icons.
   // A number on an icon: plain black on light icons, white on dark ones.
   function number(ctx, v, cx, cy, size, dark) {
     ctx.font = HEAD.replace('{px}', size);
@@ -240,7 +329,11 @@
   function draw(card) {
     var entity = card.kind === 'Entity';
     var fs = factions(card), multi = fs.length > 1;
-    var icons = [icon('cost-' + fs.join('-'), cost(fs))];
+    // A creature's cost is its faction's own symbol; spells and multicolor
+    // cards keep the grey circle with the faction circles orbiting it.
+    var full = entity && !multi && CORNER[card.faction];
+    var icons = [full ? glyph('pure ' + card.faction) : icon('cost-' + fs.join('-'), cost(fs))];
+    var inline = inlineKeys(card.text);
     if (entity) {
       icons.push(icon('bloom-' + card.faction, bloom(card.faction)), icon('power', power()),
         card.bounty == null ? icon('majesty', majesty()) : icon('essence', essence()));
@@ -251,9 +344,11 @@
       // (art: false) gets a plain art window instead.
       card.artSrc || card.art !== false ? load(card.artSrc || artPath(card)) : null,
       Promise.all(icons),
-      fonts()
+      fonts(),
+      Promise.all(inline.map(glyph))
     ]).then(function (got) {
-      var bg = got[0], art = got[1], ic = got[2];
+      var bg = got[0], art = got[1], ic = got[2], glyphs = {};
+      inline.forEach(function (k, i) { glyphs[k] = got[4][i]; });
       var canvas = document.createElement('canvas');
       canvas.width = W; canvas.height = H;
       var ctx = canvas.getContext('2d');
@@ -273,15 +368,16 @@
       line(ctx, card.name, HEAD, 44, 413, 92, 572, 'center');
       line(ctx, card.type || '', HEAD, 38, 56, 577, 586, 'left');
       rarity(ctx, card.rarity, 680, 563);
-      rulesText(ctx, card.text, 58, 604, 640, 306);
+      rulesText(ctx, card.text, 58, 604, 640, 306, glyphs);
 
       // Footer: set and number between the bloom and power icons, the
       // artist between power and bounty.
       line(ctx, (card.set || 'Alpha-r1') + '-#' + pad(card.number), BODY, 24, 217, 962, 186, 'center');
       credit(ctx, 'Art: ' + (card.artist || 'TBD'), 522, 962, 200);
 
-      ctx.drawImage(ic[0], 4, 4, 128, 128);
-      number(ctx, card.cost, 68, 68, 44, true);
+      // Cost, kept clear of the border.
+      ctx.drawImage(ic[0], 14, 14, 112, 112);
+      number(ctx, card.cost, 70, 70, full ? 42 : 40, !full || card.faction === 'Light');
       if (entity) {
         ctx.drawImage(ic[1], 14, 920, 100, 100);
         number(ctx, card.bloom, 64, 970, 40, card.faction === 'Light' || card.faction === 'Essence');

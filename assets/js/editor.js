@@ -404,6 +404,17 @@
   canvasEl.addEventListener('pointerup', endDrag);
   canvasEl.addEventListener('pointercancel', endDrag);
 
+  // Symbol buttons insert their {token} at the cursor in the rules text.
+  Array.prototype.forEach.call(form.querySelectorAll('[data-insert]'), function (b) {
+    b.addEventListener('click', function () {
+      var t = form.elements.text, at = t.selectionStart, end = t.selectionEnd;
+      t.value = t.value.slice(0, at) + b.getAttribute('data-insert') + t.value.slice(end);
+      t.focus();
+      t.selectionStart = t.selectionEnd = at + b.getAttribute('data-insert').length;
+      t.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  });
+
   $('newCard').addEventListener('click', function () { edit(null); });
   $('revert').addEventListener('click', function () { edit(current); });
 

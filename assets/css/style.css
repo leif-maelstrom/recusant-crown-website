@@ -1764,3 +1764,21 @@ button.btn {
   .section .process-steps li { padding-left: 0; }
   .process-steps li::before { position: static; display: inline-block; margin-bottom: 0.4rem; }
 }
+
+.process .angel-gallery {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  margin: 1rem 0 0.9rem;
+}
+
+.process .angel-gallery .art-piece img {
+  aspect-ratio: 4 / 3;
+  object-position: center;
+}
+
+.section.process .process-punch {
+  color: var(--text);
+  font-size: 1.15rem;
+  font-style: italic;
+  text-align: center;
+  margin: 0.4rem 0 1rem;
+}

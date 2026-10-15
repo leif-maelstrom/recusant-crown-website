@@ -101,14 +101,16 @@
   function factions(card) { return card.factions && card.factions.length ? card.factions : [card.faction]; }
 
   // Power: an eight-point starburst, taller than wide, diagonals shorter.
+  // Outlined so it reads on the light text box too, and only a little
+  // taller than wide so it sits in a line of text.
   function power() {
     var pts = [];
     for (var i = 0; i < 16; i++) {
       var a = -Math.PI / 2 + i * Math.PI / 8;
-      var r = i % 2 ? 20 : (i % 4 === 0 ? 48 : 31);
-      pts.push((50 + Math.cos(a) * r * 0.8).toFixed(1) + ',' + (50 + Math.sin(a) * r).toFixed(1));
+      var r = i % 2 ? 27 : (i % 4 === 0 ? 47 : 34);
+      pts.push((50 + Math.cos(a) * r * 0.9).toFixed(1) + ',' + (50 + Math.sin(a) * r * 0.95).toFixed(1));
     }
-    return '<polygon points="' + pts.join(' ') + '" fill="#fbfbf4"/>';
+    return '<polygon points="' + pts.join(' ') + '" fill="#fbfbf4" stroke="#000" stroke-width="3" stroke-linejoin="round"/>';
   }
 
   // Bloom: a four-point starburst whose points curl like a spiral.
@@ -223,12 +225,16 @@
   // ⚪ 🔵 🔴 ⚫ draw that faction's own symbol; {Essence} the grey circle
   // (Essence only); {Any} the Essence cross (any resource); {Essence Ink}
   // and the like the grey circle with that faction's circle orbiting it.
+  // {Power 1} and {Bounty 0} draw the Power starburst or the Bounty circle
+  // with that number inside, for figments and the like.
   var NAMES = { Light: 'Light', Insight: 'Dream', Dream: 'Dream', Resolve: 'Resolve', Ink: 'Dark', Dark: 'Dark' };
   var EMOJI = { '⚪': 'Light', '🔵': 'Dream', '🔴': 'Resolve', '⚫': 'Dark' };
-  var TOKEN = /\{(Any|Essence|Light|Insight|Dream|Resolve|Ink|Dark)(?: (Light|Insight|Dream|Resolve|Ink|Dark))?\}|⚪|🔵|🔴|⚫/g;
+  var TOKEN = /\{(Any|Essence|Light|Insight|Dream|Resolve|Ink|Dark|Power|Bounty)(?: (Light|Insight|Dream|Resolve|Ink|Dark|\d+|X))?\}|⚪|🔵|🔴|⚫/g;
 
   function tokenKey(m, a, b) {
     if (EMOJI[m]) return 'pure ' + EMOJI[m];
+    if (a === 'Power' || a === 'Bounty') return /^(\d+|X)$/.test(b || '') ? a.toLowerCase() + ' ' + b : null;
+    if (/^(\d+|X)$/.test(b || '')) return null;
     if (a === 'Any') return b ? null : 'essence';
     if (a === 'Essence') return b ? 'orbit ' + NAMES[b] : 'circle';
     return b ? null : 'pure ' + NAMES[a];
@@ -244,6 +250,8 @@
   }
   function glyph(key) {
     var p = key.split(' ');
+    if (p[0] === 'power') return icon('power', power());
+    if (p[0] === 'bounty') return icon('bounty', bounty());
     return icon(key, p[0] === 'pure' ? pure(p[1]) : p[0] === 'orbit' ? cost([p[1]]) : p[0] === 'circle' ? bounty() : essence());
   }
 
@@ -259,9 +267,15 @@
   function isGlyph(ch) { return ch.charCodeAt(0) >= PUA && ch.charCodeAt(0) < PUA + 64; }
   function pieces(str) { return str.split(/([-])/).filter(Boolean); }
   function glyphSize(ctx) { return parseFloat(/(\d+(\.\d+)?)px/.exec(ctx.font)[1]) * 1.15; }
+  // Stat symbols hold a number, so they take more room than the others.
+  var lineKeys = [];
+  function advance(g, p) {
+    var key = lineKeys[p.charCodeAt(0) - PUA] || '';
+    return /^power /.test(key) ? g * 1.3 : /^bounty /.test(key) ? g * 1.1 : g;
+  }
   function measure(ctx, str) {
     var g = glyphSize(ctx);
-    return pieces(str).reduce(function (w, p) { return w + (isGlyph(p) ? g : ctx.measureText(p).width); }, 0);
+    return pieces(str).reduce(function (w, p) { return w + (isGlyph(p) ? advance(g, p) : ctx.measureText(p).width); }, 0);
   }
   function wrapRich(ctx, text, maxW) {
     var lines = [], cur = '';
@@ -279,10 +293,17 @@
       if (isGlyph(p)) {
         // The Essence and orbit symbols have more room around them in their
         // boxes than a faction's own circle, so they're drawn larger to match.
-        var key = keys[p.charCodeAt(0) - PUA], img = glyphs[key];
-        var k = key === 'essence' ? 1.25 : /^orbit/.test(key) ? 1.1 : 1, d = g * k;
-        if (img) ctx.drawImage(img, x + (g - d) / 2, y - g * 0.8 - (d - g) / 2, d, d);
-        x += g;
+        var key = keys[p.charCodeAt(0) - PUA], img = glyphs[key], stat = /^(power|bounty) /.exec(key);
+        var a = advance(g, p), d = key === 'essence' ? g * 1.25 : /^orbit/.test(key) ? g * 1.1 :
+          stat ? (stat[1] === 'power' ? g * 1.45 : g * 1.3) : g;
+        var cy = y - g * 0.8 + g / 2;
+        if (img) ctx.drawImage(img, x + (a - d) / 2, cy - d / 2, d, d);
+        if (stat) {
+          var font = ctx.font, fill = ctx.fillStyle, n = key.slice(stat[0].length);
+          number(ctx, n, x + a / 2, cy, Math.round(g * (stat[1] === 'power' ? (n.length > 1 ? 0.5 : 0.62) : (n.length > 1 ? 0.6 : 0.75))), stat[1] === 'power');
+          ctx.font = font; ctx.textAlign = 'left'; ctx.fillStyle = fill;
+        }
+        x += a;
       } else {
         ctx.fillText(p, x, y);
         x += ctx.measureText(p).width;
@@ -293,7 +314,7 @@
   // Rules text, then any closing quotation as italic flavour text, centred in
   // the box and shrunk until both fit.
   function rulesText(ctx, text, x, y, w, h, glyphs) {
-    var keys = inlineKeys(text);
+    var keys = lineKeys = inlineKeys(text);
     text = encode(text, keys);
     var m = /^(.*?)\s*("[^"]*")\s*$/.exec(text || '');
     var rules = m ? m[1] : (text || ''), flavor = m ? m[2] : '';

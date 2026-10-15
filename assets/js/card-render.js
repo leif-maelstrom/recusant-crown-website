@@ -335,9 +335,17 @@
   function draw(card) {
     var entity = card.kind === 'Entity';
     var fs = factions(card), multi = fs.length > 1;
-    // A creature's cost is its faction's own symbol; spells and multicolor
-    // cards keep the grey circle with the faction circles orbiting it.
-    var full = entity && !multi && CORNER[card.faction];
+    // The cost symbol shows how a card can be paid. A non-creature
+    // permanent (a Conjure card that isn't a creature: Equipment,
+    // Battleground, or a Fortification, even one with power) can be paid
+    // with 1 Clarity plus Essence for the rest, so it shows the grey circle
+    // with its faction's circle orbiting it; so does a multicolor card.
+    // Everything else (creatures, Overdrives, spells, Technics) needs its
+    // faction's Clarity, so it shows that faction's own symbol. Essence cards
+    // show the Essence cross.
+    var type = card.type || '';
+    var permanent = /^Conjure\b/.test(type) && (!entity || /^Conjure (Legendary )?Fortification\b/.test(type));
+    var full = !permanent && !multi && CORNER[card.faction];
     var icons = [full ? glyph('pure ' + card.faction) : icon('cost-' + fs.join('-'), cost(fs))];
     var inline = inlineKeys(card.text);
     if (entity) {

@@ -31,7 +31,8 @@
 //           for a faction's own symbol, {Essence} for the grey circle
 //           (Essence only), {Any} for the Essence cross (any resource), and
 //           {Essence Ink} etc. for the grey circle with that faction's circle
-//           orbiting it.
+//           orbiting it. {Power 1} and {Bounty 0} draw the Power starburst or
+//           Bounty circle with that number inside.
 //   bountyFaction  only on a creature whose bounty pays a faction's Clarity
 //           instead of Essence ("Light", "Dream", "Resolve" or "Dark"); its
 //           bounty then shows that faction's symbol, not the grey circle

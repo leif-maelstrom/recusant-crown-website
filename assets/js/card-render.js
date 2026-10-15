@@ -212,16 +212,17 @@
 
   // ---- Symbols in rules text ----
   // {Light} {Insight} {Resolve} {Ink} (or {Dream}, {Dark}) and the emoji
-  // ⚪ 🔵 🔴 ⚫ draw that faction's own symbol; {Essence} the Essence symbol;
-  // {Essence Ink} and the like the grey circle with that faction's circle
-  // orbiting it.
+  // ⚪ 🔵 🔴 ⚫ draw that faction's own symbol; {Essence} the grey circle
+  // (Essence only); {Any} the Essence cross (any resource); {Essence Ink}
+  // and the like the grey circle with that faction's circle orbiting it.
   var NAMES = { Light: 'Light', Insight: 'Dream', Dream: 'Dream', Resolve: 'Resolve', Ink: 'Dark', Dark: 'Dark' };
   var EMOJI = { '⚪': 'Light', '🔵': 'Dream', '🔴': 'Resolve', '⚫': 'Dark' };
-  var TOKEN = /\{(Essence|Light|Insight|Dream|Resolve|Ink|Dark)(?: (Light|Insight|Dream|Resolve|Ink|Dark))?\}|⚪|🔵|🔴|⚫/g;
+  var TOKEN = /\{(Any|Essence|Light|Insight|Dream|Resolve|Ink|Dark)(?: (Light|Insight|Dream|Resolve|Ink|Dark))?\}|⚪|🔵|🔴|⚫/g;
 
   function tokenKey(m, a, b) {
     if (EMOJI[m]) return 'pure ' + EMOJI[m];
-    if (a === 'Essence') return b ? 'orbit ' + NAMES[b] : 'essence';
+    if (a === 'Any') return b ? null : 'essence';
+    if (a === 'Essence') return b ? 'orbit ' + NAMES[b] : 'circle';
     return b ? null : 'pure ' + NAMES[a];
   }
   function inlineKeys(text) {
@@ -235,7 +236,7 @@
   }
   function glyph(key) {
     var p = key.split(' ');
-    return icon(key, p[0] === 'pure' ? pure(p[1]) : p[0] === 'orbit' ? cost([p[1]]) : essence());
+    return icon(key, p[0] === 'pure' ? pure(p[1]) : p[0] === 'orbit' ? cost([p[1]]) : p[0] === 'circle' ? bounty() : essence());
   }
 
   // Text becomes runs of plain text and symbols; each symbol is one

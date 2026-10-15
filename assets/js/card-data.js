@@ -28,9 +28,10 @@
 //           with art false is drawn with an empty "Art to come" window.
 //   text    rules text, then any closing "quotation" as flavour text. Symbols
 //           can go in it: {Light} {Insight} {Resolve} {Ink} (or ⚪ 🔵 🔴 ⚫)
-//           for a faction's own symbol, {Essence} for the Essence symbol,
-//           and {Essence Ink} etc. for the grey circle with that faction's
-//           circle orbiting it.
+//           for a faction's own symbol, {Essence} for the grey circle
+//           (Essence only), {Any} for the Essence cross (any resource), and
+//           {Essence Ink} etc. for the grey circle with that faction's circle
+//           orbiting it.
 //   bountyFaction  only on a creature whose bounty pays a faction's Clarity
 //           instead of Essence ("Light", "Dream", "Resolve" or "Dark"); its
 //           bounty then shows that faction's symbol, not the grey circle

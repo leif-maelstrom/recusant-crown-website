@@ -1270,6 +1270,48 @@ footer.card .footer-license {
   color: var(--text);
 }
 
+/* Previous / next arrows, on the stage's left and right edges */
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-top: -1.375rem;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  background: rgba(20, 18, 16, 0.85);
+  color: var(--gold);
+  font-size: 2rem;
+  line-height: 1;
+  padding-bottom: 0.2rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.lightbox-nav[hidden] { display: none; }
+.lightbox-prev { left: 1rem; }
+.lightbox-next { right: 1rem; }
+
+.lightbox-nav:hover {
+  background: var(--crimson);
+  border-color: var(--crimson);
+  color: var(--text);
+}
+
+.lightbox-count {
+  color: var(--dim);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.lightbox-count:empty { display: none; }
+
+@media (max-width: 600px) {
+  .lightbox-prev { left: 0.4rem; }
+  .lightbox-next { right: 0.4rem; }
+}
+
 .lightbox-zoom-controls {
   display: flex;
   align-items: center;

@@ -4,6 +4,11 @@
 // or double-click) widens it to fill the screen; the wheel and a pinch zoom
 // freely toward the pointer. Drag, or use the arrow keys, to move around in
 // any direction. "Fit" returns to the whole image.
+//
+// Images inside an element marked data-lightbox-group (the Library grid, the
+// spoiler carousel, the Art page) form a set: the side arrows, the left and
+// right arrow keys (when not zoomed in) and a swipe step through the ones
+// currently shown, in page order, wrapping at the ends.
 (function () {
   var ZOOM_STEP = 1.5;
   var MAX_ZOOM = 8;          // relative to the fitted size
@@ -19,10 +24,13 @@
     '<button class="lightbox-close" type="button" aria-label="Close">&times;</button>' +
     '<div class="lightbox-stage">' +
       '<img class="lightbox-img" alt="" draggable="false">' +
+      '<button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous image">&#8249;</button>' +
+      '<button class="lightbox-nav lightbox-next" type="button" aria-label="Next image">&#8250;</button>' +
     '</div>' +
     '<div class="lightbox-footer">' +
       '<div class="lightbox-caption"></div>' +
       '<div class="lightbox-note"></div>' +
+      '<div class="lightbox-count" aria-live="polite"></div>' +
       '<div class="lightbox-zoom-controls">' +
         '<button class="lightbox-zoom-btn" type="button" data-zoom="out" aria-label="Zoom out">&minus;</button>' +
         '<span class="lightbox-zoom-label" aria-live="polite">100%</span>' +
@@ -40,6 +48,9 @@
   var closeBtn = box.querySelector('.lightbox-close');
   var btnIn = box.querySelector('[data-zoom="in"]');
   var btnOut = box.querySelector('[data-zoom="out"]');
+  var prevBtn = box.querySelector('.lightbox-prev');
+  var nextBtn = box.querySelector('.lightbox-next');
+  var count = box.querySelector('.lightbox-count');
 
   // Image state: natural size, fitted scale, current scale, top-left offset.
   var natW = 0, natH = 0, fit = 1, scale = 1, tx = 0, ty = 0;
@@ -114,8 +125,54 @@
     render(animate);
   }
 
+  // ---- The set of images to step through ----
+  var set = [], at = -1;
+
+  // The images shown in the same group as el, in page order. Hidden ones
+  // (filtered out of the Library) are skipped.
+  function groupOf(el) {
+    var g = el.closest('[data-lightbox-group]');
+    if (!g) return [el];
+    return Array.prototype.filter.call(g.querySelectorAll('[data-lightbox]'), function (x) {
+      return x === el || x.getClientRects().length > 0;
+    });
+  }
+
+  // A card image may not be drawn yet (they draw as they near the screen),
+  // so draw it first.
+  function srcOf(el) {
+    var src = el.getAttribute('data-lightbox-src') || el.currentSrc || el.src || el.getAttribute('href');
+    var job = el.__rcJob;
+    if (!src && job && window.RC_RENDER) return window.RC_RENDER.url(job.card).catch(function () { return job.card.image; });
+    return Promise.resolve(src);
+  }
+
+  function openEl(el) {
+    srcOf(el).then(function (src) {
+      open(
+        src,
+        el.getAttribute('data-lightbox-alt') || el.alt || '',
+        el.getAttribute('data-lightbox-caption') || '',
+        el.getAttribute('data-lightbox-note') || ''
+      );
+    });
+  }
+
+  function showSet() {
+    var many = set.length > 1;
+    prevBtn.hidden = nextBtn.hidden = !many;
+    count.textContent = many ? (at + 1) + ' / ' + set.length : '';
+  }
+
+  function step(dir) {
+    if (set.length < 2) return;
+    at = (at + dir + set.length) % set.length;
+    showSet();
+    openEl(set[at]);
+  }
+
   function open(src, alt, cap, nte) {
-    lastFocus = document.activeElement;
+    if (!box.classList.contains('open')) lastFocus = document.activeElement;
     caption.textContent = cap || '';
     note.textContent = nte || '';
     img.alt = alt || '';
@@ -129,7 +186,7 @@
       img.classList.add('is-ready');
     };
     img.src = src;
-    closeBtn.focus();
+    if (!box.contains(document.activeElement)) closeBtn.focus();
   }
 
   function close() {
@@ -145,15 +202,19 @@
     var el = e.target.closest && e.target.closest('[data-lightbox]');
     if (!el || box.contains(el)) return;
     e.preventDefault();
-    open(
-      el.getAttribute('data-lightbox-src') || el.currentSrc || el.src || el.getAttribute('href'),
-      el.getAttribute('data-lightbox-alt') || el.alt || '',
-      el.getAttribute('data-lightbox-caption') || '',
-      el.getAttribute('data-lightbox-note') || ''
-    );
+    set = groupOf(el);
+    at = set.indexOf(el);
+    showSet();
+    openEl(el);
   });
 
   closeBtn.addEventListener('click', close);
+  prevBtn.addEventListener('click', function () { step(-1); });
+  nextBtn.addEventListener('click', function () { step(1); });
+  // The arrows sit on the stage, so keep their presses from starting a drag.
+  [prevBtn, nextBtn].forEach(function (b) {
+    b.addEventListener('pointerdown', function (e) { e.stopPropagation(); });
+  });
   btnIn.addEventListener('click', function () { stepZoom(1); });
   btnOut.addEventListener('click', function () { stepZoom(-1); });
   box.querySelector('[data-zoom="fit"]').addEventListener('click', function () { fitImage(true); });
@@ -233,6 +294,11 @@
     }
     // A plain click on the dark area around the image closes the viewer.
     if (drag && !drag.moved && !drag.onImage && e.type === 'pointerup') close();
+    // A sideways swipe while not zoomed in steps to the next or previous image.
+    else if (drag && drag.moved && zoom() <= 1.01 && e.type === 'pointerup') {
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
+    }
     drag = null;
   }
   stage.addEventListener('pointerup', endPointer);
@@ -248,15 +314,16 @@
   // ---- Keyboard ----
   document.addEventListener('keydown', function (e) {
     if (!box.classList.contains('open')) return;
-    var k = e.key, step = 80;
+    var k = e.key, pan = 80;
     if (k === 'Escape') close();
     else if (k === '+' || k === '=') stepZoom(1);
     else if (k === '-' || k === '_') stepZoom(-1);
     else if (k === '0') fitImage(true);
-    else if (k === 'ArrowLeft') { tx += step; render(true); }
-    else if (k === 'ArrowRight') { tx -= step; render(true); }
-    else if (k === 'ArrowUp') { ty += step; render(true); }
-    else if (k === 'ArrowDown') { ty -= step; render(true); }
+    else if ((k === 'ArrowLeft' || k === 'ArrowRight') && zoom() <= 1.01 && set.length > 1) step(k === 'ArrowLeft' ? -1 : 1);
+    else if (k === 'ArrowLeft') { tx += pan; render(true); }
+    else if (k === 'ArrowRight') { tx -= pan; render(true); }
+    else if (k === 'ArrowUp') { ty += pan; render(true); }
+    else if (k === 'ArrowDown') { ty -= pan; render(true); }
     else if (k === 'Tab') {
       // Keep focus inside the viewer while it is open.
       var f = box.querySelectorAll('button:not([disabled])');

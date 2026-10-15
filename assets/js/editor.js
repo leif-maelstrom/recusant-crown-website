@@ -186,7 +186,7 @@
     current = card;
     upload = null;
     frame = null;
-    if (card) startFraming(window.RC_RENDER.artPath(card), false);
+    if (card && card.art !== false) startFraming(window.RC_RENDER.artPath(card), false);
     fill(card || blank());
     $('remove').hidden = !card;
     $('formTitle').textContent = card ? 'Editing #' + pad(card.number) + ' ' + card.name : 'New card';
@@ -251,7 +251,7 @@
       set: f.set.value.trim(),
       name: name,
       image: 'assets/cards/' + pad(num) + '-' + slug(name) + '.jpg',
-      art: true,
+      art: upload || !current ? true : current.art !== false,   // false: no art yet
       artist: f.artist.value.trim(),
       faction: f.faction.value,
       kind: f.kind.value,
@@ -301,7 +301,7 @@
   function preview() {
     var c = fromForm(), n = ++drawn;
     if (upload) c.artSrc = upload.dataUrl;
-    else if (current) c.artSrc = window.RC_RENDER.artPath(current);
+    else if (current && current.art !== false) c.artSrc = window.RC_RENDER.artPath(current);
     var msg = $('previewMsg');
     if (!upload && !current) {
       msg.textContent = 'Choose art to see the card.';
@@ -439,7 +439,7 @@
     commitChange('Remove card #' + pad(card.number) + ' ' + card.name, function (text) {
       return applyCard(text, null, card.number);
     }, function (tree) {
-      tree.push({ path: window.RC_RENDER.artPath(card), mode: '100644', type: 'blob', sha: null });
+      if (card.art !== false) tree.push({ path: window.RC_RENDER.artPath(card), mode: '100644', type: 'blob', sha: null });
     }).then(function (commit) {
       return done(msg, commit, function () { edit(null); });
     }).catch(function (err) {
@@ -492,10 +492,10 @@
       if (upload) {
         return gh('/git/blobs', { method: 'POST', body: { content: upload.base64, encoding: 'base64' } }).then(function (b) {
           tree.push({ path: newArt, mode: '100644', type: 'blob', sha: b.sha });
-          if (oldArt && oldArt !== newArt) tree.push({ path: oldArt, mode: '100644', type: 'blob', sha: null });
+          if (oldArt && oldArt !== newArt && old.art !== false) tree.push({ path: oldArt, mode: '100644', type: 'blob', sha: null });
         });
       }
-      if (oldArt && oldArt !== newArt) {
+      if (oldArt && oldArt !== newArt && old.art !== false) {
         // Renamed or renumbered: move the existing art with it.
         return gh('/contents/' + oldArt + '?ref=' + BRANCH).then(function (f) {
           tree.push({ path: newArt, mode: '100644', type: 'blob', sha: f.sha });

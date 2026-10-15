@@ -2,7 +2,8 @@
 // matches its current text. Each card is layered on a 750 x 1050 canvas
 // (2.5 x 3.5 in at 300 dpi):
 //
-//   faction background   assets/card-bg/<faction>.jpg
+//   faction background   assets/card-bg/<faction>.jpg (Essence for a
+//                        multicolor card, until those have their own)
 //   panels and border    drawn here
 //   art                  assets/card-art/<4-digit number>-<name>.jpg, named
 //                        like the old card images (see card-data.js)
@@ -54,11 +55,18 @@
       holes.replace(/fill="#000"/g, 'fill="none" stroke="#000" stroke-width="4"') + '</g>';
   }
 
-  function cost(f) {
-    if (f === 'Essence') return essence();
-    var c = CORNER[f];
-    return '<circle cx="50" cy="50" r="' + R + '" fill="' + COLOR.Essence + '" ' + LINE + '/>' + moon(f, 50 + c[0] * OFF, 50 + c[1] * OFF);
+  // A multicolor card's badge carries a circle for each faction it uses.
+  function cost(fs) {
+    if (fs.length === 1 && fs[0] === 'Essence') return essence();
+    return '<circle cx="50" cy="50" r="' + R + '" fill="' + COLOR.Essence + '" ' + LINE + '/>' +
+      fs.filter(function (f) { return CORNER[f]; }).map(function (f) {
+        var c = CORNER[f];
+        return moon(f, 50 + c[0] * OFF, 50 + c[1] * OFF);
+      }).join('');
   }
+
+  // The factions a card uses: its own, plus any others on a multicolor card.
+  function factions(card) { return card.factions && card.factions.length ? card.factions : [card.faction]; }
 
   // Power: an eight-point starburst, taller than wide, diagonals shorter.
   function power() {
@@ -149,6 +157,18 @@
     ctx.fillText(text, x, y);
   }
 
+  // The art credit: one line if it fits at a readable size, else two.
+  function credit(ctx, text, x, y, maxW) {
+    ctx.textAlign = 'center';
+    for (var size = 24; size >= 19; size--) {
+      ctx.font = BODY.replace('{px}', size);
+      if (ctx.measureText(text).width <= maxW) { ctx.fillText(text, x, y); return; }
+    }
+    ctx.font = BODY.replace('{px}', 20);
+    var lines = wrap(ctx, text, maxW).slice(0, 2);
+    lines.forEach(function (l, i) { ctx.fillText(l, x, y - 11 + i * 22, maxW); });
+  }
+
   function wrap(ctx, text, maxW) {
     var lines = [], cur = '';
     text.split(/\s+/).forEach(function (word) {
@@ -214,14 +234,15 @@
   // ---- The card ----
   function draw(card) {
     var entity = card.kind === 'Entity';
-    var icons = [icon('cost-' + card.faction, cost(card.faction))];
+    var fs = factions(card), multi = fs.length > 1;
+    var icons = [icon('cost-' + fs.join('-'), cost(fs))];
     if (entity) {
       icons.push(icon('bloom-' + card.faction, bloom(card.faction)), icon('power', power()),
         card.bounty == null ? icon('majesty', majesty()) : icon('essence', essence()));
     }
     return Promise.all([
-      load('assets/card-bg/' + BG[card.faction] + '.jpg'),
-      load(artPath(card)),
+      load('assets/card-bg/' + BG[multi ? 'Essence' : card.faction] + '.jpg'),
+      load(card.artSrc || artPath(card)),   // artSrc: the editor's unsaved upload
       Promise.all(icons),
       fonts()
     ]).then(function (got) {
@@ -246,10 +267,10 @@
       rarity(ctx, card.rarity, 680, 563);
       rulesText(ctx, card.text, 58, 604, 640, 306);
 
-      ctx.font = BODY.replace('{px}', 24);
-      ctx.textAlign = 'left';
-      ctx.fillText('Alpha-r1-#' + pad(card.number), 150, 962);
-      ctx.fillText('Art: TBD', 470, 962);
+      // Footer: set and number between the bloom and power icons, the
+      // artist between power and bounty.
+      line(ctx, (card.set || 'Alpha-r1') + '-#' + pad(card.number), BODY, 24, 217, 962, 186, 'center');
+      credit(ctx, 'Art: ' + (card.artist || 'TBD'), 522, 962, 200);
 
       ctx.drawImage(ic[0], 4, 4, 128, 128);
       number(ctx, card.cost, 68, 68, 44);

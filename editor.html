@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Card Editor — Recusant Crown</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Fira+Sans:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=85ed1bce">
+</head>
+<body>
+  <!-- Private page: not linked from the site. Saving needs a GitHub token
+       with write access to the repository, so visitors can look but not change anything. -->
+  <div class="container editor-page">
+
+    <section class="page-title card">
+      <h1>Card Editor</h1>
+      <p>Edit a card or make a new one. Saving commits straight to the site.</p>
+    </section>
+
+    <section class="card editor-signin" id="signin">
+      <h2>Sign in with GitHub</h2>
+      <p>Paste a GitHub token that can write to <strong>leif-maelstrom/recusant-crown-website</strong>.
+        Make one at GitHub → Settings → Developer settings → Fine-grained tokens, limited to this repository,
+        with <em>Contents: Read and write</em>. It stays in this browser and is only sent to GitHub.</p>
+      <form id="signinForm" class="editor-signin-form">
+        <input id="token" type="password" autocomplete="off" placeholder="github_pat_…" aria-label="GitHub token" required>
+        <label class="editor-check"><input id="remember" type="checkbox"> Remember on this device</label>
+        <button type="submit">Sign in</button>
+        <datalist id="sets"></datalist>
+      </form>
+      <p class="editor-msg" id="signinMsg" role="status"></p>
+    </section>
+
+    <section class="editor" id="editor" hidden>
+      <aside class="card editor-list">
+        <div class="editor-list-tools">
+          <input id="find" type="search" placeholder="Find a card" aria-label="Find a card">
+          <button type="button" id="newCard">New card</button>
+        </div>
+        <ol id="cardList"></ol>
+        <button type="button" id="newRevision">Start a new revision</button>
+        <p class="editor-msg" id="listMsg" role="status"></p>
+        <button type="button" class="editor-signout" id="signout">Sign out</button>
+      </aside>
+
+      <form class="card editor-form" id="cardForm" autocomplete="off">
+        <h2 id="formTitle">Choose a card</h2>
+        <div class="editor-grid">
+          <label>Number <input name="number" type="number" min="1" max="9999" required></label>
+          <label>Set <input name="set" list="sets" required></label>
+          <label>Name <input name="name" required></label>
+          <label>Faction
+            <select name="faction"><option>Dream</option><option>Resolve</option><option>Dark</option><option>Light</option><option>Essence</option></select>
+          </label>
+          <fieldset class="full editor-also"><legend>Also uses (multicolor)</legend>
+            <label class="editor-check"><input name="also" type="checkbox" value="Light"> Light</label>
+            <label class="editor-check"><input name="also" type="checkbox" value="Dream"> Dream</label>
+            <label class="editor-check"><input name="also" type="checkbox" value="Resolve"> Resolve</label>
+            <label class="editor-check"><input name="also" type="checkbox" value="Dark"> Dark</label>
+          </fieldset>
+          <label>Kind
+            <select name="kind"><option>Entity</option><option>Spell</option></select>
+          </label>
+          <label>Rarity
+            <select name="rarity"><option>Common</option><option>Uncommon</option><option>Rare</option><option>Legendary</option></select>
+          </label>
+          <label>Cost <input name="cost" placeholder="0, 1, 2 … or X" required></label>
+          <label class="wide">Type line <input name="type"></label>
+          <label class="entity">Bloom <input name="bloom" type="number" min="0"></label>
+          <label class="entity">Power <input name="power" type="number" min="0"></label>
+          <label class="entity">Bounty <input name="bounty" type="number" min="0"></label>
+          <label class="entity editor-check"><input name="crown" type="checkbox"> Crown instead of bounty (gives Majesty)</label>
+          <label class="full">Rules text
+            <textarea name="text" rows="6"></textarea>
+            <small>End with a line in "double quotes" to make it italic flavour text.</small>
+          </label>
+          <label class="full">Art
+            <input name="art" type="file" accept="image/*">
+            <small>Any size. Drag the art in the preview to move it; zoom to enlarge it.</small>
+          </label>
+          <label class="wide">Zoom <input name="zoom" type="range" min="1" max="4" step="0.01" value="1"></label>
+          <label class="wide">Artist <input name="artist"></label>
+        </div>
+        <div class="editor-actions">
+          <button type="submit" id="save">Save to site</button>
+          <button type="button" id="revert">Undo changes</button>
+          <button type="button" id="remove" class="editor-danger" hidden>Remove card</button>
+          <span class="editor-msg" id="saveMsg" role="status"></span>
+        </div>
+        <datalist id="sets"></datalist>
+      </form>
+
+      <div class="editor-preview">
+        <canvas id="preview" width="750" height="1050" aria-label="Card preview"></canvas>
+        <p class="editor-msg" id="previewMsg"></p>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="assets/js/card-render.js?v=eb3f1bd3"></script>
+  <script src="assets/js/editor.js?v=5ed066b3"></script>
+</body>
+</html>

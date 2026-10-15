@@ -1793,3 +1793,89 @@ button.btn {
   text-align: center;
   margin: 0.4rem 0 1rem;
 }
+
+/* ---- Card editor (editor.html, private) ---- */
+.editor-page { max-width: 1400px; }
+.editor-page .card { padding: 1.25rem 1.4rem; margin-bottom: 1.5rem; }
+.editor-page h2 { font-size: 1.2rem; color: var(--gold); margin-bottom: 0.8rem; }
+.editor-page input, .editor-page select, .editor-page textarea {
+  width: 100%;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid #3a342d;
+  border-radius: 6px;
+  padding: 0.45rem 0.55rem;
+  font: inherit;
+  font-size: 0.95rem;
+}
+.editor-page textarea { resize: vertical; font-family: "Fira Sans", sans-serif; }
+.editor-page input:focus, .editor-page select:focus, .editor-page textarea:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+.editor-page button {
+  background: var(--gold);
+  color: #15120f;
+  border: 0;
+  border-radius: 6px;
+  padding: 0.5rem 0.9rem;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+.editor-page button:disabled { opacity: 0.5; cursor: wait; }
+.editor-page button[type="button"] { background: transparent; color: var(--text); border: 1px solid #3a342d; }
+.editor-page small { display: block; color: var(--dim); font-size: 0.8rem; margin-top: 0.2rem; }
+.editor-msg { color: var(--muted); margin-top: 0.6rem; min-height: 1.4em; }
+.editor-msg a { color: var(--gold); }
+.editor-check { display: flex; align-items: center; gap: 0.5rem; }
+.editor-check input { width: auto; }
+
+.editor-signin { max-width: 640px; margin: 0 auto 1.5rem; }
+.editor-signin p { color: var(--muted); margin-bottom: 0.8rem; }
+.editor-signin-form { display: grid; gap: 0.7rem; }
+.editor-signin-form button { justify-self: start; }
+
+.editor { display: grid; grid-template-columns: 260px minmax(0, 1fr) minmax(280px, 420px); gap: 1.5rem; align-items: start; }
+.editor[hidden], .editor-signin[hidden], .editor-page [hidden] { display: none; }
+.editor-list { position: sticky; top: 1rem; display: flex; flex-direction: column; max-height: calc(100vh - 2rem); }
+.editor-list-tools { display: grid; gap: 0.5rem; margin-bottom: 0.7rem; }
+.editor-list ol { list-style: none; overflow-y: auto; flex: 1; margin-bottom: 0.7rem; }
+.editor-page .editor-list ol button {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-radius: 4px;
+  padding: 0.3rem 0.45rem;
+  font-weight: normal;
+  font-size: 0.9rem;
+}
+.editor-page .editor-list ol button:hover { background: #2a251f; }
+.editor-page .editor-list ol button.active { background: var(--gold); color: #15120f; }
+
+.editor-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.8rem; }
+.editor-grid label { display: block; color: var(--muted); font-size: 0.85rem; }
+.editor-grid label.wide { grid-column: span 2; }
+.editor-grid label.full { grid-column: 1 / -1; }
+.editor-grid label.editor-check { grid-column: span 2; align-self: end; font-size: 0.9rem; }
+.editor-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem; margin-top: 1.1rem; }
+.editor-actions .editor-msg { margin-top: 0; }
+
+.editor-preview { position: sticky; top: 1rem; }
+.editor-preview canvas { width: 100%; height: auto; display: block; border-radius: 18px; background: #111; }
+
+@media (max-width: 1100px) {
+  .editor { grid-template-columns: 220px minmax(0, 1fr); }
+  .editor-preview { grid-column: 1 / -1; position: static; max-width: 420px; justify-self: center; width: 100%; }
+}
+@media (max-width: 700px) {
+  .editor { grid-template-columns: minmax(0, 1fr); }
+  .editor-list { position: static; max-height: 40vh; }
+  .editor-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.editor-page button.editor-danger { color: #e0806f; border-color: #6b2a20; margin-left: auto; }
+.editor-list #newRevision { font-size: 0.85rem; }
+.editor-list > * { flex-shrink: 0; }
+.editor-list > ol { flex-shrink: 1; min-height: 6rem; }
+.editor-list .editor-msg { font-size: 0.85rem; margin-top: 0; }
+.editor-also { border: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; }
+.editor-also legend { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.3rem; }
+.editor-page input[type="range"] { padding: 0; accent-color: var(--gold); }
+.editor-preview canvas { touch-action: none; }

@@ -1694,3 +1694,11 @@ button.btn {
 .process a:hover {
   color: var(--text);
 }
+
+.process .gallery {
+  margin: 1.1rem 0 0.4rem;
+}
+
+.process .art-piece img {
+  object-position: top;
+}

@@ -22,7 +22,7 @@
 //
 // The rest comes from the set spreadsheet (Recusant_Set_1_Draft), matched by
 // collector number, then checked against the illustrated alpha renders
-// (costs of #0411-0413, Tripwire's text and #0416 Roll Over updated by hand): faction, kind (Spell or Entity), cost ("X" for X-cost
+// (costs of #0411-0413, Tripwire's text and #0416 Roll Over's type and text updated by hand): faction, kind (Spell or Entity), cost ("X" for X-cost
 // cards), type line, rarity, rules text, and for entities bloom, power and
 // bounty (null where the card prints a crown instead of a bounty).
 // The Library's filters and search use these.
@@ -204,5 +204,5 @@ window.RC_CARDS = [
   {"number": 413, "name": "Tripwire", "image": "assets/cards/0413-tripwire.jpg", "art": true, "faction": "Essence", "kind": "Spell", "cost": 5, "type": "", "rarity": "Uncommon", "text": "Trap. (Play this card facedown. Pay its costs when it is triggered to flip up.) If an opponent plays a technic targeting a creature on this lane, you may flip this card up. Your opponent must reveal their hand and discard all technics and creatures."},
   {"number": 414, "name": "Mindfog Condensate", "image": "assets/cards/0414-mindfog-condensate.jpg", "art": true, "faction": "Essence", "kind": "Spell", "cost": 0, "type": "", "rarity": "Common", "text": "Gain 1 Essence."},
   {"number": 415, "name": "Adamant Ingot", "image": "assets/cards/0415-adamant-ingot.jpg", "art": true, "faction": "Essence", "kind": "Spell", "cost": 10, "type": "", "rarity": "Rare", "text": "Reserve. Steadfast. Lingering. When you cast an equipment card, you may obliterate Adamant Ingot. If you do, you choose to give that equipment either Steadfast or Lingering."},
-  {"number": 416, "name": "Roll Over", "image": "assets/cards/0416-roll-over.jpg", "art": true, "faction": "Essence", "kind": "Spell", "cost": 3, "type": "", "rarity": "Common", "text": "Shuffle your Fade into your dream. Look at the top 5 ards of your dream. Arrange them in any order."}
+  {"number": 416, "name": "Roll Over", "image": "assets/cards/0416-roll-over.jpg", "art": true, "faction": "Essence", "kind": "Spell", "cost": 3, "type": "Essence Spell", "rarity": "Common", "text": "Shuffle your Fade into your dream. Look at the top 5 cards of your dream. Arrange them in any order.", "imagePending": true}
 ];

@@ -150,6 +150,15 @@
     ctx.strokeRect(x + 2, y + 2, w - 4, h - 4);
   }
 
+  function noArt(ctx, x, y, w, h) {
+    ctx.fillStyle = '#1b1915';
+    ctx.fillRect(x, y, w, h);
+    ctx.fillStyle = '#8a8175';
+    ctx.font = HEAD.replace('{px}', 34);
+    ctx.textAlign = 'center';
+    ctx.fillText('Art to come', x + w / 2, y + h / 2 + 12);
+  }
+
   // Text that must sit on one line: shrink until it fits.
   function line(ctx, text, font, size, x, y, maxW, align) {
     do { ctx.font = font.replace('{px}', size); } while (ctx.measureText(text).width > maxW && --size > 12);
@@ -242,7 +251,9 @@
     }
     return Promise.all([
       load('assets/card-bg/' + BG[multi ? 'Essence' : card.faction] + '.jpg'),
-      load(card.artSrc || artPath(card)),   // artSrc: the editor's unsaved upload
+      // artSrc: the editor's unsaved upload. A card without art yet
+      // (art: false) gets a plain art window instead.
+      card.artSrc || card.art !== false ? load(card.artSrc || artPath(card)) : null,
       Promise.all(icons),
       fonts()
     ]).then(function (got) {
@@ -255,7 +266,8 @@
       panel(ctx, 116, 36, 595, 84);     // name bar
       panel(ctx, 44, 528, 667, 70);     // type line
       panel(ctx, 44, 596, 667, 404);    // text box
-      cover(ctx, art, 46, 118, 663, 409);
+      if (art) cover(ctx, art, 46, 118, 663, 409);
+      else noArt(ctx, 46, 118, 663, 409);
       ctx.lineWidth = 4; ctx.strokeStyle = '#000';
       ctx.strokeRect(46, 118, 663, 409);
       ctx.lineWidth = 18;

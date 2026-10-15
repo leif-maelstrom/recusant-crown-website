@@ -89,6 +89,28 @@
       }).join('');
   }
 
+  function costKind(card) {
+    var type = card.type || '', entity = card.kind === 'Entity';
+    if (/\bStance\b/.test(type) || /^Conjure\b/.test(type) && (!entity || /^Conjure (Legendary )?Fortification\b/.test(type))) return 'colored';
+    if (entity || /\bOverdrive\b/.test(type)) return 'pure';
+    return 'spell';
+  }
+
+  // A spell's cost: the grey circle (the printed Essence) with a small
+  // Essence cross below it (the 1 Clarity of any faction).
+  function spellCost() {
+    var k = 0.45, cy = 50 + R * 0.95, r = 36 * k;
+    var holes = [[-1, -1], [-1, 1], [1, -1], [1, 1]].map(function (d) {
+      return '<circle cx="' + (50 + d[0] * OFF * k * 1.12 * 36 / R) + '" cy="' + (cy + d[1] * OFF * k * 1.12 * 36 / R) + '" r="' + MOON * k * 0.92 * 36 / R + '" fill="#000"/>';
+    }).join('');
+    // A thin gap is cut from the big circle around the cross, so the two
+    // read apart without an outline.
+    return '<mask id="g"><rect width="100" height="100" fill="#fff"/><circle cx="50" cy="' + cy + '" r="' + (r + 3) + '" fill="#000"/></mask>' +
+      '<circle cx="50" cy="50" r="' + R + '" fill="' + COLOR.Essence + '" mask="url(#g)"/>' +
+      '<mask id="s"><circle cx="50" cy="' + cy + '" r="' + r + '" fill="#fff"/>' + holes + '</mask>' +
+      '<rect width="100" height="100" fill="' + COLOR.Essence + '" mask="url(#s)"/>';
+  }
+
   // The factions a card uses: its own, plus any others on a multicolor card.
   function factions(card) { return card.factions && card.factions.length ? card.factions : [card.faction]; }
 
@@ -335,18 +357,19 @@
   function draw(card) {
     var entity = card.kind === 'Entity';
     var fs = factions(card), multi = fs.length > 1;
-    // The cost symbol shows how a card can be paid. A non-creature
-    // permanent (a Conjure card that isn't a creature: Equipment,
-    // Battleground, or a Fortification, even one with power) can be paid
-    // with 1 Clarity plus Essence for the rest, so it shows the grey circle
-    // with its faction's circle orbiting it; so does a multicolor card.
-    // Everything else (creatures, Overdrives, spells, Technics) needs its
-    // faction's Clarity, so it shows that faction's own symbol. Essence cards
-    // show the Essence cross.
-    var type = card.type || '';
-    var permanent = /^Conjure\b/.test(type) && (!entity || /^Conjure (Legendary )?Fortification\b/.test(type));
-    var full = !permanent && !multi && CORNER[card.faction];
-    var icons = [full ? glyph('pure ' + card.faction) : icon('cost-' + fs.join('-'), cost(fs))];
+    // The cost symbol shows how the card is paid (Rules Bible, casting):
+    //   pure Clarity (creatures, Overdrives): the faction's own symbol
+    //   colored (Equipment, Fortifications, Battlegrounds, Stances): the grey
+    //     circle with the faction's circle orbiting it, 1 Clarity + Essence
+    //   spell (everything else): the grey circle with a small Essence cross
+    //     below it, 1 Clarity of any faction + the printed Essence
+    // Essence cards pay in Essence, so their pure and colored costs are the
+    // plain grey circle. Multicolor cards show every faction's circle.
+    var kind = costKind(card), full = kind === 'pure' && !multi && CORNER[card.faction];
+    var badge = kind === 'spell' ? icon('cost-spell', spellCost()) :
+      full ? glyph('pure ' + card.faction) :
+      card.faction === 'Essence' && !multi ? icon('bounty', bounty()) : icon('cost-' + fs.join('-'), cost(fs));
+    var icons = [badge];
     var inline = inlineKeys(card.text);
     if (entity) {
       icons.push(icon('bloom-' + card.faction, bloom(card.faction)), icon('power', power()),
@@ -392,7 +415,7 @@
 
       // Cost, kept clear of the border.
       ctx.drawImage(ic[0], 14, 14, 112, 112);
-      number(ctx, card.cost, 70, 70, full ? 42 : 40, !full || card.faction === 'Light');
+      number(ctx, card.cost, 70, kind === 'spell' ? 64 : 70, full ? 42 : kind === 'spell' ? 36 : 40, !full || card.faction === 'Light');
       if (entity) {
         ctx.drawImage(ic[1], 14, 920, 100, 100);
         number(ctx, card.bloom, 64, 970, 40, card.faction === 'Light' || card.faction === 'Essence');

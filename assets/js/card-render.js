@@ -348,10 +348,13 @@
     //   colored (everything else: spells, Technics, Equipment, Fortifications,
     //     Battlegrounds, Stances): the grey circle with the faction's circle
     //     orbiting it, 1 Clarity + Essence for the rest
-    // Essence cards, payable with any resource, show the Essence cross, and
-    // multicolor cards show every faction's circle.
+    // Essence cards: spells and non-creature permanents take any resource,
+    // so they show the Essence cross; Essence creatures and Overdrives (such
+    // as Dream Time) take Essence only, so they show the plain grey circle.
+    // Multicolor cards show every faction's circle.
     var kind = costKind(card), full = kind === 'pure' && !multi && CORNER[card.faction];
-    var badge = full ? glyph('pure ' + card.faction) : icon('cost-' + fs.join('-'), cost(fs));
+    var badge = full ? glyph('pure ' + card.faction) :
+      kind === 'pure' && !multi && card.faction === 'Essence' ? icon('bounty', bounty()) : icon('cost-' + fs.join('-'), cost(fs));
     var icons = [badge];
     var inline = inlineKeys(card.text);
     if (entity) {

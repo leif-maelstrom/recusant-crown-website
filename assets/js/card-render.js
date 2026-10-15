@@ -101,17 +101,16 @@
   function factions(card) { return card.factions && card.factions.length ? card.factions : [card.faction]; }
 
   // Power: an eight-point starburst, taller than wide, diagonals shorter.
-  // Inline in rules text it's filled with the text colour, since the pale
-  // starburst would vanish on the light text box.
-  var INK = '#1a1a1a';
-  function power(fill) {
+  // Outlined so it reads on the light text box too, and only a little
+  // taller than wide so it sits in a line of text.
+  function power() {
     var pts = [];
     for (var i = 0; i < 16; i++) {
       var a = -Math.PI / 2 + i * Math.PI / 8;
-      var r = i % 2 ? 20 : (i % 4 === 0 ? 48 : 31);
-      pts.push((50 + Math.cos(a) * r * 0.8).toFixed(1) + ',' + (50 + Math.sin(a) * r).toFixed(1));
+      var r = i % 2 ? 27 : (i % 4 === 0 ? 47 : 34);
+      pts.push((50 + Math.cos(a) * r * 0.9).toFixed(1) + ',' + (50 + Math.sin(a) * r * 0.95).toFixed(1));
     }
-    return '<polygon points="' + pts.join(' ') + '" fill="' + (fill || '#fbfbf4') + '"/>';
+    return '<polygon points="' + pts.join(' ') + '" fill="#fbfbf4" stroke="#000" stroke-width="3" stroke-linejoin="round"/>';
   }
 
   // Bloom: a four-point starburst whose points curl like a spiral.
@@ -251,7 +250,7 @@
   }
   function glyph(key) {
     var p = key.split(' ');
-    if (p[0] === 'power') return icon('power-inline', power(INK));
+    if (p[0] === 'power') return icon('power', power());
     if (p[0] === 'bounty') return icon('bounty', bounty());
     return icon(key, p[0] === 'pure' ? pure(p[1]) : p[0] === 'orbit' ? cost([p[1]]) : p[0] === 'circle' ? bounty() : essence());
   }
@@ -272,7 +271,7 @@
   var lineKeys = [];
   function advance(g, p) {
     var key = lineKeys[p.charCodeAt(0) - PUA] || '';
-    return /^power /.test(key) ? g * 1.5 : /^bounty /.test(key) ? g * 1.3 : g;
+    return /^power /.test(key) ? g * 1.3 : /^bounty /.test(key) ? g * 1.1 : g;
   }
   function measure(ctx, str) {
     var g = glyphSize(ctx);
@@ -295,12 +294,13 @@
         // The Essence and orbit symbols have more room around them in their
         // boxes than a faction's own circle, so they're drawn larger to match.
         var key = keys[p.charCodeAt(0) - PUA], img = glyphs[key], stat = /^(power|bounty) /.exec(key);
-        var a = advance(g, p), d = key === 'essence' ? g * 1.25 : /^orbit/.test(key) ? g * 1.1 : stat ? a * 1.2 : g;
+        var a = advance(g, p), d = key === 'essence' ? g * 1.25 : /^orbit/.test(key) ? g * 1.1 :
+          stat ? (stat[1] === 'power' ? g * 1.45 : g * 1.3) : g;
         var cy = y - g * 0.8 + g / 2;
         if (img) ctx.drawImage(img, x + (a - d) / 2, cy - d / 2, d, d);
         if (stat) {
           var font = ctx.font, fill = ctx.fillStyle, n = key.slice(stat[0].length);
-          number(ctx, n, x + a / 2, cy, Math.round(g * (n.length > 1 ? 0.6 : 0.75)), false);
+          number(ctx, n, x + a / 2, cy, Math.round(g * (stat[1] === 'power' ? (n.length > 1 ? 0.5 : 0.62) : (n.length > 1 ? 0.6 : 0.75))), stat[1] === 'power');
           ctx.font = font; ctx.textAlign = 'left'; ctx.fillStyle = fill;
         }
         x += a;

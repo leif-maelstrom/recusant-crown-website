@@ -74,6 +74,11 @@
     return s;
   }
 
+  // Bounty: a plain grey circle, since a bounty pays Essence. A card whose
+  // bounty pays a faction's Clarity (bountyFaction) shows that faction's own
+  // symbol instead, and a crown (bounty null) pays Majesty.
+  function bounty() { return '<circle cx="50" cy="50" r="40" fill="' + COLOR.Essence + '"/>'; }
+
   // A multicolor card's badge carries a circle for each faction it uses.
   function cost(fs) {
     if (fs.length === 1 && fs[0] === 'Essence') return essence();
@@ -336,7 +341,8 @@
     var inline = inlineKeys(card.text);
     if (entity) {
       icons.push(icon('bloom-' + card.faction, bloom(card.faction)), icon('power', power()),
-        card.bounty == null ? icon('majesty', majesty()) : icon('essence', essence()));
+        card.bounty == null ? icon('majesty', majesty()) :
+          CORNER[card.bountyFaction] ? glyph('pure ' + card.bountyFaction) : icon('bounty', bounty()));
     }
     return Promise.all([
       load('assets/card-bg/' + BG[multi ? 'Essence' : card.faction] + '.jpg'),
@@ -384,7 +390,7 @@
         ctx.drawImage(ic[2], 320, 920, 100, 100);
         number(ctx, card.power, 370, 970, 40, true);
         ctx.drawImage(ic[3], 625, 920, 100, 100);
-        if (card.bounty != null) number(ctx, card.bounty, 675, 970, 40, true);
+        if (card.bounty != null) number(ctx, card.bounty, 675, 970, 40, !CORNER[card.bountyFaction] || card.bountyFaction === 'Light');
       }
       return canvas;
     });

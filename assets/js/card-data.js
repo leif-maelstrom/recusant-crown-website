@@ -31,6 +31,9 @@
 //           for a faction's own symbol, {Essence} for the Essence symbol,
 //           and {Essence Ink} etc. for the grey circle with that faction's
 //           circle orbiting it.
+//   bountyFaction  only on a creature whose bounty pays a faction's Clarity
+//           instead of Essence ("Light", "Dream", "Resolve" or "Dark"); its
+//           bounty then shows that faction's symbol, not the grey circle
 //   artist  the art credit printed in the footer ("Art: ..."); left out
 //           when not known yet, which prints "Art: TBD"
 //   factions  only on multicolor cards: every faction the card uses, its

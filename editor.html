@@ -8,7 +8,7 @@
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Fira+Sans:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=0d464073">
+  <link rel="stylesheet" href="assets/css/style.css?v=ec6002c3">
 </head>
 <body>
   <!-- Private page: not linked from the site. Saving needs a GitHub token
@@ -29,6 +29,7 @@
         <input id="token" type="password" autocomplete="off" placeholder="github_pat_…" aria-label="GitHub token" required>
         <label class="editor-check"><input id="remember" type="checkbox"> Remember on this device</label>
         <button type="submit">Sign in</button>
+        <datalist id="sets"></datalist>
       </form>
       <p class="editor-msg" id="signinMsg" role="status"></p>
     </section>
@@ -40,6 +41,8 @@
           <button type="button" id="newCard">New card</button>
         </div>
         <ol id="cardList"></ol>
+        <button type="button" id="newRevision">Start a new revision</button>
+        <p class="editor-msg" id="listMsg" role="status"></p>
         <button type="button" class="editor-signout" id="signout">Sign out</button>
       </aside>
 
@@ -47,7 +50,8 @@
         <h2 id="formTitle">Choose a card</h2>
         <div class="editor-grid">
           <label>Number <input name="number" type="number" min="1" max="9999" required></label>
-          <label class="wide">Name <input name="name" required></label>
+          <label>Set <input name="set" list="sets" required></label>
+          <label>Name <input name="name" required></label>
           <label>Faction
             <select name="faction"><option>Dream</option><option>Resolve</option><option>Dark</option><option>Light</option><option>Essence</option></select>
           </label>
@@ -75,8 +79,10 @@
         <div class="editor-actions">
           <button type="submit" id="save">Save to site</button>
           <button type="button" id="revert">Undo changes</button>
+          <button type="button" id="remove" class="editor-danger" hidden>Remove card</button>
           <span class="editor-msg" id="saveMsg" role="status"></span>
         </div>
+        <datalist id="sets"></datalist>
       </form>
 
       <div class="editor-preview">
@@ -87,7 +93,7 @@
 
   </div>
 
-  <script src="assets/js/card-render.js?v=91b6e5cf"></script>
-  <script src="assets/js/editor.js?v=ad8aee3d"></script>
+  <script src="assets/js/card-render.js?v=980f6dbc"></script>
+  <script src="assets/js/editor.js?v=8bf49807"></script>
 </body>
 </html>

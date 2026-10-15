@@ -1870,3 +1870,8 @@ button.btn {
   .editor-list { position: static; max-height: 40vh; }
   .editor-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+.editor-page button.editor-danger { color: #e0806f; border-color: #6b2a20; margin-left: auto; }
+.editor-list #newRevision { font-size: 0.85rem; }
+.editor-list > * { flex-shrink: 0; }
+.editor-list > ol { flex-shrink: 1; min-height: 6rem; }
+.editor-list .editor-msg { font-size: 0.85rem; margin-top: 0; }

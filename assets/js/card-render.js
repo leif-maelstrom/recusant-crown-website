@@ -248,7 +248,7 @@
 
       ctx.font = BODY.replace('{px}', 24);
       ctx.textAlign = 'left';
-      ctx.fillText('Alpha-r1-#' + pad(card.number), 150, 962);
+      ctx.fillText((card.set || 'Alpha-r1') + '-#' + pad(card.number), 150, 962);
       ctx.fillText('Art: TBD', 470, 962);
 
       ctx.drawImage(ic[0], 4, 4, 128, 128);

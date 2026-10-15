@@ -47,9 +47,9 @@
     return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   }
 
-  function extension(path) {
-    var m = /\.[a-z0-9]+$/i.exec(path);
-    return m ? m[0] : '.jpg';
+  // The card's drawn image, or its old image file if drawing fails.
+  function cardImage(card) {
+    return window.RC_RENDER.url(card).catch(function () { return card.image; });
   }
 
   // ---- Card grid ----
@@ -58,9 +58,9 @@
     tile.className = 'library-card';
 
     var img = document.createElement('img');
-    img.src = card.image;
     img.alt = card.name;
-    img.loading = 'lazy';
+    img.width = 750;
+    img.height = 1050;
     img.setAttribute('data-lightbox', '');
     img.setAttribute('data-lightbox-caption', card.name);
     img.setAttribute('data-lightbox-note', 'Card #' + pad(card.number));
@@ -74,14 +74,6 @@
     info.querySelector('.library-card-name').textContent = card.name;
     info.querySelector('.library-card-meta').textContent =
       [card.faction, card.kind, card.rarity].filter(Boolean).join(' \u00b7 ');
-    if (card.imagePending) {
-      // The text has been revised since this image was rendered.
-      var pending = document.createElement('div');
-      pending.className = 'library-card-pending';
-      pending.textContent = 'Updated text, new image coming';
-      info.appendChild(pending);
-      img.setAttribute('data-lightbox-note', 'Card #' + pad(card.number) + ' \u00b7 updated text, new image coming');
-    }
 
     var actions = document.createElement('div');
     actions.className = 'library-card-actions';
@@ -89,11 +81,35 @@
     var dl = document.createElement('a');
     dl.className = 'library-download';
     dl.href = card.image;
-    dl.download = 'recusant-crown-' + pad(card.number) + '-' + slug(card.name) + extension(card.image);
+    dl.download = 'recusant-crown-' + pad(card.number) + '-' + slug(card.name) + '.jpg';
     dl.textContent = 'Download';
     dl.setAttribute('aria-label', 'Download ' + card.name);
-    dl.addEventListener('click', function () {
+    dl.addEventListener('click', function (e) {
+      // Until the card has been drawn, wait for it, then download that.
+      if (!dl.getAttribute('data-ready')) {
+        e.preventDefault();
+        cardImage(card).then(function (src) {
+          dl.href = src;
+          dl.setAttribute('data-ready', '1');
+          dl.click();
+        });
+        return;
+      }
       track('download/' + cardKey(card), 'Downloaded ' + card.name);
+    });
+
+    // Draw the card from its data. If that fails, show the old image file,
+    // labelled when its text is out of date.
+    window.RC_RENDER.lazy(img, card, function (rendered) {
+      dl.href = img.src;
+      dl.setAttribute('data-ready', '1');
+      if (!rendered && card.imagePending) {
+        var pending = document.createElement('div');
+        pending.className = 'library-card-pending';
+        pending.textContent = 'Updated text, new image coming';
+        info.appendChild(pending);
+        img.setAttribute('data-lightbox-note', 'Card #' + pad(card.number) + ' \u00b7 updated text, new image coming');
+      }
     });
 
     var qty = document.createElement('div');
@@ -248,6 +264,17 @@
     var old = document.querySelector('.print-sheet');
     if (old) old.remove();
 
+    btnPrint.disabled = true;
+    btnPrint.textContent = 'Preparing…';
+    var unique = list.filter(function (c, i) { return list.indexOf(c) === i; });
+    Promise.all(unique.map(cardImage)).then(function (srcs) {
+      var srcFor = {};
+      unique.forEach(function (c, i) { srcFor[c.image] = srcs[i]; });
+      buildSheet(list, srcFor);
+    });
+  });
+
+  function buildSheet(list, srcFor) {
     var wrap = document.createElement('div');
     wrap.className = 'print-sheet';
     var waits = [];
@@ -264,7 +291,7 @@
         waits.push(new Promise(function (done) {
           img.onload = img.onerror = done;
         }));
-        img.src = card.image;
+        img.src = srcFor[card.image];
         var slot = document.createElement('div');
         slot.className = 'print-slot';
         slot.appendChild(img);
@@ -274,8 +301,6 @@
     }
     document.body.appendChild(wrap);
 
-    btnPrint.disabled = true;
-    btnPrint.textContent = 'Preparing…';
     Promise.all(waits).then(function () {
       btnPrint.disabled = false;
       btnPrint.textContent = 'Print Sheet';
@@ -287,7 +312,7 @@
       });
       window.print();
     });
-  });
+  }
 
   filter();
   updateSheet();

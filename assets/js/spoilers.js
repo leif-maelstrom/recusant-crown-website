@@ -18,8 +18,8 @@
     item.className = 'spoiler-card';
 
     var img = document.createElement('img');
-    img.src = card.image;
     img.alt = card.name;
+    window.RC_RENDER.lazy(img, card);   // drawn from its data; see card-render.js
     img.setAttribute('data-lightbox', '');
     img.setAttribute('data-lightbox-caption', card.name);
     img.setAttribute('data-lightbox-note', 'Card #' + ('000' + card.number).slice(-4));

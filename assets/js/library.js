@@ -74,6 +74,14 @@
     info.querySelector('.library-card-name').textContent = card.name;
     info.querySelector('.library-card-meta').textContent =
       [card.faction, card.kind, card.rarity].filter(Boolean).join(' \u00b7 ');
+    if (card.imagePending) {
+      // The text has been revised since this image was rendered.
+      var pending = document.createElement('div');
+      pending.className = 'library-card-pending';
+      pending.textContent = 'Updated text, new image coming';
+      info.appendChild(pending);
+      img.setAttribute('data-lightbox-note', 'Card #' + pad(card.number) + ' \u00b7 updated text, new image coming');
+    }
 
     var actions = document.createElement('div');
     actions.className = 'library-card-actions';

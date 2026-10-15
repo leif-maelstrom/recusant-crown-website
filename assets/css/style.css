@@ -1453,6 +1453,13 @@ button.btn {
   letter-spacing: 0.04em;
 }
 
+.library-card-pending {
+  margin-top: 0.2rem;
+  color: var(--gold);
+  font-size: 0.68rem;
+  font-style: italic;
+}
+
 .library-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));

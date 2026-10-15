@@ -316,7 +316,9 @@
   function rulesText(ctx, text, x, y, w, h, glyphs) {
     var keys = lineKeys = inlineKeys(text);
     text = encode(text, keys);
-    var m = /^(.*?)\s*("[^"]*")\s*$/.exec(text || '');
+    // A closing quote is flavour only when it follows a finished sentence, so
+    // quoted ability text ("...with "Strike: ..."") stays rules text.
+    var m = /^((?:.*?[.!?)"])?)\s*("[^"]*")\s*$/.exec(text || '');
     var rules = m ? m[1] : (text || ''), flavor = m ? m[2] : '';
     for (var size = 40; size >= 14; size--) {
       var lh = size * 1.18, gap = rules && flavor ? size * 0.5 : 0;

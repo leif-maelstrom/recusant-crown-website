@@ -224,8 +224,9 @@
     f.cost.value = c.cost;
     f.bloom.value = c.bloom == null ? '' : c.bloom;
     f.power.value = c.power == null ? '' : c.power;
-    f.bounty.value = c.bounty == null ? '' : c.bounty;
-    f.crown.checked = c.kind === 'Entity' && c.bounty === null;
+    var crowned = c.bounty == null || c.bounty === '{Majesty}';
+    f.bounty.value = crowned ? '' : c.bounty;
+    f.crown.checked = c.kind === 'Entity' && crowned;
     f.bountyFaction.value = c.bountyFaction || '';
     f.art.value = '';
     kindChanged();
@@ -267,7 +268,7 @@
     if (c.kind === 'Entity') {
       c.bloom = parseInt(f.bloom.value, 10) || 0;
       c.power = parseInt(f.power.value, 10) || 0;
-      c.bounty = f.crown.checked ? null : (parseInt(f.bounty.value, 10) || 0);
+      c.bounty = f.crown.checked ? '{Majesty}' : (parseInt(f.bounty.value, 10) || 0);
       if (!f.crown.checked && f.bountyFaction.value) c.bountyFaction = f.bountyFaction.value;
     }
     c.text = f.text.value.trim();

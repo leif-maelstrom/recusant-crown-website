@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Recusant Crown milestones: the "achievements unlocked" list on the blog
+  page, and the site's RSS feed. This one file is both, so there is nothing
+  to keep in sync.
+
+  To add a milestone, copy an <item> block to the top of the list (newest
+  first), then change its title, link, date, guid and description.
+  - pubDate is "Day, DD Mon YYYY HH:MM:SS -0400".
+  - guid must be new and never change afterwards; feed readers use it to
+    spot new items. The pattern below is milestone-YYYY-MM-DD-short-name.
+  - Write & as &amp; inside text.
+-->
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Recusant Crown: Milestones</title>
+    <link>https://www.recusantcrown.com/blog.html#milestones</link>
+    <atom:link href="https://www.recusantcrown.com/milestones.xml" rel="self" type="application/rss+xml"/>
+    <description>Achievements unlocked on the way to Recusant Crown: new chapters, tales, card sets and site updates.</description>
+    <language>en</language>
+    <managingEditor>magi.wildcard@gmail.com (Magi Grimm)</managingEditor>
+
+    <item>
+      <title>The Dark faction gets its first balance pass</title>
+      <link>https://www.recusantcrown.com/library.html</link>
+      <pubDate>Fri, 16 Oct 2026 08:00:00 -0400</pubDate>
+      <guid isPermaLink="false">milestone-2026-10-16-dark-balance-pass</guid>
+      <description>34 Dark cards retuned, Dive cycle included. Stickier, trickier, and a little meaner.</description>
+    </item>
+
+    <item>
+      <title>Every card now draws itself</title>
+      <link>https://www.recusantcrown.com/library.html</link>
+      <pubDate>Thu, 15 Oct 2026 05:00:00 -0400</pubDate>
+      <guid isPermaLink="false">milestone-2026-10-15-card-renderer</guid>
+      <description>The Library builds each card live from its data, so a fixed card is fixed everywhere the moment it lands.</description>
+    </item>
+
+    <item>
+      <title>Tale: The Rose Untouchable live</title>
+      <link>https://www.recusantcrown.com/tales/the-rose-untouchable.html</link>
+      <pubDate>Wed, 14 Oct 2026 15:20:00 -0400</pubDate>
+      <guid isPermaLink="false">milestone-2026-10-14-the-rose-untouchable</guid>
+      <description>The hidden story under Sleeping Beauty and Beauty and the Beast. Bring tissues.</description>
+    </item>
+
+    <item>
+      <title>PreAlpha Base Set revision 1.00 uploaded</title>
+      <link>https://www.recusantcrown.com/library.html</link>
+      <pubDate>Wed, 14 Oct 2026 08:40:00 -0400</pubDate>
+      <guid isPermaLink="false">milestone-2026-10-14-prealpha-base-set-r1</guid>
+      <description>The whole first set, illustrated, in the Library and ready to print at home.</description>
+    </item>
+
+    <item>
+      <title>Blog post: October Progress</title>
+      <link>https://www.recusantcrown.com/blog.html#october-progress</link>
+      <pubDate>Tue, 13 Oct 2026 06:30:00 -0400</pubDate>
+      <guid isPermaLink="false">milestone-2026-10-13-october-progress</guid>
+      <description>The most productive month in seven years, written up between factory shifts.</description>
+    </item>
+
+    <item>
+      <title>Chapter 3: Undertow live</title>
+      <link>https://www.recusantcrown.com/chapters/undertow.html</link>
+      <pubDate>Sun, 11 Oct 2026 05:50:00 -0400</pubDate>
+      <guid isPermaLink="false">milestone-2026-10-11-chapter-3-undertow</guid>
+      <description>A storm, a road trip, and the fall of Shin-Seibu.</description>
+    </item>
+
+    <item>
+      <title>The card Library opens</title>
+      <link>https://www.recusantcrown.com/library.html</link>
+      <pubDate>Sat, 10 Oct 2026 15:10:00 -0400</pubDate>
+      <guid isPermaLink="false">milestone-2026-10-10-card-library</guid>
+      <description>Browse every card, download it, or print a sheet on your kitchen printer.</description>
+    </item>
+
+    <item>
+      <title>Chapter 2: Disaster live</title>
+      <link>https://www.recusantcrown.com/chapters/disaster.html</link>
+      <pubDate>Sat, 10 Oct 2026 05:25:00 -0400</pubDate>
+      <guid isPermaLink="false">milestone-2026-10-10-chapter-2-disaster</guid>
+      <description>It's in the name.</description>
+    </item>
+
+    <item>
+      <title>recusantcrown.com claimed</title>
+      <link>https://www.recusantcrown.com/</link>
+      <pubDate>Fri, 09 Oct 2026 21:00:00 -0400</pubDate>
+      <guid isPermaLink="false">milestone-2026-10-09-domain</guid>
+      <description>The Crown has a proper address now.</description>
+    </item>
+
+    <item>
+      <title>Officially copyleft: CC BY-SA 4.0</title>
+      <link>https://www.recusantcrown.com/license.html</link>
+      <pubDate>Sun, 04 Oct 2026 18:45:00 -0400</pubDate>
+      <guid isPermaLink="false">milestone-2026-10-04-copyleft</guid>
+      <description>Take it, build on it, share it the same way. Plus the first blog post, Seek the Crown.</description>
+    </item>
+
+    <item>
+      <title>Chapter 1: Berthing live</title>
+      <link>https://www.recusantcrown.com/chapters/berthing.html</link>
+      <pubDate>Mon, 28 Sep 2026 07:30:00 -0400</pubDate>
+      <guid isPermaLink="false">milestone-2026-09-28-chapter-1-berthing</guid>
+      <description>Nikko and Wren's story begins.</description>
+    </item>
+
+    <item>
+      <title>First three spoiler cards revealed</title>
+      <link>https://www.recusantcrown.com/cards.html</link>
+      <pubDate>Sun, 27 Sep 2026 10:15:00 -0400</pubDate>
+      <guid isPermaLink="false">milestone-2026-09-27-spoiler-cards</guid>
+      <description>Glow Harvest, Ivory Unicorn and Archivist of Ash step into the light.</description>
+    </item>
+
+    <item>
+      <title>Tales open: The Mirror of Everything and The Frog Throne</title>
+      <link>https://www.recusantcrown.com/tales.html</link>
+      <pubDate>Sun, 27 Sep 2026 05:30:00 -0400</pubDate>
+      <guid isPermaLink="false">milestone-2026-09-27-tales-open</guid>
+      <description>Two new fairy tales, told the old way.</description>
+    </item>
+
+    <item>
+      <title>Prologue: The Death of Leon Garo live</title>
+      <link>https://www.recusantcrown.com/chapters/the-death-of-leon-garo.html</link>
+      <pubDate>Sat, 29 Aug 2026 12:45:00 -0400</pubDate>
+      <guid isPermaLink="false">milestone-2026-08-29-prologue</guid>
+      <description>Achievement unlocked: the first page.</description>
+    </item>
+  </channel>
+</rss>

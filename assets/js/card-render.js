@@ -226,7 +226,9 @@
   // (Essence only); {Any} the Essence cross (any resource); {Essence Ink}
   // and the like the grey circle with that faction's circle orbiting it.
   // {Power 1} and {Bounty 0} draw the Power starburst or the Bounty circle
-  // with that number inside, for figments and the like.
+  // with that number inside, for figments and the like. A number after a
+  // faction or Essence ({Insight 2}, {Essence 1}) puts it inside that
+  // symbol, for costs and amounts of a resource.
   var NAMES = { Light: 'Light', Insight: 'Dream', Dream: 'Dream', Resolve: 'Resolve', Ink: 'Dark', Dark: 'Dark' };
   var EMOJI = { '⚪': 'Light', '🔵': 'Dream', '🔴': 'Resolve', '⚫': 'Dark' };
   var TOKEN = /\{(Any|Essence|Light|Insight|Dream|Resolve|Ink|Dark|Power|Bounty)(?: (Light|Insight|Dream|Resolve|Ink|Dark|\d+|X))?\}|⚪|🔵|🔴|⚫/g;
@@ -234,7 +236,10 @@
   function tokenKey(m, a, b) {
     if (EMOJI[m]) return 'pure ' + EMOJI[m];
     if (a === 'Power' || a === 'Bounty') return /^(\d+|X)$/.test(b || '') ? a.toLowerCase() + ' ' + b : null;
-    if (/^(\d+|X)$/.test(b || '')) return null;
+    if (/^(\d+|X)$/.test(b || '')) {
+      if (a === 'Essence') return 'bounty ' + b;
+      return NAMES[a] ? 'num ' + NAMES[a] + ' ' + b : null;
+    }
     if (a === 'Any') return b ? null : 'essence';
     if (a === 'Essence') return b ? 'orbit ' + NAMES[b] : 'circle';
     return b ? null : 'pure ' + NAMES[a];
@@ -252,6 +257,7 @@
     var p = key.split(' ');
     if (p[0] === 'power') return icon('power', power());
     if (p[0] === 'bounty') return icon('bounty', bounty());
+    if (p[0] === 'num') return glyph('pure ' + p[1]);
     return icon(key, p[0] === 'pure' ? pure(p[1]) : p[0] === 'orbit' ? cost([p[1]]) : p[0] === 'circle' ? bounty() : essence());
   }
 
@@ -271,7 +277,7 @@
   var lineKeys = [];
   function advance(g, p) {
     var key = lineKeys[p.charCodeAt(0) - PUA] || '';
-    return /^power /.test(key) ? g * 1.3 : /^bounty /.test(key) ? g * 1.1 : g;
+    return /^power /.test(key) ? g * 1.3 : /^(bounty|num) /.test(key) ? g * 1.1 : g;
   }
   function measure(ctx, str) {
     var g = glyphSize(ctx);
@@ -293,14 +299,15 @@
       if (isGlyph(p)) {
         // The Essence and orbit symbols have more room around them in their
         // boxes than a faction's own circle, so they're drawn larger to match.
-        var key = keys[p.charCodeAt(0) - PUA], img = glyphs[key], stat = /^(power|bounty) /.exec(key);
+        var key = keys[p.charCodeAt(0) - PUA], img = glyphs[key], stat = /^(power|bounty|num \w+) /.exec(key);
         var a = advance(g, p), d = key === 'essence' ? g * 1.25 : /^orbit/.test(key) ? g * 1.1 :
           stat ? (stat[1] === 'power' ? g * 1.45 : g * 1.3) : g;
         var cy = y - g * 0.8 + g / 2;
         if (img) ctx.drawImage(img, x + (a - d) / 2, cy - d / 2, d, d);
         if (stat) {
           var font = ctx.font, fill = ctx.fillStyle, n = key.slice(stat[0].length);
-          number(ctx, n, x + a / 2, cy, Math.round(g * (stat[1] === 'power' ? (n.length > 1 ? 0.5 : 0.62) : (n.length > 1 ? 0.6 : 0.75))), stat[1] === 'power');
+          number(ctx, n, x + a / 2, cy, Math.round(g * (stat[1] === 'power' ? (n.length > 1 ? 0.5 : 0.62) : (n.length > 1 ? 0.6 : 0.75))),
+            stat[1] === 'power' || stat[1] === 'num Light');
           ctx.font = font; ctx.textAlign = 'left'; ctx.fillStyle = fill;
         }
         x += a;

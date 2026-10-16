@@ -811,6 +811,111 @@ nav a.active {
   margin-top: 1.2rem;
 }
 
+/* Milestones list on the blog page, read from milestones.xml (blog.html) */
+.milestones-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(176, 141, 87, 0.35);
+}
+
+.milestones-head h2 {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.milestones-rss {
+  color: var(--gold);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  border: 1px solid rgba(176, 141, 87, 0.5);
+  border-radius: 3px;
+  padding: 0.1rem 0.45rem;
+}
+
+.milestones-rss:hover {
+  color: var(--bg);
+  background: var(--gold);
+}
+
+.milestone-list {
+  list-style: none;
+}
+
+.milestone {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  column-gap: 0.9rem;
+  padding: 0.55rem 0 0.55rem 1.4rem;
+  position: relative;
+  border-bottom: 1px dashed rgba(176, 141, 87, 0.2);
+}
+
+.milestone:last-child {
+  border-bottom: none;
+}
+
+/* A small gold diamond, like an unlocked badge */
+.milestone::before {
+  content: "";
+  position: absolute;
+  left: 0.2rem;
+  top: 0.95rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+.milestone-date {
+  grid-row: span 2;
+  font-size: 0.78rem;
+  color: var(--crimson);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-top: 0.15rem;
+}
+
+.milestone-title {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.98rem;
+}
+
+.milestone-title:hover {
+  color: var(--gold);
+}
+
+.milestone-desc {
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-style: italic;
+}
+
+.milestone-desc a {
+  color: var(--gold);
+}
+
+.milestone-more {
+  margin-top: 1rem;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+@media (max-width: 520px) {
+  .milestone {
+    grid-template-columns: 1fr;
+  }
+
+  .milestone-date {
+    grid-row: auto;
+  }
+}
+
 .blog-body a,
 .license-page a {
   color: var(--gold);

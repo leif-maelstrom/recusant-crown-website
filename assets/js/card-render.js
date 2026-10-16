@@ -328,7 +328,7 @@
     var m = /^((?:.*?[.!?)"])?)\s*("[^"]*")\s*$/.exec(text || '');
     var rules = m ? m[1] : (text || ''), flavor = m ? m[2] : '';
     for (var size = 40; size >= 14; size--) {
-      var lh = size * 1.18, gap = rules && flavor ? size * 0.5 : 0;
+      var lh = size * 1.14, gap = rules && flavor ? size * 0.5 : 0;
       ctx.font = BODY.replace('{px}', size);
       var a = rules ? wrapRich(ctx, rules, w) : [];
       ctx.font = ITALIC.replace('{px}', size);
@@ -422,7 +422,7 @@
       line(ctx, card.name, HEAD, 44, 413, 92, 572, 'center');
       line(ctx, card.type || '', HEAD, 38, 56, 577, 586, 'left');
       rarity(ctx, card.rarity, 680, 563);
-      rulesText(ctx, card.text, 58, 604, 640, 306, glyphs);
+      rulesText(ctx, card.text, 56, 602, 644, 320, glyphs);
 
       // Footer: set and number between the bloom and power icons, the
       // artist between power and bounty.

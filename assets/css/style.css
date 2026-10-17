@@ -2029,3 +2029,57 @@ button.btn {
 .editor-preview canvas { touch-action: none; }
 .editor-symbols { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.4rem; }
 .editor-page .editor-symbols button { padding: 0.2rem 0.5rem; font-size: 0.8rem; font-weight: normal; }
+
+/* 404: three Recusant X's lying on the ground, the crown broken between them.
+   The sigil images are masks, so these colors repaint the drawings. */
+.lost-title { margin-top: 1.5rem; }
+.lost-text { margin: 0.5rem auto 0; font-style: italic; color: var(--muted); }
+.lost .btn { margin-top: 1.5rem; }
+
+.lost-scene {
+  position: relative;
+  width: min(100%, 560px);
+  aspect-ratio: 560 / 220;
+  margin: 0 auto;
+  perspective: 700px;
+}
+
+/* the ground the X's lie on */
+.lost-scene::before {
+  content: "";
+  position: absolute;
+  left: 2%; right: 2%; top: 40%; bottom: 0;
+  background: radial-gradient(ellipse at 50% 55%, rgba(176, 141, 87, 0.16), transparent 70%);
+}
+
+.lost-x, .lost-shard {
+  position: absolute;
+  -webkit-mask-size: contain; mask-size: contain;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: center; mask-position: center;
+}
+
+.lost-x {
+  width: 34%;
+  aspect-ratio: 1000 / 567;
+  background: #ECE6D6;
+  -webkit-mask-image: url("../art/sigil/sigil-x.png");
+  mask-image: url("../art/sigil/sigil-x.png");
+  filter: drop-shadow(0 6px 4px rgba(0, 0, 0, 0.6));
+}
+.lost-x-1 { left: 0;   top: 28%; transform: rotateX(56deg) rotate(-18deg); }
+.lost-x-2 { left: 33%; top: 44%; transform: rotateX(58deg) rotate(32deg); }
+.lost-x-3 { left: 66%; top: 24%; transform: rotateX(54deg) rotate(8deg); }
+
+/* the crown, split into three shards with clip-path */
+.lost-shard {
+  width: 20%;
+  aspect-ratio: 1000 / 608;
+  background: #D6B25E;
+  -webkit-mask-image: url("../art/sigil/sigil-crown.png");
+  mask-image: url("../art/sigil/sigil-crown.png");
+  filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.6));
+}
+.lost-shard-1 { left: 20%; top: 52%; clip-path: polygon(0 0, 40% 0, 30% 100%, 0 100%); transform: rotate(-28deg); }
+.lost-shard-2 { left: 38%; top: 30%; clip-path: polygon(40% 0, 68% 0, 58% 100%, 30% 100%); transform: rotate(12deg); }
+.lost-shard-3 { left: 52%; top: 58%; clip-path: polygon(68% 0, 100% 0, 100% 100%, 58% 100%); transform: rotate(34deg); }

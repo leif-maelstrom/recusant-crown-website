@@ -381,11 +381,14 @@
   }
 
   // A number on an icon: plain black on light icons, white on dark ones.
+  // Ink and Insight numbers print pale yellow so they read on black and blue.
+  var PALE = '#f6e9a8';
+  function numberColor(f, dark) { return (f === 'Dark' || f === 'Dream') && !dark ? PALE : dark; }
   function number(ctx, v, cx, cy, size, dark) {
     ctx.font = HEAD.replace('{px}', size);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = dark ? '#111' : '#fff';
+    ctx.fillStyle = typeof dark === 'string' ? dark : dark ? '#111' : '#fff';
     ctx.fillText(String(v), cx, cy + size * 0.04);
     ctx.textBaseline = 'alphabetic';
   }
@@ -468,10 +471,10 @@
 
       // Cost, kept clear of the border.
       ctx.drawImage(ic[0], 14, 14, 112, 112);
-      number(ctx, card.cost, 70, 70, full ? 42 : 40, !full || card.faction === 'Light');
+      number(ctx, card.cost, 70, 70, full ? 42 : 40, numberColor(card.faction, !full || card.faction === 'Light'));
       if (entity) {
         ctx.drawImage(ic[1], 14, 920, 100, 100);
-        number(ctx, card.bloom, 64, 970, 40, card.faction === 'Light' || card.faction === 'Essence');
+        number(ctx, card.bloom, 64, 970, 40, numberColor(card.faction, card.faction === 'Light' || card.faction === 'Essence'));
         ctx.drawImage(ic[2], 320, 920, 100, 100);
         number(ctx, card.power, 370, 970, 40, true);
         ctx.drawImage(ic[3], 625, 920, 100, 100);

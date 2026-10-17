@@ -115,16 +115,51 @@
     return '<polygon points="' + pts.join(' ') + '" fill="#fbfbf4" stroke="#000" stroke-width="3" stroke-linejoin="round"/>';
   }
 
-  // Bloom: a four-point starburst whose points curl like a spiral.
-  function bloom(f) {
-    var d = '', TIP = 48, WAIST = 24, TWIST = 0.5;
-    function pt(a, r) { return (50 + Math.cos(a) * r).toFixed(1) + ' ' + (50 + Math.sin(a) * r).toFixed(1); }
-    for (var k = 0; k < 4; k++) {
-      var a = -Math.PI / 2 + k * Math.PI / 2;
-      d += (k ? 'L' : 'M') + pt(a - Math.PI / 4, WAIST) + 'Q' + pt(a - TWIST, TIP * 0.62) + ' ' + pt(a, TIP) +
-        'Q' + pt(a + 0.12, TIP * 0.42) + ' ' + pt(a + Math.PI / 4, WAIST);
+  // Bloom: one flower per faction, seen from above: Light white lotus,
+  // Insight poppy, Resolve wild rose, Dark nightshade (thick enough to read
+  // in print), Essence dandelion clock.
+  function flowerPetals(n, len, w0, wm, fill, spin) {
+    var path = 'M' + -w0 + ',0C' + (-wm * 1.1) + ',' + (-len * 0.25) + ' ' + -wm + ',' + (-len * 0.45) + ' ' + (-wm * 0.35) + ',' + (-len * 0.8) +
+      'Q0,' + (-len * 1.04) + ' ' + (wm * 0.35) + ',' + (-len * 0.8) + 'C' + wm + ',' + (-len * 0.45) + ' ' + (wm * 1.1) + ',' + (-len * 0.25) + ' ' + w0 + ',0Z';
+    var out = '';
+    for (var i = 0; i < n; i++) {
+      out += '<path d="' + path + '" transform="translate(50 50) rotate(' + (spin + i * 360 / n).toFixed(1) + ')" fill="' + fill + '"/>';
     }
-    return '<path d="' + d + 'Z" fill="' + BLOOM[f] + '"/>';
+    return out;
+  }
+  function dots(n, r, size, fill, spin) {
+    var out = '';
+    for (var i = 0; i < n; i++) {
+      var a = spin + i * 2 * Math.PI / n;
+      out += '<circle cx="' + (50 + Math.cos(a) * r).toFixed(1) + '" cy="' + (50 + Math.sin(a) * r).toFixed(1) + '" r="' + size + '" fill="' + fill + '"/>';
+    }
+    return out;
+  }
+  function bloom(f) {
+    var c = BLOOM[f], i, a, out = '';
+    if (f === 'Light') {
+      return flowerPetals(8, 47, 8, 12, c, 0) + flowerPetals(8, 33, 7, 10, '#f6e3a8', 22.5) + '<circle cx="50" cy="50" r="17" fill="' + c + '"/>';
+    }
+    if (f === 'Dream') {
+      for (i = 0; i < 4; i++) {
+        a = Math.PI / 4 + i * Math.PI / 2;
+        out += '<circle cx="' + (50 + Math.cos(a) * 17).toFixed(1) + '" cy="' + (50 + Math.sin(a) * 17).toFixed(1) + '" r="23" fill="' + c + '"/>';
+      }
+      return out + '<circle cx="50" cy="50" r="22" fill="' + c + '"/>' + dots(12, 25, 1.8, '#fff', 0).replace(/fill="#fff"/g, 'fill="#fff" fill-opacity=".55"');
+    }
+    if (f === 'Resolve') {
+      for (i = 0; i < 5; i++) {
+        a = -Math.PI / 2 + i * 2 * Math.PI / 5;
+        out += '<circle cx="' + (50 + Math.cos(a) * 25).toFixed(1) + '" cy="' + (50 + Math.sin(a) * 25).toFixed(1) + '" r="19" fill="' + c + '"/>';
+      }
+      return out + '<circle cx="50" cy="50" r="30" fill="' + c + '"/>' + dots(10, 24, 1.8, '#fff', 0).replace(/fill="#fff"/g, 'fill="#fff" fill-opacity=".55"');
+    }
+    if (f === 'Dark') return flowerPetals(5, 48, 6.7, 8.6, c, 0) + '<circle cx="50" cy="50" r="12.5" fill="' + c + '"/>';
+    for (i = 0; i < 16; i++) {
+      a = i * Math.PI / 8;
+      out += '<line x1="' + (50 + Math.cos(a) * 14).toFixed(1) + '" y1="' + (50 + Math.sin(a) * 14).toFixed(1) + '" x2="' + (50 + Math.cos(a) * 38).toFixed(1) + '" y2="' + (50 + Math.sin(a) * 38).toFixed(1) + '" stroke="' + c + '" stroke-width="2.6"/>';
+    }
+    return out + dots(16, 41, 5.2, c, 0) + '<circle cx="50" cy="50" r="20" fill="' + c + '"/>';
   }
 
   // Majesty: the crown from the site's sigil (assets/art/sigil/sigil-crown.png),

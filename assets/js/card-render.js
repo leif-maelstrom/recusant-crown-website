@@ -382,7 +382,7 @@
 
   // A number on an icon: plain black on light icons, white on dark ones.
   // Ink and Insight numbers print pale yellow so they read on black and blue.
-  var PALE = '#f6e9a8';
+  var PALE = '#f4e285';
   function numberColor(f, dark) { return (f === 'Dark' || f === 'Dream') && !dark ? PALE : dark; }
   function number(ctx, v, cx, cy, size, dark) {
     ctx.font = HEAD.replace('{px}', size);

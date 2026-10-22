@@ -116,7 +116,7 @@
   }
 
   // Bloom: one flower per faction, seen from above: Light white lotus,
-  // Insight poppy, Resolve wild rose, Dark nightshade (thick enough to read
+  // Insight poppy, Resolve carnation, Dark nightshade (thick enough to read
   // in print), Essence dandelion clock.
   function flowerPetals(n, len, w0, wm, fill, spin) {
     var path = 'M' + -w0 + ',0C' + (-wm * 1.1) + ',' + (-len * 0.25) + ' ' + -wm + ',' + (-len * 0.45) + ' ' + (-wm * 0.35) + ',' + (-len * 0.8) +
@@ -135,6 +135,15 @@
     }
     return out;
   }
+  // A carnation's ruffled edge: a ring of uneven teeth around the centre.
+  function frill(n, rOut, rIn, fill, extra, spin) {
+    var pts = [];
+    for (var i = 0; i < n * 2; i++) {
+      var a = spin + i * Math.PI / n, r = i % 2 ? rIn + Math.sin(i * 2.3) * 1.5 : rOut - 3 + Math.sin(i * 1.7) * 3;
+      pts.push((50 + Math.cos(a) * r).toFixed(1) + ',' + (50 + Math.sin(a) * r).toFixed(1));
+    }
+    return '<polygon points="' + pts.join(' ') + '" fill="' + fill + '"' + extra + '/>';
+  }
   function bloom(f) {
     var c = BLOOM[f], i, a, out = '';
     if (f === 'Light') {
@@ -148,11 +157,8 @@
       return out + '<circle cx="50" cy="50" r="22" fill="' + c + '"/>' + dots(12, 25, 1.8, '#fff', 0).replace(/fill="#fff"/g, 'fill="#fff" fill-opacity=".55"');
     }
     if (f === 'Resolve') {
-      for (i = 0; i < 5; i++) {
-        a = -Math.PI / 2 + i * 2 * Math.PI / 5;
-        out += '<circle cx="' + (50 + Math.cos(a) * 25).toFixed(1) + '" cy="' + (50 + Math.sin(a) * 25).toFixed(1) + '" r="19" fill="' + c + '"/>';
-      }
-      return out + '<circle cx="50" cy="50" r="30" fill="' + c + '"/>' + dots(10, 24, 1.8, '#fff', 0).replace(/fill="#fff"/g, 'fill="#fff" fill-opacity=".55"');
+      return frill(34, 49, 41, c, '', 0) + frill(22, 36, 30, 'none', ' stroke="#fff" stroke-opacity=".45" stroke-width="1.6" stroke-linejoin="round"', 0.07) +
+        frill(16, 25, 21, 'none', ' stroke="#fff" stroke-opacity=".35" stroke-width="1.4" stroke-linejoin="round"', 0.1);
     }
     if (f === 'Dark') return flowerPetals(5, 48, 6.7, 8.6, c, 0) + '<circle cx="50" cy="50" r="12.5" fill="' + c + '"/>';
     for (i = 0; i < 16; i++) {

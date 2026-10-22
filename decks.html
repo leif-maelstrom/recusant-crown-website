@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decks — Recusant Crown</title>
+  <meta name="description" content="The Recusant Crown starter decks, free to view, save, and print at home.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Recusant Crown">
+  <meta property="og:title" content="Decks — Recusant Crown">
+  <meta property="og:description" content="The Recusant Crown starter decks, free to view, save, and print at home.">
+  <meta property="og:url" content="https://www.recusantcrown.com/decks.html">
+  <meta property="og:image" content="https://www.recusantcrown.com/assets/art/illustrations/the-library.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="alternate" type="application/rss+xml" title="Recusant Crown: Milestones" href="milestones.xml">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Fira+Sans:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=3629cebb">
+  <!-- Visit counter: GoatCounter (no cookies, no personal data) -->
+  <script data-goatcounter="https://magiwolfgrimm.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</head>
+<body>
+  <div class="container">
+
+    <header class="card">
+      <div class="brand">
+        <span class="brand-x" aria-hidden="true"></span>
+        <div class="brand-words">
+          <div class="title">Recusant</div>
+          <div class="subtitle">Crown<span class="brand-crown" aria-hidden="true"><span class="brand-crown-inner"></span></span></div>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="fiction.html">Fiction</a>
+        <a href="tales.html">Tales</a>
+        <a href="cards.html" class="active">Card Game</a>
+        <a href="art.html">Art</a>
+        <a href="blog.html">Blog</a>
+      </nav>
+    </header>
+
+    <section class="page-title card">
+      <h1>Decks</h1>
+      <p>Ready-to-play starter decks, free to save, print, and play at home</p>
+    </section>
+
+    <section class="section card" id="starters">
+      <h2>Starter Decks</h2>
+      <p class="section-desc">
+        Fixed 60-card decks, built to be fun first: each one can win, has a few splashy spells,
+        and hides combos for you to find. Pick one to see its cards.
+      </p>
+      <div class="deck-picker" id="deckPicker"></div>
+      <div class="deck-open">
+        <label class="btn" for="deckFile">Open a Deck File</label>
+        <input type="file" id="deckFile" accept=".json,.rcdeck,.txt,application/json,text/plain" hidden>
+        <span class="deck-open-note">Deck files stay on your computer; opening one only reads it in your browser.</span>
+      </div>
+      <p class="deck-message" id="deckMessage" role="status" hidden></p>
+    </section>
+
+    <section class="section card deck-view" id="deck" hidden>
+      <div class="deck-head">
+        <div>
+          <div class="deck-kicker" id="deckKicker"></div>
+          <h2 id="deckName"></h2>
+          <p class="section-desc" id="deckDesc"></p>
+          <p class="deck-stats" id="deckStats"></p>
+        </div>
+      </div>
+      <div class="print-actions">
+        <button type="button" class="btn btn-primary" id="deckDownload">Download Deck File</button>
+        <button type="button" class="btn" id="deckPrint">Print Cards</button>
+        <button type="button" class="btn" id="deckPrintList">Print Deck List</button>
+        <button type="button" class="btn" id="deckCopy">Copy as Text</button>
+      </div>
+      <p class="print-tip">
+        Cards print at true size (2.5 &times; 3.5 in), nine to a page. In the print dialog, set scale to
+        <strong>100%</strong> (or &ldquo;Actual size&rdquo;). Choose &ldquo;Save as PDF&rdquo; as the printer to get a PDF.
+      </p>
+      <div id="deckGroups" data-lightbox-group></div>
+    </section>
+
+    <footer class="card">
+      Recusant Crown · Decks · <a href="mailto:magi.wildcard@gmail.com">magi.wildcard@gmail.com</a> · <a href="https://x.com/MagiWolfgrimm" target="_blank" rel="noopener">X</a> · <a href="milestones.xml">RSS</a>
+      <p class="footer-license">
+        &copy; 2026 Magi Grimm. Recusant Crown stories, art, and game content are licensed under
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license">CC BY-SA 4.0</a>.
+        The Recusant Crown name and sigil are not covered by this <a href="license.html">license</a>.
+      </p>
+    </footer>
+
+  </div>
+
+  <script src="assets/js/card-data.js?v=8da6edab"></script>
+  <script src="assets/js/card-render.js?v=69164564"></script>
+  <script src="assets/js/print-sheet.js?v=0585c383"></script>
+  <script src="assets/js/deck-format.js?v=3cf11ee2"></script>
+  <script src="assets/js/starter-decks.js?v=d122bdbd"></script>
+  <script src="assets/js/decks.js?v=9b9e3e3a"></script>
+  <script src="assets/js/lightbox.js?v=3c4fd3a2"></script>
+  <script src="assets/js/brand.js?v=58a0f844"></script>
+</body>
+</html>

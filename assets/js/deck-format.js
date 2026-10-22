@@ -140,10 +140,73 @@
     return deck;
   }
 
+  // ---- Share links ----
+  // A deck packed into a page address, read by the browser only:
+  //   decks.html#v=1&n=Frogs+and+Fancies&s=Alpha-r1&c=3-5.1-5.4-4
+  // c lists number-qty pairs. Links carry numbers only, to stay short, so
+  // they belong to the set revision in s; deck files are the lasting copy.
+  function toLink(deck) {
+    var q = new URLSearchParams();
+    q.set('v', VERSION);
+    q.set('n', deck.name || '');
+    if (deck.set) q.set('s', deck.set);
+    q.set('c', (deck.cards || []).map(function (c) { return c.number + '-' + c.qty; }).join('.'));
+    return q.toString();
+  }
+
+  // The deck in a link's hash, or null when the hash holds no deck.
+  function fromLink(hash) {
+    var q = new URLSearchParams(String(hash || '').replace(/^#/, ''));
+    if (!q.get('c')) return null;
+    var names = {};
+    (window.RC_CARDS || []).forEach(function (c) { names[c.number] = c.name; });
+    var cards = q.get('c').split('.').map(function (pair) {
+      var p = pair.split('-');
+      return { qty: Number(p[1]) || 0, number: Number(p[0]), name: names[Number(p[0])] || '' };
+    }).filter(function (c) { return c.qty > 0 && c.number >= 0; });
+    var deck = { format: FORMAT, version: VERSION, name: q.get('n') || 'Shared deck', cards: cards };
+    if (q.get('s')) deck.set = q.get('s');
+    return deck;
+  }
+
+  // ---- Deck-building checks (Rules Bible XVIII) ----
+  // At least 60 cards; by rarity, up to 5 copies of a Common, 4 of an
+  // Uncommon, 3 of a Rare, and 1 of each Legendary with no more than 7
+  // Legendaries in all. A card's own text overrides its limit: "You may
+  // have any number of ..." (Creeping Shade) or "You may have 7 copies of
+  // ..." (Dwarf Miner). These are shown as warnings only; casual and
+  // house-rule decks still save.
+  var MIN_CARDS = 60, MAX_LEGENDARIES = 7;
+  var LIMITS = { Common: 5, Uncommon: 4, Rare: 3, Legendary: 1 };
+
+  function limit(card) {
+    var text = card.text || '';
+    if (/you may have any number of/i.test(text)) return Infinity;
+    var own = text.match(/you may have (\d+) copies/i);
+    if (own) return Number(own[1]);
+    return LIMITS[card.rarity] || 1;
+  }
+
+  function check(entries) {
+    var problems = [];
+    var n = total(entries);
+    if (n < MIN_CARDS) problems.push(n + ' cards: a deck needs at least ' + MIN_CARDS + '.');
+    entries.forEach(function (e) {
+      var max = limit(e.card);
+      if (e.qty > max) {
+        problems.push(e.qty + ' × ' + e.card.name + ': ' + e.card.rarity + ' cards are limited to ' + max + (max === 1 ? ' copy.' : ' copies.'));
+      }
+    });
+    var legends = total(entries.filter(function (e) { return e.card.rarity === 'Legendary'; }));
+    if (legends > MAX_LEGENDARIES) problems.push(legends + ' Legendaries: a deck may hold ' + MAX_LEGENDARIES + ' at most.');
+    return problems;
+  }
+
   window.RC_DECK = {
     FORMAT: FORMAT, VERSION: VERSION,
     resolve: resolve, total: total, build: build,
     toFile: toFile, fileName: fileName, toText: toText, parse: parse,
+    toLink: toLink, fromLink: fromLink, check: check, limit: limit,
     simplify: simplify, slug: slug
   };
 })();

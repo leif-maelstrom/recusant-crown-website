@@ -18,7 +18,7 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="alternate" type="application/rss+xml" title="Recusant Crown: Milestones" href="milestones.xml">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Fira+Sans:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=3629cebb">
+  <link rel="stylesheet" href="assets/css/style.css?v=514e5f56">
   <!-- Visit counter: GoatCounter (no cookies, no personal data) -->
   <script data-goatcounter="https://magiwolfgrimm.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -54,10 +54,11 @@
         Fixed 60-card decks, built to be fun first: each one can win, has a few splashy spells,
         and hides combos for you to find. Each Starter is a matched pair: Dream vs Dark, and Resolve vs Light.
         Resolve and Light hit about a third harder, so mixing pairs (Resolve vs Dark, say) leans toward the bigger deck.
-        Pick one to see its cards.
+        Pick one to see its cards, or edit a copy to make it your own.
       </p>
       <div class="deck-picker" id="deckPicker"></div>
       <div class="deck-open">
+        <button type="button" class="btn" id="deckNew">New Deck</button>
         <label class="btn" for="deckFile">Open a Deck File</label>
         <input type="file" id="deckFile" accept=".json,.rcdeck,.txt,application/json,text/plain" hidden>
         <span class="deck-open-note">Deck files stay on your computer; opening one only reads it in your browser.</span>
@@ -75,7 +76,8 @@
         </div>
       </div>
       <div class="print-actions">
-        <button type="button" class="btn btn-primary" id="deckDownload">Download Deck File</button>
+        <button type="button" class="btn btn-primary" id="deckEdit">Edit a Copy</button>
+        <button type="button" class="btn" id="deckDownload">Download Deck File</button>
         <button type="button" class="btn" id="deckPrint">Print Cards</button>
         <button type="button" class="btn" id="deckPrintList">Print Deck List</button>
         <button type="button" class="btn" id="deckCopy">Copy as Text</button>
@@ -85,6 +87,69 @@
         <strong>100%</strong> (or &ldquo;Actual size&rdquo;). Choose &ldquo;Save as PDF&rdquo; as the printer to get a PDF.
       </p>
       <div id="deckGroups" data-lightbox-group></div>
+    </section>
+
+    <section class="section card deck-builder" id="builder" hidden>
+      <h2>Deck Builder</h2>
+      <p class="section-desc">
+        Your deck saves itself in this browser as you go. To keep it for good, share it, or move it to
+        another device, download the deck file; open it here any time to carry on.
+      </p>
+      <div class="builder-fields">
+        <label>Deck name <input type="text" id="builderName" maxlength="80" placeholder="Untitled deck"></label>
+        <label>Notes <textarea id="builderDesc" rows="2" maxlength="600" placeholder="Optional: the plan, combos to find, who it's for"></textarea></label>
+      </div>
+      <p class="deck-stats" id="builderStats"></p>
+      <ul class="builder-checks" id="builderChecks"></ul>
+      <div class="print-actions">
+        <button type="button" class="btn btn-primary" id="builderDownload">Download Deck File</button>
+        <button type="button" class="btn" id="builderLink">Copy Share Link</button>
+        <button type="button" class="btn" id="builderCopy">Copy as Text</button>
+        <button type="button" class="btn" id="builderPrint">Print Cards</button>
+        <button type="button" class="btn" id="builderPrintList">Print Deck List</button>
+        <button type="button" class="btn" id="builderClear">Clear Deck</button>
+      </div>
+      <details class="builder-import">
+        <summary>Paste a deck list</summary>
+        <p class="deck-open-note">One card per line, like &ldquo;5 Well Gazer&rdquo;. A first line starting with # becomes the deck name. This replaces the deck above.</p>
+        <textarea id="builderPaste" rows="6" spellcheck="false"></textarea>
+        <button type="button" class="btn" id="builderPasteGo">Load List</button>
+      </details>
+
+      <div class="builder-columns">
+        <div class="builder-list" id="builderList" aria-live="polite"></div>
+        <div class="builder-browse">
+          <h3 class="deck-group-title">Add Cards</h3>
+          <div class="library-toolbar">
+            <input type="search" id="builderSearch" class="library-search" placeholder="Search names, types and rules text" aria-label="Search cards">
+            <span class="library-count" id="builderCount" aria-live="polite"></span>
+          </div>
+          <div class="library-filters" id="builderFilters">
+            <label>Faction
+              <select data-filter="faction">
+                <option value="">All</option>
+                <option>Dream</option><option>Resolve</option><option>Dark</option><option>Light</option><option>Essence</option>
+              </select>
+            </label>
+            <label>Kind
+              <select data-filter="kind">
+                <option value="">All</option>
+                <option value="Entity">Entities</option><option value="Spell">Spells</option>
+              </select>
+            </label>
+            <label>Cost
+              <select data-filter="cost"><option value="">All</option></select>
+            </label>
+            <label>Rarity
+              <select data-filter="rarity">
+                <option value="">All</option>
+                <option>Common</option><option>Uncommon</option><option>Rare</option><option>Legendary</option>
+              </select>
+            </label>
+          </div>
+          <div class="library-grid builder-grid" id="builderGrid" data-lightbox-group></div>
+        </div>
+      </div>
     </section>
 
     <footer class="card">
@@ -101,9 +166,9 @@
   <script src="assets/js/card-data.js?v=8da6edab"></script>
   <script src="assets/js/card-render.js?v=69164564"></script>
   <script src="assets/js/print-sheet.js?v=0585c383"></script>
-  <script src="assets/js/deck-format.js?v=3cf11ee2"></script>
+  <script src="assets/js/deck-format.js?v=38a64c57"></script>
   <script src="assets/js/starter-decks.js?v=1fa053f9"></script>
-  <script src="assets/js/decks.js?v=9b9e3e3a"></script>
+  <script src="assets/js/decks.js?v=76cb8795"></script>
   <script src="assets/js/lightbox.js?v=3c4fd3a2"></script>
   <script src="assets/js/brand.js?v=58a0f844"></script>
 </body>

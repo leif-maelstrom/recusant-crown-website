@@ -1933,6 +1933,117 @@ button.btn {
 
 .deck-card .library-card-info { padding-bottom: 0.6rem; }
 
+/* Deck builder (decks.html) */
+.builder-fields {
+  display: grid;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.builder-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  color: var(--dim);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.builder-fields input,
+.builder-fields textarea,
+.builder-import textarea {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  background: #141210;
+  border: 1px solid rgba(176, 141, 87, 0.5);
+  border-radius: 4px;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.builder-fields input:focus,
+.builder-fields textarea:focus,
+.builder-import textarea:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.builder-checks {
+  margin: 0.4rem 0 0.8rem;
+  padding-left: 1.2rem;
+  color: #e0a06f;
+  font-size: 0.88rem;
+}
+
+.builder-checks-ok { color: #8fbf7f; list-style: none; padding-left: 0; }
+
+.builder-import { margin: 0.8rem 0 0.4rem; }
+
+.builder-import summary {
+  color: var(--gold);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.builder-import textarea {
+  margin: 0.5rem 0;
+  font-family: "Fira Sans", sans-serif;
+}
+
+.builder-columns {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 2fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.builder-list {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+}
+
+.builder-list .builder-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.builder-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba(176, 141, 87, 0.15);
+  font-size: 0.88rem;
+}
+
+.builder-row-name { flex: 1; min-width: 0; }
+
+.builder-row-meta {
+  color: var(--dim);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.builder-row-over .builder-row-name { color: #e0a06f; }
+
+.builder-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.9rem; }
+
+.builder-card .library-card-actions { flex-direction: column; align-items: stretch; gap: 0.35rem; }
+.builder-card .library-card-meta { text-align: center; color: var(--gold); }
+.builder-card .library-qty { justify-content: center; }
+
+@media (max-width: 760px) {
+  .builder-columns { grid-template-columns: 1fr; }
+  .builder-list { position: static; max-height: none; }
+}
+
 /* A printed deck list: plain black on white */
 .print-decklist { font-family: 'Fira Sans', sans-serif; color: #000; }
 .print-decklist h1 { font-family: 'Cinzel', serif; font-size: 20pt; margin: 0 0 4pt; color: #000; }

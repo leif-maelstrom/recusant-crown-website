@@ -16,7 +16,7 @@
   var btnClear = document.getElementById('printClear');
   var btnPrint = document.getElementById('printGo');
 
-  var PER_PAGE = 9;
+  var PER_PAGE = window.RC_PRINT.perPage;
   var MAX_COPIES = 9;
   var STORE = 'rc-print-sheet-v2';   // v1 was keyed by card number
 
@@ -47,10 +47,7 @@
     return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   }
 
-  // The card's drawn image, or its old image file if drawing fails.
-  function cardImage(card) {
-    return window.RC_RENDER.url(card).catch(function () { return card.image; });
-  }
+  var cardImage = window.RC_PRINT.cardImage;
 
   // ---- Card grid ----
   var tiles = cards.map(function (card) {
@@ -256,52 +253,13 @@
     updateSheet();
   });
 
-  // Build the printable pages, wait for every image, then open the print
-  // dialog. The pages only show when printing (see .print-sheet in the CSS).
+  // Lay the cards out on true-size pages and open the print dialog.
   btnPrint.addEventListener('click', function () {
     var list = sheetList();
     if (!list.length) return;
-    var old = document.querySelector('.print-sheet');
-    if (old) old.remove();
-
     btnPrint.disabled = true;
     btnPrint.textContent = 'Preparing…';
-    var unique = list.filter(function (c, i) { return list.indexOf(c) === i; });
-    Promise.all(unique.map(cardImage)).then(function (srcs) {
-      var srcFor = {};
-      unique.forEach(function (c, i) { srcFor[c.image] = srcs[i]; });
-      buildSheet(list, srcFor);
-    });
-  });
-
-  function buildSheet(list, srcFor) {
-    var wrap = document.createElement('div');
-    wrap.className = 'print-sheet';
-    var waits = [];
-    for (var i = 0; i < list.length; i += PER_PAGE) {
-      var page = document.createElement('div');
-      page.className = 'print-page';
-      var cardGrid = document.createElement('div');
-      cardGrid.className = 'print-grid';
-      page.appendChild(cardGrid);
-      list.slice(i, i + PER_PAGE).forEach(function (card) {
-        var img = document.createElement('img');
-        img.className = 'print-card';
-        img.alt = card.name;
-        waits.push(new Promise(function (done) {
-          img.onload = img.onerror = done;
-        }));
-        img.src = srcFor[card.image];
-        var slot = document.createElement('div');
-        slot.className = 'print-slot';
-        slot.appendChild(img);
-        cardGrid.appendChild(slot);
-      });
-      wrap.appendChild(page);
-    }
-    document.body.appendChild(wrap);
-
-    Promise.all(waits).then(function () {
+    window.RC_PRINT.cards(list).then(function () {
       btnPrint.disabled = false;
       btnPrint.textContent = 'Print Sheet';
       // One event per print sheet (titled with its size), plus one per
@@ -310,9 +268,8 @@
       list.filter(function (c, i) { return list.indexOf(c) === i; }).forEach(function (c) {
         track('print/' + cardKey(c), 'Printed ' + c.name);
       });
-      window.print();
     });
-  }
+  });
 
   filter();
   updateSheet();

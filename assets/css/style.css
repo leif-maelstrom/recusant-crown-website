@@ -1823,6 +1823,250 @@ button.btn {
   }
 }
 
+/* Decks page (decks.html) */
+.deck-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+
+.deck-pick {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.8rem 1rem;
+  background: #141210;
+  border: 2px solid var(--deck-accent, var(--gold));
+  border-radius: 8px;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.deck-pick:hover,
+.deck-pick.active {
+  background: #211d19;
+  box-shadow: 0 0 0 1px var(--deck-accent, var(--gold));
+}
+
+.deck-pick-dream { --deck-accent: #4F7FB8; }
+.deck-pick-resolve { --deck-accent: var(--crimson); }
+.deck-pick-dark { --deck-accent: #7B5AA6; }
+.deck-pick-light { --deck-accent: #D9C58A; }
+
+.deck-pick-faction {
+  color: var(--deck-accent, var(--gold));
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.deck-pick-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1.05rem;
+  color: var(--gold);
+}
+
+.deck-open {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+}
+
+.deck-open .btn { cursor: pointer; }
+
+.deck-open-note {
+  color: var(--dim);
+  font-size: 0.82rem;
+}
+
+.section .deck-message {
+  margin-top: 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.section .deck-message-error { color: #e0806f; }
+
+.deck-kicker {
+  color: var(--crimson);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.section .deck-stats {
+  color: var(--gold);
+  font-size: 0.9rem;
+}
+
+.deck-group-title {
+  margin: 1.6rem 0 0.8rem;
+  color: var(--gold);
+  font-size: 1rem;
+  font-weight: normal;
+  letter-spacing: 0.06em;
+}
+
+.deck-card { position: relative; }
+
+/* Sits on the art, clear of the card's name and cost */
+.deck-qty {
+  position: absolute;
+  top: 16%;
+  right: 0.6rem;
+  min-width: 2.2rem;
+  padding: 0.15rem 0.45rem;
+  background: rgba(13, 12, 11, 0.85);
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  color: var(--text);
+  font-size: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.deck-card .library-card-info { padding-bottom: 0.6rem; }
+
+/* Deck builder (decks.html) */
+.builder-fields {
+  display: grid;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.builder-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  color: var(--dim);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.builder-fields input,
+.builder-fields textarea,
+.builder-import textarea {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  background: #141210;
+  border: 1px solid rgba(176, 141, 87, 0.5);
+  border-radius: 4px;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.builder-fields input:focus,
+.builder-fields textarea:focus,
+.builder-import textarea:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.builder-checks {
+  margin: 0.4rem 0 0.8rem;
+  padding-left: 1.2rem;
+  color: #e0a06f;
+  font-size: 0.88rem;
+}
+
+.builder-checks-ok { color: #8fbf7f; list-style: none; padding-left: 0; }
+
+.builder-import { margin: 0.8rem 0 0.4rem; }
+
+.builder-import summary {
+  color: var(--gold);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.builder-import textarea {
+  margin: 0.5rem 0;
+  font-family: "Fira Sans", sans-serif;
+}
+
+.builder-columns {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 2fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.builder-list {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+}
+
+.builder-list .builder-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.builder-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba(176, 141, 87, 0.15);
+  font-size: 0.88rem;
+}
+
+.builder-row-name { flex: 1; min-width: 0; }
+
+.builder-row-meta {
+  color: var(--dim);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.builder-row-over .builder-row-name { color: #e0a06f; }
+
+.builder-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.9rem; }
+
+.builder-card .library-card-actions { flex-direction: column; align-items: stretch; gap: 0.35rem; }
+.builder-card .library-card-meta { text-align: center; color: var(--gold); }
+.builder-card .library-qty { justify-content: center; }
+
+@media (max-width: 760px) {
+  .builder-columns { grid-template-columns: 1fr; }
+  .builder-list { position: static; max-height: none; }
+}
+
+/* Tabletop Simulator how-to (decks.html) */
+.tts-steps {
+  margin: 0 0 1rem;
+  padding-left: 1.4rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.tts-steps code {
+  color: var(--gold);
+  font-size: 0.85em;
+  overflow-wrap: anywhere;
+}
+
+/* A printed deck list: plain black on white */
+.print-decklist { font-family: 'Fira Sans', sans-serif; color: #000; }
+.print-decklist h1 { font-family: 'Cinzel', serif; font-size: 20pt; margin: 0 0 4pt; color: #000; }
+.print-decklist p { margin: 0 0 10pt; font-size: 10pt; color: #333; }
+.print-decklist table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+.print-decklist th,
+.print-decklist td { text-align: left; padding: 2pt 6pt; border-bottom: 0.5pt solid #bbb; color: #000; }
+.print-decklist th { border-bottom: 1pt solid #000; }
+
 /* Concept & Process section (art.html) */
 .process h3 {
   color: var(--gold);

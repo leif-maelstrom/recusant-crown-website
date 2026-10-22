@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decks — Recusant Crown</title>
+  <meta name="description" content="The Recusant Crown starter decks, free to view, save, and print at home.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Recusant Crown">
+  <meta property="og:title" content="Decks — Recusant Crown">
+  <meta property="og:description" content="The Recusant Crown starter decks, free to view, save, and print at home.">
+  <meta property="og:url" content="https://www.recusantcrown.com/decks.html">
+  <meta property="og:image" content="https://www.recusantcrown.com/assets/art/illustrations/the-library.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="alternate" type="application/rss+xml" title="Recusant Crown: Milestones" href="milestones.xml">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Fira+Sans:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=c5078f9d">
+  <!-- Visit counter: GoatCounter (no cookies, no personal data) -->
+  <script data-goatcounter="https://magiwolfgrimm.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</head>
+<body>
+  <div class="container">
+
+    <header class="card">
+      <div class="brand">
+        <span class="brand-x" aria-hidden="true"></span>
+        <div class="brand-words">
+          <div class="title">Recusant</div>
+          <div class="subtitle">Crown<span class="brand-crown" aria-hidden="true"><span class="brand-crown-inner"></span></span></div>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="fiction.html">Fiction</a>
+        <a href="tales.html">Tales</a>
+        <a href="cards.html" class="active">Card Game</a>
+        <a href="art.html">Art</a>
+        <a href="blog.html">Blog</a>
+      </nav>
+    </header>
+
+    <section class="page-title card">
+      <h1>Decks</h1>
+      <p>Ready-to-play starter decks, free to save, print, and play at home</p>
+    </section>
+
+    <section class="section card" id="starters">
+      <h2>Starter Decks</h2>
+      <p class="section-desc">
+        Fixed 60-card decks, built to be fun first: each one can win, has a few splashy spells,
+        and hides combos for you to find. Each Starter is a matched pair: Dream vs Dark, and Resolve vs Light.
+        Resolve and Light win by fighting; Dream and Dark have smaller creatures and win by firing their engines,
+        so mixing pairs (Resolve vs Dark, say) leans toward the bigger creatures.
+        Pick one to see its cards, or edit a copy to make it your own.
+      </p>
+      <div class="deck-picker" id="deckPicker"></div>
+      <div class="deck-open">
+        <button type="button" class="btn" id="deckNew">New Deck</button>
+        <label class="btn" for="deckFile">Open a Deck File</label>
+        <input type="file" id="deckFile" accept=".json,.rcdeck,.txt,application/json,text/plain" hidden>
+        <span class="deck-open-note">Deck files stay on your computer; opening one only reads it in your browser.</span>
+      </div>
+      <p class="deck-message" id="deckMessage" role="status" hidden></p>
+    </section>
+
+    <section class="section card deck-view" id="deck" hidden>
+      <div class="deck-head">
+        <div>
+          <div class="deck-kicker" id="deckKicker"></div>
+          <h2 id="deckName"></h2>
+          <p class="section-desc" id="deckDesc"></p>
+          <p class="deck-stats" id="deckStats"></p>
+        </div>
+      </div>
+      <div class="print-actions">
+        <button type="button" class="btn btn-primary" id="deckEdit">Edit a Copy</button>
+        <button type="button" class="btn" id="deckDownload">Download Deck File</button>
+        <button type="button" class="btn" id="deckPrint">Print Cards</button>
+        <button type="button" class="btn" id="deckPrintList">Print Deck List</button>
+        <button type="button" class="btn" id="deckCopy">Copy as Text</button>
+        <button type="button" class="btn" id="deckTts">Export for Tabletop Simulator</button>
+      </div>
+      <p class="print-tip">
+        Cards print at true size (2.5 &times; 3.5 in), nine to a page. In the print dialog, set scale to
+        <strong>100%</strong> (or &ldquo;Actual size&rdquo;). Choose &ldquo;Save as PDF&rdquo; as the printer to get a PDF.
+      </p>
+      <div id="deckGroups" data-lightbox-group></div>
+    </section>
+
+    <section class="section card deck-builder" id="builder" hidden>
+      <h2>Deck Builder</h2>
+      <p class="section-desc">
+        Your deck saves itself in this browser as you go. To keep it for good, share it, or move it to
+        another device, download the deck file; open it here any time to carry on.
+      </p>
+      <div class="builder-fields">
+        <label>Deck name <input type="text" id="builderName" maxlength="80" placeholder="Untitled deck"></label>
+        <label>Notes <textarea id="builderDesc" rows="2" maxlength="600" placeholder="Optional: the plan, combos to find, who it's for"></textarea></label>
+      </div>
+      <p class="deck-stats" id="builderStats"></p>
+      <ul class="builder-checks" id="builderChecks"></ul>
+      <div class="print-actions">
+        <button type="button" class="btn btn-primary" id="builderDownload">Download Deck File</button>
+        <button type="button" class="btn" id="builderLink">Copy Share Link</button>
+        <button type="button" class="btn" id="builderCopy">Copy as Text</button>
+        <button type="button" class="btn" id="builderPrint">Print Cards</button>
+        <button type="button" class="btn" id="builderPrintList">Print Deck List</button>
+        <button type="button" class="btn" id="builderTts">Export for Tabletop Simulator</button>
+        <button type="button" class="btn" id="builderClear">Clear Deck</button>
+      </div>
+      <details class="builder-import">
+        <summary>Paste a deck list</summary>
+        <p class="deck-open-note">One card per line, like &ldquo;5 Well Gazer&rdquo;. A first line starting with # becomes the deck name. This replaces the deck above.</p>
+        <textarea id="builderPaste" rows="6" spellcheck="false"></textarea>
+        <button type="button" class="btn" id="builderPasteGo">Load List</button>
+      </details>
+
+      <div class="builder-columns">
+        <div class="builder-list" id="builderList" aria-live="polite"></div>
+        <div class="builder-browse">
+          <h3 class="deck-group-title">Add Cards</h3>
+          <div class="library-toolbar">
+            <input type="search" id="builderSearch" class="library-search" placeholder="Search names, types and rules text" aria-label="Search cards">
+            <span class="library-count" id="builderCount" aria-live="polite"></span>
+          </div>
+          <div class="library-filters" id="builderFilters">
+            <label>Faction
+              <select data-filter="faction">
+                <option value="">All</option>
+                <option>Dream</option><option>Resolve</option><option>Dark</option><option>Light</option><option>Essence</option>
+              </select>
+            </label>
+            <label>Kind
+              <select data-filter="kind">
+                <option value="">All</option>
+                <option value="Entity">Entities</option><option value="Spell">Spells</option>
+              </select>
+            </label>
+            <label>Cost
+              <select data-filter="cost"><option value="">All</option></select>
+            </label>
+            <label>Rarity
+              <select data-filter="rarity">
+                <option value="">All</option>
+                <option>Common</option><option>Uncommon</option><option>Rare</option><option>Legendary</option>
+              </select>
+            </label>
+          </div>
+          <div class="library-grid builder-grid" id="builderGrid" data-lightbox-group></div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section card" id="tabletop-simulator">
+      <h2>Playing in Tabletop Simulator</h2>
+      <p class="section-desc">
+        Any deck on this page, starter or your own, can go straight into
+        <a href="https://store.steampowered.com/app/286160/Tabletop_Simulator/" target="_blank" rel="noopener">Tabletop Simulator</a>.
+      </p>
+      <ol class="tts-steps">
+        <li>Press <strong>Export for Tabletop Simulator</strong> on the deck. You get a small <code>.json</code> file.</li>
+        <li>Put it in your Saved Objects folder: <code>Documents/My Games/Tabletop Simulator/Saves/Saved Objects</code>
+          (on a Mac, <code>~/Library/Tabletop Simulator/Saves/Saved Objects</code>).</li>
+        <li>In a game, open <strong>Objects &rsaquo; Saved Objects</strong> and click the deck to spawn it. Right-click it and shuffle.</li>
+      </ol>
+      <p class="print-tip">
+        The card images load from this site the first time, then Tabletop Simulator keeps its own copy.
+        When the cards change, export the deck again to get the new versions.
+      </p>
+    </section>
+
+    <footer class="card">
+      Recusant Crown · Decks · <a href="mailto:magi.wildcard@gmail.com">magi.wildcard@gmail.com</a> · <a href="https://x.com/MagiWolfgrimm" target="_blank" rel="noopener">X</a> · <a href="milestones.xml">RSS</a>
+      <p class="footer-license">
+        &copy; 2026 Magi Grimm. Recusant Crown stories, art, and game content are licensed under
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license">CC BY-SA 4.0</a>.
+        The Recusant Crown name and sigil are not covered by this <a href="license.html">license</a>.
+      </p>
+    </footer>
+
+  </div>
+
+  <script src="assets/js/card-data.js?v=8da6edab"></script>
+  <script src="assets/js/card-render.js?v=a1054912"></script>
+  <script src="assets/js/print-sheet.js?v=0585c383"></script>
+  <script src="assets/js/deck-format.js?v=38a64c57"></script>
+  <script src="assets/js/starter-decks.js?v=aa926dc6"></script>
+  <script src="assets/js/tts-sheets.js?v=45eb0378"></script>
+  <script src="assets/js/tts-export.js?v=c4574001"></script>
+  <script src="assets/js/decks.js?v=b0a4926d"></script>
+  <script src="assets/js/lightbox.js?v=3c4fd3a2"></script>
+  <script src="assets/js/brand.js?v=58a0f844"></script>
+</body>
+</html>

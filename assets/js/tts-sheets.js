@@ -1073,5 +1073,5 @@ window.RC_TTS = {
    "Lost and Found"
   ]
  },
- "back": "assets/tts/back-ebef1b45.jpg"
+ "back": "assets/tts/back-0dd240b6.jpg"
 };

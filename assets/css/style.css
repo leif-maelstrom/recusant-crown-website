@@ -2044,6 +2044,20 @@ button.btn {
   .builder-list { position: static; max-height: none; }
 }
 
+/* Tabletop Simulator how-to (decks.html) */
+.tts-steps {
+  margin: 0 0 1rem;
+  padding-left: 1.4rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.tts-steps code {
+  color: var(--gold);
+  font-size: 0.85em;
+  overflow-wrap: anywhere;
+}
+
 /* A printed deck list: plain black on white */
 .print-decklist { font-family: 'Fira Sans', sans-serif; color: #000; }
 .print-decklist h1 { font-family: 'Cinzel', serif; font-size: 20pt; margin: 0 0 4pt; color: #000; }

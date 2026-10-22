@@ -110,6 +110,19 @@
     window.RC_PRINT.page(page);
   }
 
+  // A Tabletop Simulator saved object, named after the deck.
+  function exportTts(deck, entries) {
+    var out;
+    try { out = window.RC_TTS_EXPORT.build(deck.name || 'Recusant Crown deck', entries.slice().sort(byPlay)); }
+    catch (err) { say(err.message, true); return; }
+    if (!out.count) { say('None of these cards are on the Tabletop Simulator sheets yet.', true); return; }
+    download('Recusant Crown - ' + (deck.name || 'deck').replace(/[\\/:*?"<>|]+/g, '') + '.json', out.text, 'application/json');
+    say(out.missing.length
+      ? 'Exported without ' + out.missing.join(', ') + ': not on the Tabletop Simulator sheets yet.'
+      : '', out.missing.length > 0);
+    track('deck-tts/' + D.slug(deck.name), 'Exported deck to TTS ' + deck.name);
+  }
+
   // ---- Starter deck picker and view ----
   var buttons = starters.map(function (deck) {
     var b = document.createElement('button');
@@ -193,6 +206,7 @@
   $('deckDownload').addEventListener('click', function () { saveFile(shownDeck()); });
   $('deckPrint').addEventListener('click', function () { printCards(this, shown.deck, shown.entries); });
   $('deckPrintList').addEventListener('click', function () { printList(shown.deck, shown.entries); });
+  $('deckTts').addEventListener('click', function () { exportTts(shown.deck, shown.entries); });
   $('deckCopy').addEventListener('click', function () {
     copy(this, D.toText(shownDeck()), D.slug(shown.deck.name) + '.txt');
   });
@@ -330,7 +344,7 @@
     });
 
     var empty = !n;
-    ['builderDownload', 'builderLink', 'builderCopy', 'builderPrint', 'builderPrintList', 'builderClear'].forEach(function (id) {
+    ['builderDownload', 'builderLink', 'builderCopy', 'builderPrint', 'builderPrintList', 'builderTts', 'builderClear'].forEach(function (id) {
       $(id).disabled = empty;
     });
     tiles.forEach(function (t) {
@@ -361,6 +375,7 @@
     printCards(this, deck, draft.entries.slice().sort(byPlay));
   });
   $('builderPrintList').addEventListener('click', function () { printList(draftDeck(), draft.entries); });
+  $('builderTts').addEventListener('click', function () { exportTts(draftDeck(), draft.entries); });
   $('builderClear').addEventListener('click', function () {
     if (!window.confirm('Clear every card from this deck?')) return;
     draft.entries = [];

@@ -18,7 +18,7 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="alternate" type="application/rss+xml" title="Recusant Crown: Milestones" href="milestones.xml">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Fira+Sans:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=514e5f56">
+  <link rel="stylesheet" href="assets/css/style.css?v=c5078f9d">
   <!-- Visit counter: GoatCounter (no cookies, no personal data) -->
   <script data-goatcounter="https://magiwolfgrimm.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
@@ -81,6 +81,7 @@
         <button type="button" class="btn" id="deckPrint">Print Cards</button>
         <button type="button" class="btn" id="deckPrintList">Print Deck List</button>
         <button type="button" class="btn" id="deckCopy">Copy as Text</button>
+        <button type="button" class="btn" id="deckTts">Export for Tabletop Simulator</button>
       </div>
       <p class="print-tip">
         Cards print at true size (2.5 &times; 3.5 in), nine to a page. In the print dialog, set scale to
@@ -107,6 +108,7 @@
         <button type="button" class="btn" id="builderCopy">Copy as Text</button>
         <button type="button" class="btn" id="builderPrint">Print Cards</button>
         <button type="button" class="btn" id="builderPrintList">Print Deck List</button>
+        <button type="button" class="btn" id="builderTts">Export for Tabletop Simulator</button>
         <button type="button" class="btn" id="builderClear">Clear Deck</button>
       </div>
       <details class="builder-import">
@@ -152,6 +154,25 @@
       </div>
     </section>
 
+
+    <section class="section card" id="tabletop-simulator">
+      <h2>Playing in Tabletop Simulator</h2>
+      <p class="section-desc">
+        Any deck on this page, starter or your own, can go straight into
+        <a href="https://store.steampowered.com/app/286160/Tabletop_Simulator/" target="_blank" rel="noopener">Tabletop Simulator</a>.
+      </p>
+      <ol class="tts-steps">
+        <li>Press <strong>Export for Tabletop Simulator</strong> on the deck. You get a small <code>.json</code> file.</li>
+        <li>Put it in your Saved Objects folder: <code>Documents/My Games/Tabletop Simulator/Saves/Saved Objects</code>
+          (on a Mac, <code>~/Library/Tabletop Simulator/Saves/Saved Objects</code>).</li>
+        <li>In a game, open <strong>Objects &rsaquo; Saved Objects</strong> and click the deck to spawn it. Right-click it and shuffle.</li>
+      </ol>
+      <p class="print-tip">
+        The card images load from this site the first time, then Tabletop Simulator keeps its own copy.
+        When the cards change, export the deck again to get the new versions.
+      </p>
+    </section>
+
     <footer class="card">
       Recusant Crown · Decks · <a href="mailto:magi.wildcard@gmail.com">magi.wildcard@gmail.com</a> · <a href="https://x.com/MagiWolfgrimm" target="_blank" rel="noopener">X</a> · <a href="milestones.xml">RSS</a>
       <p class="footer-license">
@@ -168,7 +189,9 @@
   <script src="assets/js/print-sheet.js?v=0585c383"></script>
   <script src="assets/js/deck-format.js?v=38a64c57"></script>
   <script src="assets/js/starter-decks.js?v=1fa053f9"></script>
-  <script src="assets/js/decks.js?v=76cb8795"></script>
+  <script src="assets/js/tts-sheets.js?v=e3757956"></script>
+  <script src="assets/js/tts-export.js?v=c4574001"></script>
+  <script src="assets/js/decks.js?v=b0a4926d"></script>
   <script src="assets/js/lightbox.js?v=3c4fd3a2"></script>
   <script src="assets/js/brand.js?v=58a0f844"></script>
 </body>

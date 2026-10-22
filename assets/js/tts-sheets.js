@@ -6,8 +6,8 @@ window.RC_TTS = {
  "cols": 10,
  "rows": 7,
  "sheets": [
-  "assets/tts/alpha-r1/sheet-1-a8132d39.jpg",
-  "assets/tts/alpha-r1/sheet-2-fd143a42.jpg",
+  "assets/tts/alpha-r1/sheet-1-6dd1ae64.jpg",
+  "assets/tts/alpha-r1/sheet-2-74ac69d0.jpg",
   "assets/tts/alpha-r1/sheet-3-a9a1cb8c.jpg",
   "assets/tts/alpha-r1/sheet-4-2a33c229.jpg"
  ],

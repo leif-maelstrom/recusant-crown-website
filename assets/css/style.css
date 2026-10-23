@@ -1740,6 +1740,18 @@ button.btn {
   gap: 0.75rem;
 }
 
+.print-backs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.print-backs input { accent-color: var(--gold); width: 1rem; height: 1rem; }
+
 .section .print-tip {
   margin: 1rem 0 0;
   font-size: 0.85rem;
@@ -1806,6 +1818,9 @@ button.btn {
 
   /* Hairline cut guides, drawn inside each card so they never spill
      across a page break. */
+  /* An empty slot on a page of backs keeps its place but prints nothing */
+  .print-slot-empty::after { content: none !important; }
+
   .print-slot::after {
     content: "";
     position: absolute;

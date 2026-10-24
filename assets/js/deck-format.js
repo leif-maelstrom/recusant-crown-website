@@ -173,17 +173,19 @@
   // At least 60 cards; by rarity, up to 5 copies of a Common, 4 of an
   // Uncommon, 3 of a Rare, and 1 of each Legendary with no more than 7
   // Legendaries in all. A card's own text overrides its limit: "You may
-  // have any number of ..." (Creeping Shade) or "You may have 7 copies of
-  // ..." (Dwarf Miner). These are shown as warnings only; casual and
+  // have any number of Creeping Shades in your Dream" or "You may have 7
+  // copies of Dwarf Miner in your Dream". These are shown as warnings only; casual and
   // house-rule decks still save.
   var MIN_CARDS = 60, MAX_LEGENDARIES = 7;
   var LIMITS = { Common: 5, Uncommon: 4, Rare: 3, Legendary: 1 };
 
   function limit(card) {
-    var text = card.text || '';
-    if (/you may have any number of/i.test(text)) return Infinity;
-    var own = text.match(/you may have (\d+) copies/i);
-    if (own) return Number(own[1]);
+    // Only when it names the card itself and your deck (Dream): Silver
+    // Chain's "any number of Charms in your Reserve" is not a deck limit.
+    var m = (card.text || '').match(/you may have (any number of|(\d+) copies of) (.+?) in your (dream|deck)\b/i);
+    if (m && simplify(m[3]).replace(/s$/, '') === simplify(card.name).replace(/s$/, '')) {
+      return m[2] ? Number(m[2]) : Infinity;
+    }
     return LIMITS[card.rarity] || 1;
   }
 

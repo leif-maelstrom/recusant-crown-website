@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Grimm: Starting Soon</title><link rel="stylesheet" href="stream.css"></head><body>
+<div class="bg" style="background-image:url(media/bg-soon.jpg)"></div><div class="shade"></div>
+<div class="title" style="top:150px"><h1>Starting Soon</h1><span class="rule"></span><p id="sub">Magi Grimm is inking the next page</p><p id="clock" style="font-size:64px;color:var(--parchment);font-style:normal" hidden></p></div>
+<div class="foot">recusantcrown.com</div>
+<script src="drips.js"></script>
+<script>
+// Optional countdown: soon.html?min=5
+var m=parseFloat(new URLSearchParams(location.search).get('min'));
+if(m>0){var end=Date.now()+m*60000,c=document.getElementById('clock');c.hidden=false;
+(function t(){var s=Math.max(0,Math.round((end-Date.now())/1000));c.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');if(s>0)setTimeout(t,250);else c.textContent='Any moment now';})();}
+</script></body></html>

@@ -1,0 +1,16 @@
+/* Magi Grimm stream kit: 1920x1080 OBS browser sources */
+@import url("https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Alegreya:ital,wght@0,500;0,700;1,500&display=swap");
+:root{--ink:#0f0c0a;--parchment:#efe3c8;--gold:#d4a845;--ember:#c8642b;--blue:#9fc3dd;
+--display:"IM Fell English SC",Georgia,serif;--body:"Alegreya",Georgia,serif;color-scheme:dark}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:transparent;color:var(--parchment);font-family:var(--body)}
+.bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.shade{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,0) 30%,rgba(8,6,5,.75) 100%)}
+.title{position:absolute;left:0;right:0;text-align:center;font-family:var(--display);font-weight:400;letter-spacing:.02em;text-shadow:0 4px 24px rgba(0,0,0,.85),0 0 2px #000}
+.title h1{margin:0;font-size:150px;line-height:1;font-weight:400}
+.title p{margin:18px 0 0;font-family:var(--body);font-style:italic;font-size:44px;color:var(--gold)}
+.rule{display:block;width:420px;height:3px;margin:26px auto 0;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.drip{position:absolute;top:-40px;width:10px;border-radius:0 0 8px 8px;background:var(--ink);opacity:.85;animation:drip 9s ease-in infinite}
+@keyframes drip{0%{height:0}60%{height:var(--h)}100%{height:var(--h);opacity:0}}
+.grimm{position:absolute;bottom:-20px;height:960px}
+.foot{position:absolute;bottom:36px;left:0;right:0;text-align:center;font-size:30px;letter-spacing:.12em;text-transform:uppercase;color:var(--parchment);opacity:.85;text-shadow:0 2px 8px #000}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}

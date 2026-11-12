@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Grimm: Live Overlay</title><link rel="stylesheet" href="stream.css"></head><body>
+<style>
+.lower{position:absolute;left:56px;bottom:56px;display:flex;align-items:center;gap:22px;padding:18px 34px 18px 22px;background:linear-gradient(90deg,rgba(15,12,10,.92),rgba(15,12,10,.7));border-left:6px solid var(--gold);animation:in 1.2s ease-out both}
+.lower img{width:64px;height:64px}
+.lower b{display:block;font-family:var(--display);font-weight:400;font-size:56px;line-height:1}
+.lower span{font-style:italic;font-size:28px;color:var(--gold)}
+.chat{position:absolute;right:40px;top:40px;width:440px;height:620px;border:2px solid rgba(212,168,69,.7);background:rgba(15,12,10,.55);box-shadow:0 0 0 6px rgba(15,12,10,.5)}
+.chat i{position:absolute;top:-22px;left:20px;padding:4px 14px;background:var(--ink);font-family:var(--display);font-style:normal;font-size:28px;color:var(--gold)}
+@keyframes in{from{transform:translateX(-120%)}to{transform:none}}
+</style>
+<div class="chat" id="chat"><i>Marginalia</i></div>
+<div class="lower"><img src="../assets/icons/icon-192.png" alt="" onerror="this.remove()"><div><b>Magi Grimm</b><span id="tag">Recusant Crown</span></div></div>
+<script>
+// live.html?tag=Deck%20building&chat=0
+var q=new URLSearchParams(location.search);if(q.get('tag'))document.getElementById('tag').textContent=q.get('tag');if(q.get('chat')==='0')document.getElementById('chat').remove();
+</script></body></html>

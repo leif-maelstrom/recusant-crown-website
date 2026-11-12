@@ -1,0 +1,12 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Grimm: Avatar</title><link rel="stylesheet" href="stream.css"></head><body>
+<style>video{position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:1080px}</style>
+<video id="v" src="media/loop-idle.webm" autoplay muted playsinline></video>
+<script>
+// Idle loops forever. Emotes: avatar.html?pose=laugh, or keys 1-5 in OBS "Interact".
+var v=document.getElementById('v'),keys={1:'talk',2:'laugh',3:'angry',4:'surprised',5:'thinking'};
+var fixed=new URLSearchParams(location.search).get('pose');
+function play(p){v.src='media/loop-'+p+'.webm';v.play();}
+v.onended=function(){fixed?v.play():play('idle');};
+if(fixed)play(fixed);
+addEventListener('keydown',function(e){if(keys[e.key])play(keys[e.key]);});
+</script></body></html>

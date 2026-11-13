@@ -2547,3 +2547,64 @@ button.btn {
   align-self: center;
   white-space: nowrap;
 }
+
+/* Art page tabs and Free Printables (art.html) */
+.art-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem;
+}
+.art-tabs:not(:has(.active)) { display: none; }
+.art-tab {
+  padding: 0.5rem 1.2rem;
+  border: 2px solid var(--gold);
+  border-radius: 3px;
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.art-tab:hover { background: rgba(176, 141, 87, 0.15); }
+.art-tab.active { background: var(--gold); color: var(--bg); }
+.art-tab:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+.printables-notes {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.2rem 1.2rem;
+  display: grid;
+  gap: 0.4rem;
+}
+.printables-jump { display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; }
+.printables-jump a { color: var(--gold); }
+.printable-faction {
+  color: var(--dim);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+.printable-row + .printable-row { margin-top: 1.6rem; }
+.printable-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1rem;
+  margin-bottom: 0.8rem;
+}
+.printable-head h3 {
+  color: var(--gold);
+  font-size: 0.95rem;
+  font-weight: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.printable-size { color: var(--dim); text-transform: none; letter-spacing: 0; margin-left: 0.3rem; }
+.printable-pages { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.printable-pages .art-piece img { height: auto; aspect-ratio: 8.5 / 11; object-fit: cover; background: #fff; }
+.printables-notes a { color: var(--gold); }
+@media (max-width: 560px) {
+  .printable-pages { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

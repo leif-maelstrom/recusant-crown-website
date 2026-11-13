@@ -17,12 +17,12 @@
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="alternate" type="application/rss+xml" title="Recusant Crown: Milestones" href="milestones.xml">
-  <link rel="stylesheet" href="assets/css/style.css?v=7a2b0f8a">
+  <link rel="stylesheet" href="assets/css/style.css?v=1fd57b3f">
   <!-- Visit counter: GoatCounter (no cookies, no personal data) -->
   <script data-goatcounter="https://magiwolfgrimm.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
-  <div class="container">
+  <div class="container container-wide">
 
     <header class="card">
       <div class="brand">
@@ -47,7 +47,8 @@
       <p>Notes on where the game stands: design decisions, progress, and what is still in flux</p>
     </section>
 
-    <section class="section card milestones" id="milestones">
+    <div class="blog-layout">
+    <aside class="section card milestones blog-sidebar" id="milestones">
       <div class="milestones-head">
         <h2>Achievements Unlocked</h2>
         <a class="milestones-rss" href="milestones.xml" title="Follow milestones by RSS">RSS</a>
@@ -56,9 +57,9 @@
         <li class="milestone"><span class="milestone-desc">Loading milestones&hellip;</span></li>
       </ul>
       <button type="button" class="btn milestone-more" id="milestone-more" hidden></button>
-    </section>
+    </aside>
 
-    <section class="section card" id="posts">
+    <section class="section card blog-main" id="posts">
       <article class="blog-entry" id="state-of-the-game">
         <div class="blog-date">November 2026</div>
         <h3 class="blog-title">State of the Game</h3>
@@ -219,7 +220,9 @@
           <p class="blog-sign">— Magi</p>
         </div>
       </article>
+      <button type="button" class="btn posts-more" id="posts-more" hidden></button>
     </section>
+    </div>
 
     <footer class="card">
       Recusant Crown · Developer Blog · <a href="mailto:Magi.Grimm@recusantcrown.com">Magi.Grimm@recusantcrown.com</a> · <a href="https://x.com/MagiWolfgrimm" target="_blank" rel="noopener">X</a> · <a href="milestones.xml">RSS</a>
@@ -233,7 +236,8 @@
 
   </div>
 
-  <script src="assets/js/milestones.js?v=9e19c847"></script>
+  <script src="assets/js/blog.js?v=291047df"></script>
+  <script src="assets/js/milestones.js?v=197f9a97"></script>
   <script src="assets/js/brand.js?v=58a0f844"></script>
 </body>
 </html>

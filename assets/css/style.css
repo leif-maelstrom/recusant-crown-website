@@ -2547,3 +2547,7 @@ button.btn {
   align-self: center;
   white-space: nowrap;
 }
+
+.support-text a {
+  color: var(--gold);
+}

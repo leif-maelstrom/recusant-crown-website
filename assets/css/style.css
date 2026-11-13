@@ -2548,6 +2548,10 @@ button.btn {
   white-space: nowrap;
 }
 
+.support-text a {
+  color: var(--gold);
+}
+
 /* Art page tabs and Free Printables (art.html) */
 .art-tabs {
   display: flex;

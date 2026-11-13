@@ -58,7 +58,7 @@
       });
 
       if (more && items.length > SHOWN) {
-        more.textContent = 'Show all ' + items.length;
+        more.textContent = 'View all achievements (' + items.length + ')';
         more.hidden = false;
         more.addEventListener('click', function () {
           Array.prototype.forEach.call(list.children, function (li) { li.hidden = false; });

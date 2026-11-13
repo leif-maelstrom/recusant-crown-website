@@ -2525,3 +2525,25 @@ button.btn {
 .milestone[hidden] {
   display: none;
 }
+
+/* Small Ko-fi support strip above Contact (index.html) */
+.support.card {
+  margin-top: 1.5rem;
+  padding: 1.1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  flex-wrap: wrap;
+}
+
+.support-text {
+  color: var(--muted);
+  font-size: 0.92rem;
+  flex: 1 1 22rem;
+}
+
+.support-btn {
+  align-self: center;
+  white-space: nowrap;
+}

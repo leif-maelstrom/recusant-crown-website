@@ -1259,6 +1259,26 @@ footer.card .footer-license {
   letter-spacing: 0.6em;
 }
 
+/* Numbered parts inside a multi-part tale, and sung verses */
+.chapter-body .tale-part {
+  margin: 2.4rem 0 1.2rem;
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.chapter-body .tale-part:first-child {
+  margin-top: 0;
+}
+
+.chapter-body .verse {
+  margin-left: 1.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--gold);
+}
+
 .chapter-nav {
   display: flex;
   justify-content: space-between;

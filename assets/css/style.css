@@ -1779,6 +1779,7 @@ button.btn {
 }
 
 .print-tip strong { color: var(--muted); }
+.print-tip a, .section-desc a { color: var(--gold); }
 
 @media (max-width: 560px) {
   .library-grid {

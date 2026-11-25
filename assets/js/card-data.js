@@ -47,7 +47,7 @@
 //   markers  only on Legendary or Rival cards: ["Legendary"], ["Rival"] or
 //           both. Markers are frame treatments, not type-line words (Rules
 //           Bible, type lines): the renderer gives each its own frame shape
-//           and a plaque under the art.
+//           and rarity-spot symbol.
 //   type    the type line. Creatures: Kind, then Lineage if any, then up to
 //           two Roles after a dot, e.g. "Denizen Frog · Knight". Other
 //           cards: faction and card type, then subtypes, e.g. "Dark Spell",

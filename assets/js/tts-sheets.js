@@ -555,7 +555,7 @@ window.RC_TTS = {
   "215": [
    1,
    39,
-   "Thin Shadow"
+   "Slender Boogeyman"
   ],
   "216": [
    1,

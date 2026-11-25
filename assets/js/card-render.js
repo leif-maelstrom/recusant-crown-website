@@ -95,7 +95,7 @@
   // everything else is colored.
   function costKind(card) {
     var type = card.type || '';
-    if (card.kind === 'Entity' && !/^Conjure (Legendary )?Fortification\b/.test(type)) return 'pure';
+    if (card.kind === 'Entity' && !/^Fortification\b/.test(type)) return 'pure';
     return /\bOverdrive\b/.test(type) ? 'pure' : 'colored';
   }
 
@@ -223,6 +223,169 @@
     ctx.lineWidth = 4;
     ctx.strokeStyle = '#000';
     ctx.strokeRect(x + 2, y + 2, w - 4, h - 4);
+  }
+
+  // ---- Frame shapes for Markers (Rules Bible: type lines) ----
+  // Legendary and Rival are Markers, printed on the frame instead of the
+  // type line, and each changes the frame's shape so the card reads as
+  // different from a plain creature at a glance, even in black and white:
+  //   Legendary  name banner swoops up to a regal peak on top, flat below;
+  //              the art window's top corners curve up into the banner;
+  //              a crown in the rarity spot
+  //   Rival      (a Role on the type line, not a Marker) a tattered name
+  //              banner: two overlapping round bites out of its bottom edge
+  //              and a hole near its right end; the art runs up under it and
+  //              has clipped bottom corners; its normal rarity symbol
+  // A Legendary Rival uses the Rival frame. Every name banner runs behind
+  // the cost symbol.
+  function markers(card) { return card.markers || []; }
+  function frameStyle(card) {
+    var m = markers(card);
+    // Rival is a Role (after the dot on the type line); Legendary a Marker.
+    var roles = (card.type || '').split(' · ')[1] || '';
+    return /\bRival\b/.test(roles) ? 'rival' : m.indexOf('Legendary') !== -1 ? 'legendary' : 'plain';
+  }
+
+  var PANEL_FILL = 'rgba(235, 240, 245, 0.72)';
+  // The name banner runs from behind the cost symbol (its left end, centred
+  // on the symbol, never shows) to the right edge of the art.
+  var BAN_L = 70, BAN_R = 711, BAN_T = 36, BAN_B = 120;
+  // Rival tatters at the banner's right end: two deep overlapping bites out
+  // of its bottom edge, a torn-off corner and a small hole. [x, y, radius]
+  var TATTERS = [[662, 120, 22], [688, 112, 13], [716, 98, 15], [697, 64, 6]];
+
+  // The banner's left end tucks behind the cost symbol, with its bottom
+  // corner rounded up into the symbol so no corner shows.
+  function hiddenLeftEnd(ctx, bottom) {
+    ctx.lineTo(BAN_L + 40, bottom);
+    ctx.quadraticCurveTo(BAN_L, bottom, BAN_L, bottom - 30);
+    ctx.lineTo(BAN_L, BAN_T);
+  }
+
+  // One swoop of the Legendary crest: a pointed ogee from the base line up
+  // to a sharp peak h above it and back down, drawn from (cx - hw, base) to
+  // (cx + hw, base). Every swoop uses the same proportions, scaled, so the
+  // crest reads as one geometric pattern.
+  function swoop(ctx, cx, hw, base, h) {
+    var peak = base - h;
+    // An ogee: a full shoulder rising off the base, then a concave sweep
+    // into a sharp spike, like the points of a crown.
+    ctx.bezierCurveTo(cx - hw * 0.9, base - h * 0.6, cx - hw * 0.05, peak + h * 0.55, cx, peak);
+    ctx.bezierCurveTo(cx + hw * 0.05, peak + h * 0.55, cx + hw * 0.9, base - h * 0.6, cx + hw, base);
+  }
+
+  // keep: add to the current path instead of starting a new one.
+  function bannerPath(ctx, style, keep) {
+    var L = BAN_L, R = BAN_R, b = BAN_B;
+    if (!keep) ctx.beginPath();
+    if (style !== 'legendary') {
+      ctx.moveTo(L, BAN_T);
+      ctx.lineTo(R, BAN_T);
+      ctx.lineTo(R, b);
+      hiddenLeftEnd(ctx, b);
+      ctx.closePath();
+      return;
+    }
+    // Legendary: a regal crest on top (one tall swoop in the middle and two
+    // smaller ones stepping down on each side), the same
+    // height as before so the name never runs into it; flat below, with
+    // each bottom corner curling down and in over the art like a breaking
+    // wave turned upside down.
+    // Centred on the card: a tall swoop flanked by two smaller ones on each
+    // side, each a scaled copy, running edge to edge without a gap.
+    var base = BAN_T + 22, mid = W / 2;
+    var crest = [[0, 76, 36], [134, 44, 27], [214, 26, 18]];   // [offset, half-width, height]
+    ctx.moveTo(L, base);
+    ctx.lineTo(mid - 244, base);
+    [2, 1].forEach(function (i) { var c = crest[i]; swoop(ctx, mid - c[0], c[1], base, c[2]); });
+    swoop(ctx, mid, crest[0][1], base, crest[0][2]);
+    [1, 2].forEach(function (i) { var c = crest[i]; swoop(ctx, mid + c[0], c[1], base, c[2]); });
+    ctx.lineTo(R, base);
+    ctx.lineTo(R, b);
+    // The two bottom corners, mirror images about the card's centre, curl
+    // down and in over the art like a breaking wave turned upside down.
+    var cw = 66, cd = 46, lc = W - R;
+    ctx.bezierCurveTo(R, b + 26, R - 10, b + cd - 2, R - 30, b + cd);
+    ctx.quadraticCurveTo(R - 24, b + 34, R - 36, b + 24);
+    ctx.quadraticCurveTo(R - 46, b + 10, R - cw, b);
+    ctx.lineTo(lc + cw, b);
+    ctx.quadraticCurveTo(lc + 46, b + 10, lc + 36, b + 24);
+    ctx.quadraticCurveTo(lc + 24, b + 34, lc + 30, b + cd);
+    ctx.bezierCurveTo(lc + 10, b + cd - 2, lc, b + 26, lc, b);
+    // Up into the cost symbol, where the banner's left end hides.
+    ctx.quadraticCurveTo(lc, BAN_L + 20, L, BAN_L + 16);
+    ctx.closePath();
+  }
+
+  // Fill the banner, cut the Rival tatters out of it, and outline it all
+  // with a 4px line on the inside of every edge, cuts included.
+  function nameBanner(ctx, style) {
+    var cuts = style === 'rival' ? TATTERS : [];
+    function layer(paint) {
+      var c = document.createElement('canvas');
+      c.width = W; c.height = H;
+      var g = c.getContext('2d');
+      paint(g);
+      g.globalCompositeOperation = 'destination-out';
+      cuts.forEach(function (t) { g.beginPath(); g.arc(t[0], t[1], t[2], 0, Math.PI * 2); g.fill(); });
+      ctx.drawImage(c, 0, 0);
+    }
+    layer(function (g) {
+      bannerPath(g, style);
+      // The Legendary banner covers the top of the art, so it's less see-through.
+      g.fillStyle = style === 'legendary' ? 'rgba(235, 240, 245, 0.88)' : PANEL_FILL;
+      g.fill();
+    });
+    layer(function (g) {
+      bannerPath(g, style);
+      g.clip();
+      g.lineWidth = 8;
+      g.strokeStyle = '#000';
+      bannerPath(g, style);
+      g.stroke();
+      cuts.forEach(function (t) { g.beginPath(); g.arc(t[0], t[1], t[2], 0, Math.PI * 2); g.stroke(); });
+    });
+  }
+
+  // The art window's outline. Legendary: its top tucks up behind the name
+  // banner, and its top corners curve up into it. Rival: its top also runs up
+  // behind the banner, so the art shows through the tatters; its bottom
+  // corners are clipped.
+  function artPathShape(ctx, x, y, w, h, style) {
+    ctx.beginPath();
+    if (style === 'legendary') {
+      var top = y - 30, r = 64;
+      ctx.moveTo(x, y + h);
+      ctx.lineTo(x, top + r);
+      ctx.quadraticCurveTo(x, top, x + r, top);
+      ctx.lineTo(x + w - r, top);
+      ctx.quadraticCurveTo(x + w, top, x + w, top + r);
+      ctx.lineTo(x + w, y + h);
+    } else if (style === 'rival') {
+      var c = 40, t = y - 30;
+      ctx.moveTo(x, t); ctx.lineTo(x + w, t);
+      ctx.lineTo(x + w, y + h - c); ctx.lineTo(x + w - c, y + h); ctx.lineTo(x + c, y + h);
+      ctx.lineTo(x, y + h - c);
+    } else ctx.rect(x, y, w, h);
+    ctx.closePath();
+  }
+
+  // The rarity spot: Legendary shows a crown instead of its rarity symbol.
+  function markerSymbol(ctx, style, cx, cy) {
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    if (style === 'legendary') {
+      ctx.moveTo(cx - 17, cy + 12); ctx.lineTo(cx - 19, cy - 10); ctx.lineTo(cx - 9, cy - 1);
+      ctx.lineTo(cx, cy - 15); ctx.lineTo(cx + 9, cy - 1); ctx.lineTo(cx + 19, cy - 10);
+      ctx.lineTo(cx + 17, cy + 12);
+      ctx.closePath();
+      ctx.fill();
+      [-19, 0, 19].forEach(function (dx) {
+        ctx.beginPath();
+        ctx.arc(cx + dx, cy + (dx ? -12 : -17), 3.2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
   }
 
   function noArt(ctx, x, y, w, h) {
@@ -453,26 +616,48 @@
       canvas.width = W; canvas.height = H;
       var ctx = canvas.getContext('2d');
 
+      var style = frameStyle(card);
       cover(ctx, bg, 0, 0, W, H);
-      panel(ctx, 116, 36, 595, 84);     // name bar
       panel(ctx, 44, 528, 667, 70);     // type line
       panel(ctx, 44, 596, 667, 404);    // text box
+      ctx.save();
+      artPathShape(ctx, 46, 118, 663, 409, style);
+      ctx.clip();
+      // Legendary: the art stops exactly at the banner's edge, curls
+      // included, so it never shows through the banner.
+      if (style === 'legendary') {
+        ctx.beginPath();
+        ctx.rect(0, 0, W, H);
+        bannerPath(ctx, style, true);
+        ctx.clip('evenodd');
+      }
       if (art) cover(ctx, art, 46, 118, 663, 409);
       else noArt(ctx, 46, 118, 663, 409);
+      ctx.restore();
+      // Outline the art window, but not the part tucked behind the banner.
+      ctx.save();
+      ctx.beginPath(); ctx.rect(0, 118, W, H); ctx.clip();
       ctx.lineWidth = 4; ctx.strokeStyle = '#000';
-      ctx.strokeRect(46, 118, 663, 409);
+      artPathShape(ctx, 46, 118, 663, 409, style);
+      ctx.stroke();
+      ctx.restore();
+      // Name banner over the art's top edge, running behind the cost symbol.
+      nameBanner(ctx, style);
       ctx.lineWidth = 18;
       ctx.strokeRect(9, 9, W - 18, H - 18);   // outer border
 
       ctx.fillStyle = '#000';
-      line(ctx, card.name, HEAD, 44, 413, 92, 572, 'center');
+      // The Rival banner's hole sits at its right end, so its name stops short.
+      if (style === 'rival') line(ctx, card.name, HEAD, 44, 400, 98, 540, 'center');
+      else line(ctx, card.name, HEAD, 44, 413, 98, 572, 'center');
       line(ctx, card.type || '', HEAD, 38, 56, 577, 586, 'left');
-      rarity(ctx, card.rarity, 680, 563);
+      if (style === 'legendary') markerSymbol(ctx, style, 680, 563);
+      else rarity(ctx, card.rarity, 680, 563);
       rulesText(ctx, card.text, 56, 602, 644, 320, glyphs);
 
       // Footer: set and number between the bloom and power icons, the
       // artist between power and bounty.
-      line(ctx, (card.set || 'Alpha-r1') + '-#' + pad(card.number), BODY, 24, 217, 962, 186, 'center');
+      line(ctx, (card.set || 'Fablemire-r2') + '-#' + pad(card.number), BODY, 24, 217, 962, 186, 'center');
       credit(ctx, 'Art: ' + (card.artist || 'TBD'), 522, 962, 200);
 
       // Cost, kept clear of the border.

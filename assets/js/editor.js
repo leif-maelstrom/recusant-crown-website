@@ -12,7 +12,7 @@
   var API = 'https://api.github.com/repos/' + OWNER + '/' + REPO;
   var DATA = 'assets/js/card-data.js';
   var PAGES = ['library.html', 'cards.html'];   // pages that load card-data.js
-  var KEYS = ['number', 'set', 'name', 'image', 'art', 'artist', 'faction', 'factions', 'kind', 'cost', 'type', 'rarity', 'bloom', 'power', 'bounty', 'bountyFaction', 'text'];
+  var KEYS = ['number', 'set', 'name', 'image', 'art', 'artist', 'faction', 'factions', 'kind', 'cost', 'type', 'markers', 'rarity', 'bloom', 'power', 'bounty', 'bountyFaction', 'text'];
   var STORE = 'rc-editor-token';
   var ART_W = 1000, ART_H = 620;
 
@@ -203,7 +203,7 @@
     return n;
   }
   function blank() {
-    return { number: nextNumber('Dream'), set: latestSet(), artist: commonArtist(), name: '', faction: 'Dream', kind: 'Entity', cost: 0, type: 'Conjure ', rarity: 'Common', bloom: 1, power: 1, bounty: 1, text: '' };
+    return { number: nextNumber('Dream'), set: latestSet(), artist: commonArtist(), name: '', faction: 'Dream', kind: 'Entity', cost: 0, type: '', rarity: 'Common', bloom: 1, power: 1, bounty: 1, text: '' };
   }
 
   function commonArtist() {
@@ -219,6 +219,9 @@
     var f = form.elements;
     Array.prototype.forEach.call(form.querySelectorAll('input[name=also]'), function (box) {
       box.checked = !!c.factions && c.factions.indexOf(box.value) !== -1 && box.value !== c.faction;
+    });
+    Array.prototype.forEach.call(form.querySelectorAll('input[name=marker]'), function (box) {
+      box.checked = !!c.markers && c.markers.indexOf(box.value) !== -1;
     });
     ['number', 'set', 'artist', 'name', 'faction', 'kind', 'rarity', 'type', 'text'].forEach(function (k) { f[k].value = c[k] == null ? '' : c[k]; });
     f.cost.value = c.cost;
@@ -261,6 +264,10 @@
       type: f.type.value.trim(),
       rarity: f.rarity.value
     };
+    // Legendary is a Marker: it prints as a frame shape and a crown, not on
+    // the type line. (Rival is a Role, typed on the type line.)
+    var marks = ['Legendary'].filter(function (x) { return form.querySelector('input[name=marker][value=' + x + ']:checked'); });
+    if (marks.length) c.markers = marks;
     var also = CORNERS.filter(function (x) { return form.querySelector('input[name=also][value=' + x + ']:checked'); });
     if (also.length) c.factions = [c.faction].concat(also);
     else delete c.factions;

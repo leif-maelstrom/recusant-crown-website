@@ -2,14 +2,14 @@
 // tools/make-tts-sheets.js; run it again after cards change, rather than
 // editing this by hand. cards: number -> [sheet, slot, name].
 window.RC_TTS = {
- "set": "Alpha-r1",
+ "set": "Fablemire-r2",
  "cols": 10,
  "rows": 7,
  "sheets": [
-  "assets/tts/alpha-r1/sheet-1-6dd1ae64.jpg",
-  "assets/tts/alpha-r1/sheet-2-74ac69d0.jpg",
-  "assets/tts/alpha-r1/sheet-3-a9a1cb8c.jpg",
-  "assets/tts/alpha-r1/sheet-4-2a33c229.jpg"
+  "assets/tts/fablemire-r2/sheet-1-82581c28.jpg",
+  "assets/tts/fablemire-r2/sheet-2-05c31fe0.jpg",
+  "assets/tts/fablemire-r2/sheet-3-57358652.jpg",
+  "assets/tts/fablemire-r2/sheet-4-8206c8b4.jpg"
  ],
  "cards": {
   "1": [
@@ -515,7 +515,7 @@ window.RC_TTS = {
   "207": [
    1,
    31,
-   "Dawnedge Shadow"
+   "Dawnedge Razorshade"
   ],
   "208": [
    1,
@@ -555,7 +555,7 @@ window.RC_TTS = {
   "215": [
    1,
    39,
-   "Thin Shadow"
+   "Slender Boogeyman"
   ],
   "216": [
    1,
@@ -1073,5 +1073,5 @@ window.RC_TTS = {
    "Lost and Found"
   ]
  },
- "back": "assets/tts/back-8d600344.jpg"
+ "back": "assets/tts/back-0dd240b6.jpg"
 };

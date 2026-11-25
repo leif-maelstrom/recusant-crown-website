@@ -264,9 +264,9 @@
       type: f.type.value.trim(),
       rarity: f.rarity.value
     };
-    // Markers (Legendary, Rival) print as frame shapes and plaques, not on
-    // the type line.
-    var marks = ['Legendary', 'Rival'].filter(function (x) { return form.querySelector('input[name=marker][value=' + x + ']:checked'); });
+    // Legendary is a Marker: it prints as a frame shape and a crown, not on
+    // the type line. (Rival is a Role, typed on the type line.)
+    var marks = ['Legendary'].filter(function (x) { return form.querySelector('input[name=marker][value=' + x + ']:checked'); });
     if (marks.length) c.markers = marks;
     var also = CORNERS.filter(function (x) { return form.querySelector('input[name=also][value=' + x + ']:checked'); });
     if (also.length) c.factions = [c.faction].concat(also);

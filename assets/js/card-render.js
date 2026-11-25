@@ -232,15 +232,18 @@
   //   Legendary  name banner swoops up to a regal peak on top, flat below;
   //              the art window's top corners curve up into the banner;
   //              a crown in the rarity spot
-  //   Rival      a tattered name banner: two overlapping round bites out
-  //              of its bottom edge and a hole near its right end; the art
-  //              window has clipped corners; a jagged burst in the rarity spot
-  // A card with both uses the Rival frame. Every name banner runs behind
+  //   Rival      (a Role on the type line, not a Marker) a tattered name
+  //              banner: two overlapping round bites out of its bottom edge
+  //              and a hole near its right end; the art runs up under it and
+  //              has clipped bottom corners; its normal rarity symbol
+  // A Legendary Rival uses the Rival frame. Every name banner runs behind
   // the cost symbol.
   function markers(card) { return card.markers || []; }
   function frameStyle(card) {
     var m = markers(card);
-    return m.indexOf('Rival') !== -1 ? 'rival' : m.indexOf('Legendary') !== -1 ? 'legendary' : 'plain';
+    // Rival is a Role (after the dot on the type line); Legendary a Marker.
+    var roles = (card.type || '').split(' · ')[1] || '';
+    return /\bRival\b/.test(roles) ? 'rival' : m.indexOf('Legendary') !== -1 ? 'legendary' : 'plain';
   }
 
   var PANEL_FILL = 'rgba(235, 240, 245, 0.72)';
@@ -259,11 +262,14 @@
     ctx.lineTo(BAN_L, BAN_T);
   }
 
-  // One swoop of the Legendary crest: an ogee from the base line up to a
-  // pointed peak and back down. Draws from (cx - hw, base) to (cx + hw, base).
-  function swoop(ctx, cx, hw, base, peak) {
-    ctx.bezierCurveTo(cx - hw * 0.45, base + 3, cx - hw * 0.35, peak + (base - peak) * 0.45, cx, peak);
-    ctx.bezierCurveTo(cx + hw * 0.35, peak + (base - peak) * 0.45, cx + hw * 0.45, base + 3, cx + hw, base);
+  // One swoop of the Legendary crest: a pointed ogee from the base line up
+  // to a peak h above it and back down, drawn from (cx - hw, base) to
+  // (cx + hw, base). Every swoop uses the same proportions, scaled, so the
+  // crest reads as one geometric pattern.
+  function swoop(ctx, cx, hw, base, h) {
+    var peak = base - h;
+    ctx.bezierCurveTo(cx - hw * 0.5, base, cx - hw * 0.3, peak + h * 0.3, cx, peak);
+    ctx.bezierCurveTo(cx + hw * 0.3, peak + h * 0.3, cx + hw * 0.5, base, cx + hw, base);
   }
 
   function bannerPath(ctx, style) {
@@ -282,30 +288,29 @@
     // height as before so the name never runs into it; flat below, with
     // each bottom corner curling down and in over the art like a breaking
     // wave turned upside down.
-    var base = BAN_T + 12, mid = (L + 126 + R) / 2;
+    // Centred on the card: a tall swoop flanked by two smaller ones on each
+    // side, each a scaled copy, running edge to edge without a gap.
+    var base = BAN_T + 18, mid = W / 2;
+    var crest = [[0, 84, 34], [134, 50, 24], [214, 30, 16]];   // [offset, half-width, height]
     ctx.moveTo(L, base);
-    ctx.lineTo(mid - 250, base);
-    swoop(ctx, mid - 215, 35, base, base - 14);      // small, far left
-    swoop(ctx, mid - 140, 40, base, base - 22);      // small, left
-    ctx.lineTo(mid - 100, base);
-    swoop(ctx, mid, 100, base, BAN_T - 14);          // tall, centre
-    ctx.lineTo(mid + 100, base);
-    swoop(ctx, mid + 140, 40, base, base - 22);      // small, right
-    swoop(ctx, mid + 215, 35, base, base - 14);      // small, far right
+    ctx.lineTo(mid - 244, base);
+    [2, 1].forEach(function (i) { var c = crest[i]; swoop(ctx, mid - c[0], c[1], base, c[2]); });
+    swoop(ctx, mid, crest[0][1], base, crest[0][2]);
+    [1, 2].forEach(function (i) { var c = crest[i]; swoop(ctx, mid + c[0], c[1], base, c[2]); });
     ctx.lineTo(R, base);
     ctx.lineTo(R, b);
-    // Right curl: sweeps down and in, and its tip hooks back up, like a
-    // breaking wave turned upside down.
-    ctx.bezierCurveTo(R, b + 26, R - 12, b + 44, R - 38, b + 46);
-    ctx.quadraticCurveTo(R - 30, b + 34, R - 44, b + 24);
-    ctx.quadraticCurveTo(R - 58, b + 10, R - 86, b);
-    // Left curl, the mirror image, just right of the cost symbol.
-    var lc = 108;
-    ctx.lineTo(lc + 86, b);
-    ctx.quadraticCurveTo(lc + 58, b + 10, lc + 44, b + 24);
-    ctx.quadraticCurveTo(lc + 30, b + 34, lc + 38, b + 46);
-    ctx.bezierCurveTo(lc + 12, b + 44, lc, b + 26, lc, b);
-    hiddenLeftEnd(ctx, b);
+    // The two bottom corners, mirror images about the card's centre, curl
+    // down and in over the art like a breaking wave turned upside down.
+    var cw = 66, cd = 46, lc = W - R;
+    ctx.bezierCurveTo(R, b + 26, R - 10, b + cd - 2, R - 30, b + cd);
+    ctx.quadraticCurveTo(R - 24, b + 34, R - 36, b + 24);
+    ctx.quadraticCurveTo(R - 46, b + 10, R - cw, b);
+    ctx.lineTo(lc + cw, b);
+    ctx.quadraticCurveTo(lc + 46, b + 10, lc + 36, b + 24);
+    ctx.quadraticCurveTo(lc + 24, b + 34, lc + 30, b + cd);
+    ctx.bezierCurveTo(lc + 10, b + cd - 2, lc, b + 26, lc, b);
+    // Up into the cost symbol, where the banner's left end hides.
+    ctx.quadraticCurveTo(lc, BAN_L + 20, L, BAN_L + 16);
     ctx.closePath();
   }
 
@@ -362,8 +367,7 @@
     ctx.closePath();
   }
 
-  // The rarity spot: Legendary shows a crown, Rival a jagged burst, and
-  // other cards their rarity symbol.
+  // The rarity spot: Legendary shows a crown instead of its rarity symbol.
   function markerSymbol(ctx, style, cx, cy) {
     ctx.fillStyle = '#000';
     ctx.beginPath();
@@ -378,17 +382,7 @@
         ctx.arc(cx + dx, cy + (dx ? -12 : -17), 3.2, 0, Math.PI * 2);
         ctx.fill();
       });
-      return;
     }
-    // Rival: twelve uneven spikes.
-    var spikes = [19, 12, 17, 10, 20, 11, 16, 12, 19, 10, 17, 11];
-    for (var i = 0; i < spikes.length * 2; i++) {
-      var a = -Math.PI / 2 + i * Math.PI / spikes.length;
-      var rr = i % 2 ? 6 : spikes[i / 2];
-      ctx[i ? 'lineTo' : 'moveTo'](cx + Math.cos(a) * rr, cy + Math.sin(a) * rr);
-    }
-    ctx.closePath();
-    ctx.fill();
   }
 
   function noArt(ctx, x, y, w, h) {
@@ -646,8 +640,8 @@
       if (style === 'rival') line(ctx, card.name, HEAD, 44, 400, 92, 540, 'center');
       else line(ctx, card.name, HEAD, 44, 413, 92, 572, 'center');
       line(ctx, card.type || '', HEAD, 38, 56, 577, 586, 'left');
-      if (style === 'plain') rarity(ctx, card.rarity, 680, 563);
-      else markerSymbol(ctx, style, 680, 563);
+      if (style === 'legendary') markerSymbol(ctx, style, 680, 563);
+      else rarity(ctx, card.rarity, 680, 563);
       rulesText(ctx, card.text, 56, 602, 644, 320, glyphs);
 
       // Footer: set and number between the bloom and power icons, the

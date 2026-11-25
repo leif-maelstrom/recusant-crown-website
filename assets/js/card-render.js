@@ -250,9 +250,9 @@
   // The name banner runs from behind the cost symbol (its left end, centred
   // on the symbol, never shows) to the right edge of the art.
   var BAN_L = 70, BAN_R = 711, BAN_T = 36, BAN_B = 120;
-  // Rival tatters near the banner's right end: two overlapping bites out of
-  // its bottom edge and a hole. [x, y, radius]
-  var TATTERS = [[606, 130, 34], [646, 121, 19], [688, 74, 9]];
+  // Rival tatters at the banner's right end: two deep overlapping bites out
+  // of its bottom edge, a torn-off corner and a small hole. [x, y, radius]
+  var TATTERS = [[662, 120, 22], [688, 112, 13], [716, 98, 15], [697, 64, 6]];
 
   // The banner's left end tucks behind the cost symbol, with its bottom
   // corner rounded up into the symbol so no corner shows.
@@ -263,18 +263,21 @@
   }
 
   // One swoop of the Legendary crest: a pointed ogee from the base line up
-  // to a peak h above it and back down, drawn from (cx - hw, base) to
+  // to a sharp peak h above it and back down, drawn from (cx - hw, base) to
   // (cx + hw, base). Every swoop uses the same proportions, scaled, so the
   // crest reads as one geometric pattern.
   function swoop(ctx, cx, hw, base, h) {
     var peak = base - h;
-    ctx.bezierCurveTo(cx - hw * 0.5, base, cx - hw * 0.3, peak + h * 0.3, cx, peak);
-    ctx.bezierCurveTo(cx + hw * 0.3, peak + h * 0.3, cx + hw * 0.5, base, cx + hw, base);
+    // An ogee: a full shoulder rising off the base, then a concave sweep
+    // into a sharp spike, like the points of a crown.
+    ctx.bezierCurveTo(cx - hw * 0.9, base - h * 0.6, cx - hw * 0.05, peak + h * 0.55, cx, peak);
+    ctx.bezierCurveTo(cx + hw * 0.05, peak + h * 0.55, cx + hw * 0.9, base - h * 0.6, cx + hw, base);
   }
 
-  function bannerPath(ctx, style) {
+  // keep: add to the current path instead of starting a new one.
+  function bannerPath(ctx, style, keep) {
     var L = BAN_L, R = BAN_R, b = BAN_B;
-    ctx.beginPath();
+    if (!keep) ctx.beginPath();
     if (style !== 'legendary') {
       ctx.moveTo(L, BAN_T);
       ctx.lineTo(R, BAN_T);
@@ -290,8 +293,8 @@
     // wave turned upside down.
     // Centred on the card: a tall swoop flanked by two smaller ones on each
     // side, each a scaled copy, running edge to edge without a gap.
-    var base = BAN_T + 18, mid = W / 2;
-    var crest = [[0, 84, 34], [134, 50, 24], [214, 30, 16]];   // [offset, half-width, height]
+    var base = BAN_T + 22, mid = W / 2;
+    var crest = [[0, 76, 36], [134, 44, 27], [214, 26, 18]];   // [offset, half-width, height]
     ctx.moveTo(L, base);
     ctx.lineTo(mid - 244, base);
     [2, 1].forEach(function (i) { var c = crest[i]; swoop(ctx, mid - c[0], c[1], base, c[2]); });
@@ -620,6 +623,14 @@
       ctx.save();
       artPathShape(ctx, 46, 118, 663, 409, style);
       ctx.clip();
+      // Legendary: the art stops exactly at the banner's edge, curls
+      // included, so it never shows through the banner.
+      if (style === 'legendary') {
+        ctx.beginPath();
+        ctx.rect(0, 0, W, H);
+        bannerPath(ctx, style, true);
+        ctx.clip('evenodd');
+      }
       if (art) cover(ctx, art, 46, 118, 663, 409);
       else noArt(ctx, 46, 118, 663, 409);
       ctx.restore();
@@ -637,8 +648,8 @@
 
       ctx.fillStyle = '#000';
       // The Rival banner's hole sits at its right end, so its name stops short.
-      if (style === 'rival') line(ctx, card.name, HEAD, 44, 400, 92, 540, 'center');
-      else line(ctx, card.name, HEAD, 44, 413, 92, 572, 'center');
+      if (style === 'rival') line(ctx, card.name, HEAD, 44, 400, 98, 540, 'center');
+      else line(ctx, card.name, HEAD, 44, 413, 98, 572, 'center');
       line(ctx, card.type || '', HEAD, 38, 56, 577, 586, 'left');
       if (style === 'legendary') markerSymbol(ctx, style, 680, 563);
       else rarity(ctx, card.rarity, 680, 563);

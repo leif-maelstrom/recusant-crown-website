@@ -267,7 +267,10 @@
 
   function setQty(card, n) {
     var entry = draft.entries.filter(function (e) { return e.card === card; })[0];
-    n = Math.max(0, Math.min(99, n));
+    // Digital decks hold at most D.MAX_CARDS (Rules Bible XVIII), so the
+    // builder won't add past it.
+    var room = D.MAX_CARDS - (D.total(draft.entries) - (entry ? entry.qty : 0));
+    n = Math.max(0, Math.min(99, room, n));
     if (entry && !n) draft.entries.splice(draft.entries.indexOf(entry), 1);
     else if (entry) entry.qty = n;
     else if (n) draft.entries.push({ qty: n, card: card });
@@ -422,7 +425,7 @@
       value: box.querySelector('.library-qty-value'),
       minus: box.querySelector('[data-step="-1"]'),
       name: D.simplify(card.name),
-      haystack: ' ' + D.simplify([card.name, card.type, card.text].join(' ')) + ' '
+      haystack: ' ' + D.simplify([card.name, card.type, (card.markers || []).join(' '), card.text].join(' ')) + ' '
     };
   });
 

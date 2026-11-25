@@ -145,7 +145,7 @@
   tiles.forEach(function (t) {
     var c = t.card;
     t.name = simplify(c.name);
-    t.haystack = ' ' + simplify([c.name, c.type, c.text].join(' ')) + ' ';
+    t.haystack = ' ' + simplify([c.name, c.type, (c.markers || []).join(' '), c.text].join(' ')) + ' ';
   });
 
   var selects = Array.prototype.slice.call(document.querySelectorAll('#libraryFilters select'));

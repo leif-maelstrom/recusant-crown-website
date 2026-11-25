@@ -95,7 +95,7 @@
   // everything else is colored.
   function costKind(card) {
     var type = card.type || '';
-    if (card.kind === 'Entity' && !/^Conjure (Legendary )?Fortification\b/.test(type)) return 'pure';
+    if (card.kind === 'Entity' && !/^Fortification\b/.test(type)) return 'pure';
     return /\bOverdrive\b/.test(type) ? 'pure' : 'colored';
   }
 
@@ -223,6 +223,91 @@
     ctx.lineWidth = 4;
     ctx.strokeStyle = '#000';
     ctx.strokeRect(x + 2, y + 2, w - 4, h - 4);
+  }
+
+  // ---- Frame shapes for Markers (Rules Bible: type lines) ----
+  // Legendary and Rival are Markers, printed on the frame instead of the
+  // type line, and each changes the frame's shape so the card reads as
+  // different from a plain creature at a glance, even in black and white:
+  //   Legendary  name bar as a banner with pointed ends; art window with an
+  //              arched top; a gold "Legendary" plaque under the art
+  //   Rival      name bar with swallowtail (notched) ends; art window with
+  //              clipped corners; a crimson "Rival" plaque under the art
+  // A card with both uses the Rival frame and shows both plaques.
+  function markers(card) { return card.markers || []; }
+  function frameStyle(card) {
+    var m = markers(card);
+    return m.indexOf('Rival') !== -1 ? 'rival' : m.indexOf('Legendary') !== -1 ? 'legendary' : 'plain';
+  }
+
+  // The name bar's outline: a rectangle, a pointed banner, or notched ends.
+  function barPath(ctx, x, y, w, h, style) {
+    var d = 26;
+    ctx.beginPath();
+    if (style === 'legendary') {
+      ctx.moveTo(x, y + h / 2); ctx.lineTo(x + d, y); ctx.lineTo(x + w - d, y);
+      ctx.lineTo(x + w, y + h / 2); ctx.lineTo(x + w - d, y + h); ctx.lineTo(x + d, y + h);
+    } else if (style === 'rival') {
+      ctx.moveTo(x, y); ctx.lineTo(x + w, y); ctx.lineTo(x + w - d, y + h / 2);
+      ctx.lineTo(x + w, y + h); ctx.lineTo(x, y + h); ctx.lineTo(x + d, y + h / 2);
+    } else ctx.rect(x, y, w, h);
+    ctx.closePath();
+  }
+
+  // The art window's outline: a rectangle, an arched top, or clipped corners.
+  function artPathShape(ctx, x, y, w, h, style) {
+    ctx.beginPath();
+    if (style === 'legendary') {
+      var rise = 46;
+      ctx.moveTo(x, y + h); ctx.lineTo(x, y + rise);
+      ctx.quadraticCurveTo(x + w / 2, y - rise, x + w, y + rise);
+      ctx.lineTo(x + w, y + h);
+    } else if (style === 'rival') {
+      var c = 40;
+      ctx.moveTo(x + c, y); ctx.lineTo(x + w - c, y); ctx.lineTo(x + w, y + c);
+      ctx.lineTo(x + w, y + h - c); ctx.lineTo(x + w - c, y + h); ctx.lineTo(x + c, y + h);
+      ctx.lineTo(x, y + h - c); ctx.lineTo(x, y + c);
+    } else ctx.rect(x, y, w, h);
+    ctx.closePath();
+  }
+
+  function shapedPanel(ctx, x, y, w, h, style) {
+    barPath(ctx, x, y, w, h, style);
+    ctx.fillStyle = 'rgba(235, 240, 245, 0.72)';
+    ctx.fill();
+    barPath(ctx, x + 2, y + 2, w - 4, h - 4, style);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#000';
+    ctx.stroke();
+  }
+
+  // Marker plaques sit centred on the art window's bottom edge.
+  var PLAQUE = { Legendary: ['#d9b45a', '#111'], Rival: ['#7a1620', '#f6ead2'] };
+  function plaques(ctx, card, cx, y) {
+    var m = markers(card).filter(function (k) { return PLAQUE[k]; });
+    if (!m.length) return;
+    ctx.font = HEAD.replace('{px}', 26);
+    var widths = m.map(function (k) { return ctx.measureText(k.toUpperCase()).width + 50; });
+    var gap = 12, total = widths.reduce(function (a, b) { return a + b; }, 0) + gap * (m.length - 1);
+    var x = cx - total / 2, h = 40;
+    m.forEach(function (k, i) {
+      var w = widths[i], d = 12;
+      ctx.beginPath();
+      ctx.moveTo(x, y); ctx.lineTo(x + d, y - h / 2); ctx.lineTo(x + w - d, y - h / 2);
+      ctx.lineTo(x + w, y); ctx.lineTo(x + w - d, y + h / 2); ctx.lineTo(x + d, y + h / 2);
+      ctx.closePath();
+      ctx.fillStyle = PLAQUE[k][0];
+      ctx.fill();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#000';
+      ctx.stroke();
+      ctx.fillStyle = PLAQUE[k][1];
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(k.toUpperCase(), x + w / 2, y + 1);
+      ctx.textBaseline = 'alphabetic';
+      x += w + gap;
+    });
   }
 
   function noArt(ctx, x, y, w, h) {
@@ -453,14 +538,21 @@
       canvas.width = W; canvas.height = H;
       var ctx = canvas.getContext('2d');
 
+      var style = frameStyle(card);
       cover(ctx, bg, 0, 0, W, H);
-      panel(ctx, 116, 36, 595, 84);     // name bar
+      shapedPanel(ctx, 116, 36, 595, 84, style);   // name bar
       panel(ctx, 44, 528, 667, 70);     // type line
       panel(ctx, 44, 596, 667, 404);    // text box
+      ctx.save();
+      artPathShape(ctx, 46, 118, 663, 409, style);
+      ctx.clip();
       if (art) cover(ctx, art, 46, 118, 663, 409);
       else noArt(ctx, 46, 118, 663, 409);
+      ctx.restore();
       ctx.lineWidth = 4; ctx.strokeStyle = '#000';
-      ctx.strokeRect(46, 118, 663, 409);
+      artPathShape(ctx, 46, 118, 663, 409, style);
+      ctx.stroke();
+      plaques(ctx, card, 375, 527);
       ctx.lineWidth = 18;
       ctx.strokeRect(9, 9, W - 18, H - 18);   // outer border
 
@@ -472,7 +564,7 @@
 
       // Footer: set and number between the bloom and power icons, the
       // artist between power and bounty.
-      line(ctx, (card.set || 'Alpha-r1') + '-#' + pad(card.number), BODY, 24, 217, 962, 186, 'center');
+      line(ctx, (card.set || 'Fablemire-r2') + '-#' + pad(card.number), BODY, 24, 217, 962, 186, 'center');
       credit(ctx, 'Art: ' + (card.artist || 'TBD'), 522, 962, 200);
 
       // Cost, kept clear of the border.

@@ -170,13 +170,14 @@
   }
 
   // ---- Deck-building checks (Rules Bible XVIII) ----
-  // At least 60 cards; by rarity, up to 5 copies of a Common, 4 of an
+  // At least 60 cards and, for digital play, no more than 100 (on the table
+  // the only cap is that you can shuffle it with both hands); by rarity, up to 5 copies of a Common, 4 of an
   // Uncommon, 3 of a Rare, and 1 of each Legendary with no more than 7
   // Legendaries in all. A card's own text overrides its limit: "You may
   // have any number of Creeping Shades in your Dream" or "You may have 7
   // copies of Dwarf Miner in your Dream". These are shown as warnings only; casual and
   // house-rule decks still save.
-  var MIN_CARDS = 60, MAX_LEGENDARIES = 7;
+  var MIN_CARDS = 60, MAX_CARDS = 100, MAX_LEGENDARIES = 7;
   var LIMITS = { Common: 5, Uncommon: 4, Rare: 3, Legendary: 1 };
 
   function limit(card) {
@@ -193,6 +194,7 @@
     var problems = [];
     var n = total(entries);
     if (n < MIN_CARDS) problems.push(n + ' cards: a deck needs at least ' + MIN_CARDS + '.');
+    if (n > MAX_CARDS) problems.push(n + ' cards: a digital deck may hold ' + MAX_CARDS + ' at most.');
     entries.forEach(function (e) {
       var max = limit(e.card);
       if (e.qty > max) {
@@ -205,7 +207,7 @@
   }
 
   window.RC_DECK = {
-    FORMAT: FORMAT, VERSION: VERSION,
+    FORMAT: FORMAT, VERSION: VERSION, MAX_CARDS: MAX_CARDS,
     resolve: resolve, total: total, build: build,
     toFile: toFile, fileName: fileName, toText: toText, parse: parse,
     toLink: toLink, fromLink: fromLink, check: check, limit: limit,

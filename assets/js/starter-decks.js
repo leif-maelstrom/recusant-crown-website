@@ -1,11 +1,11 @@
 // The starter decks shown on the Decks page (decks.html), in the same
 // shape as a saved deck file (see deck-format.js). To change a list, edit
 // the lines below; "number" and "name" must match card-data.js.
-// Final lists, Oct 22, 2026 (Dream and Dark revised for consistency), Alpha-r1
+// Final lists, Oct 22, 2026 (Dream and Dark revised for consistency), Alpha-r1 (carried to Fablemire-r2 unchanged)
 // (decks/starter-decks.json in the project files).
 window.RC_STARTER_DECKS = [
   {
-    "id": "dream-frogs-and-fancies", "name": "Frogs and Fancies", "faction": "Dream", "set": "Alpha-r1", "starter": "Starter 1: Dream vs Dark",
+    "id": "dream-frogs-and-fancies", "name": "Frogs and Fancies", "faction": "Dream", "set": "Fablemire-r2", "starter": "Starter 1: Dream vs Dark",
     "description": "Two engines that find each other. Golden-Ball Princess fetches Prince Stephen to grow a board of Frogs, while Eroding Focus, Plumb the Depths and fading Strikes empty the opponent's Dream to fuel a lane-clearing Thought Cycle.",
     "cards": [
       { "qty": 5, "number": 3, "name": "Well Gazer" },
@@ -32,7 +32,7 @@ window.RC_STARTER_DECKS = [
     ]
   },
   {
-    "id": "dark-into-the-ink", "name": "Into the Ink", "faction": "Dark", "set": "Alpha-r1", "starter": "Starter 1: Dream vs Dark",
+    "id": "dark-into-the-ink", "name": "Into the Ink", "faction": "Dark", "set": "Fablemire-r2", "starter": "Starter 1: Dream vs Dark",
     "description": "Put them to sleep, then rob them. Exhaust and Pitch every defender in a lane, then Steal anchors with Wren and Midnight Heist, or keep the whole board asleep for Darkness Absolute's Majesty clock.",
     "cards": [
       { "qty": 3, "number": 201, "name": "Creeping Shade" },
@@ -63,7 +63,7 @@ window.RC_STARTER_DECKS = [
     ]
   },
   {
-    "id": "resolve-sunny-punks", "name": "Sunny Punks", "faction": "Resolve", "set": "Alpha-r1", "starter": "Starter 2: Resolve vs Light",
+    "id": "resolve-sunny-punks", "name": "Sunny Punks", "faction": "Resolve", "set": "Fablemire-r2", "starter": "Starter 2: Resolve vs Light",
     "description": "Win the fight. Cheap Knights and Dwarves hold the lanes, Nikko and Tenmei lead the charge, and chained Technics clear the way. When the hand is full, Dive Into the Heart and pour it all into one Battlecry.",
     "cards": [
       { "qty": 4, "number": 103, "name": "Brave Squire" },
@@ -103,7 +103,7 @@ window.RC_STARTER_DECKS = [
     ]
   },
   {
-    "id": "light-the-ascendant-host", "name": "The Ascendant Host", "faction": "Light", "set": "Alpha-r1", "starter": "Starter 2: Resolve vs Light",
+    "id": "light-the-ascendant-host", "name": "The Ascendant Host", "faction": "Light", "set": "Fablemire-r2", "starter": "Starter 2: Resolve vs Light",
     "description": "Rich and righteous. Angels bloom faster than anyone, wall up behind Defenders, burn the opponent's Fade away, then bring every fallen creature back as an Angel and judge the board with Sevenfold Seraph.",
     "cards": [
       { "qty": 5, "number": 301, "name": "Marble Cherub" },

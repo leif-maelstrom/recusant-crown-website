@@ -293,7 +293,8 @@
     }
     if (style === 'legendary') regalPath(ctx, x, y, w, h);
     else { ctx.beginPath(); ctx.rect(x, y, w, h); }
-    ctx.fillStyle = PANEL_FILL;
+    // The Legendary banner covers the top of the art, so it's less see-through.
+    ctx.fillStyle = style === 'legendary' ? 'rgba(235, 240, 245, 0.88)' : PANEL_FILL;
     ctx.fill();
     if (style === 'legendary') regalPath(ctx, x, y, w, h, 2);
     else { ctx.beginPath(); ctx.rect(x + 2, y + 2, w - 4, h - 4); }

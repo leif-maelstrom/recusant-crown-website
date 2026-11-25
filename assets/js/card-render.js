@@ -229,38 +229,90 @@
   // Legendary and Rival are Markers, printed on the frame instead of the
   // type line, and each changes the frame's shape so the card reads as
   // different from a plain creature at a glance, even in black and white:
-  //   Legendary  name bar as a banner with pointed ends; art window with an
-  //              arched top; a gold "Legendary" plaque under the art
-  //   Rival      name bar with swallowtail (notched) ends; art window with
-  //              clipped corners; a crimson "Rival" plaque under the art
-  // A card with both uses the Rival frame and shows both plaques.
+  //   Legendary  name banner swoops up to a regal peak on top, flat below;
+  //              the art window's top corners curve up into the banner;
+  //              a crown in the rarity spot
+  //   Rival      a tattered name banner: two overlapping round bites out
+  //              of its bottom edge and a hole near its right end; the art
+  //              window has clipped corners; a jagged burst in the rarity spot
+  // A card with both uses the Rival frame. Every name banner runs behind
+  // the cost symbol.
   function markers(card) { return card.markers || []; }
   function frameStyle(card) {
     var m = markers(card);
     return m.indexOf('Rival') !== -1 ? 'rival' : m.indexOf('Legendary') !== -1 ? 'legendary' : 'plain';
   }
 
-  // The name bar's outline: a rectangle, a pointed banner, or notched ends.
-  function barPath(ctx, x, y, w, h, style) {
-    var d = 26;
+  var PANEL_FILL = 'rgba(235, 240, 245, 0.72)';
+  // The Rival banner's bites and hole, relative to the banner's right end
+  // and bottom edge: [dx from right, dy from bottom, radius].
+  var TATTERS = [[170, -12, 36], [124, -2, 20]];
+  var HOLE = [26, 40, 9];
+
+  // Outline of the Legendary banner: flat bottom, straight sides, and a top
+  // that swoops from each end up to a central peak.
+  function regalPath(ctx, x, y, w, h, inset) {
+    var i = inset || 0, l = x + i, r = x + w - i, b = y + h - i, side = y + 30 + i, peak = y - 14 + i, mid = x + w / 2;
     ctx.beginPath();
-    if (style === 'legendary') {
-      ctx.moveTo(x, y + h / 2); ctx.lineTo(x + d, y); ctx.lineTo(x + w - d, y);
-      ctx.lineTo(x + w, y + h / 2); ctx.lineTo(x + w - d, y + h); ctx.lineTo(x + d, y + h);
-    } else if (style === 'rival') {
-      ctx.moveTo(x, y); ctx.lineTo(x + w, y); ctx.lineTo(x + w - d, y + h / 2);
-      ctx.lineTo(x + w, y + h); ctx.lineTo(x, y + h); ctx.lineTo(x + d, y + h / 2);
-    } else ctx.rect(x, y, w, h);
+    ctx.moveTo(l, b);
+    ctx.lineTo(l, side);
+    // An ogee on each side: a shallow dip, then a sweep up to a pointed crest.
+    ctx.bezierCurveTo(l + w * 0.30, side + 6, mid - w * 0.10, peak + 18, mid, peak);
+    ctx.bezierCurveTo(mid + w * 0.10, peak + 18, r - w * 0.30, side + 6, r, side);
+    ctx.lineTo(r, b);
     ctx.closePath();
   }
 
-  // The art window's outline: a rectangle, an arched top, or clipped corners.
+  // The Rival banner is drawn on its own canvas so the bites and hole can be
+  // cut out and outlined. grow > 0 widens the cuts (used for the outline).
+  function tatteredMask(x, y, w, h, inset, grow, color) {
+    var c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    var g = c.getContext('2d');
+    g.fillStyle = color;
+    g.fillRect(x + inset, y + inset, w - inset * 2, h - inset * 2);
+    g.globalCompositeOperation = 'destination-out';
+    TATTERS.concat([HOLE]).forEach(function (t) {
+      g.beginPath();
+      g.arc(x + w - t[0], y + h - t[1], t[2] + grow, 0, Math.PI * 2);
+      g.fill();
+    });
+    return c;
+  }
+
+  function nameBanner(ctx, x, y, w, h, style) {
+    if (style === 'rival') {
+      var fill = tatteredMask(x, y, w, h, 0, 0, PANEL_FILL);
+      var line = tatteredMask(x, y, w, h, 0, 0, '#000');
+      var g = line.getContext('2d');
+      g.globalCompositeOperation = 'destination-out';
+      g.drawImage(tatteredMask(x, y, w, h, 4, 4, '#000'), 0, 0);
+      ctx.drawImage(fill, 0, 0);
+      ctx.drawImage(line, 0, 0);
+      return;
+    }
+    if (style === 'legendary') regalPath(ctx, x, y, w, h);
+    else { ctx.beginPath(); ctx.rect(x, y, w, h); }
+    ctx.fillStyle = PANEL_FILL;
+    ctx.fill();
+    if (style === 'legendary') regalPath(ctx, x, y, w, h, 2);
+    else { ctx.beginPath(); ctx.rect(x + 2, y + 2, w - 4, h - 4); }
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#000';
+    ctx.stroke();
+  }
+
+  // The art window's outline. Legendary: its top tucks up behind the name
+  // banner, and its top corners curve up into it. Rival: clipped corners.
   function artPathShape(ctx, x, y, w, h, style) {
     ctx.beginPath();
     if (style === 'legendary') {
-      var rise = 46;
-      ctx.moveTo(x, y + h); ctx.lineTo(x, y + rise);
-      ctx.quadraticCurveTo(x + w / 2, y - rise, x + w, y + rise);
+      var top = y - 30, r = 64;
+      ctx.moveTo(x, y + h);
+      ctx.lineTo(x, top + r);
+      ctx.quadraticCurveTo(x, top, x + r, top);
+      ctx.lineTo(x + w - r, top);
+      ctx.quadraticCurveTo(x + w, top, x + w, top + r);
       ctx.lineTo(x + w, y + h);
     } else if (style === 'rival') {
       var c = 40;
@@ -271,43 +323,33 @@
     ctx.closePath();
   }
 
-  function shapedPanel(ctx, x, y, w, h, style) {
-    barPath(ctx, x, y, w, h, style);
-    ctx.fillStyle = 'rgba(235, 240, 245, 0.72)';
-    ctx.fill();
-    barPath(ctx, x + 2, y + 2, w - 4, h - 4, style);
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = '#000';
-    ctx.stroke();
-  }
-
-  // Marker plaques sit centred on the art window's bottom edge.
-  var PLAQUE = { Legendary: ['#d9b45a', '#111'], Rival: ['#7a1620', '#f6ead2'] };
-  function plaques(ctx, card, cx, y) {
-    var m = markers(card).filter(function (k) { return PLAQUE[k]; });
-    if (!m.length) return;
-    ctx.font = HEAD.replace('{px}', 26);
-    var widths = m.map(function (k) { return ctx.measureText(k.toUpperCase()).width + 50; });
-    var gap = 12, total = widths.reduce(function (a, b) { return a + b; }, 0) + gap * (m.length - 1);
-    var x = cx - total / 2, h = 40;
-    m.forEach(function (k, i) {
-      var w = widths[i], d = 12;
-      ctx.beginPath();
-      ctx.moveTo(x, y); ctx.lineTo(x + d, y - h / 2); ctx.lineTo(x + w - d, y - h / 2);
-      ctx.lineTo(x + w, y); ctx.lineTo(x + w - d, y + h / 2); ctx.lineTo(x + d, y + h / 2);
+  // The rarity spot: Legendary shows a crown, Rival a jagged burst, and
+  // other cards their rarity symbol.
+  function markerSymbol(ctx, style, cx, cy) {
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    if (style === 'legendary') {
+      ctx.moveTo(cx - 17, cy + 12); ctx.lineTo(cx - 19, cy - 10); ctx.lineTo(cx - 9, cy - 1);
+      ctx.lineTo(cx, cy - 15); ctx.lineTo(cx + 9, cy - 1); ctx.lineTo(cx + 19, cy - 10);
+      ctx.lineTo(cx + 17, cy + 12);
       ctx.closePath();
-      ctx.fillStyle = PLAQUE[k][0];
       ctx.fill();
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = '#000';
-      ctx.stroke();
-      ctx.fillStyle = PLAQUE[k][1];
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(k.toUpperCase(), x + w / 2, y + 1);
-      ctx.textBaseline = 'alphabetic';
-      x += w + gap;
-    });
+      [-19, 0, 19].forEach(function (dx) {
+        ctx.beginPath();
+        ctx.arc(cx + dx, cy + (dx ? -12 : -17), 3.2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      return;
+    }
+    // Rival: twelve uneven spikes.
+    var spikes = [19, 12, 17, 10, 20, 11, 16, 12, 19, 10, 17, 11];
+    for (var i = 0; i < spikes.length * 2; i++) {
+      var a = -Math.PI / 2 + i * Math.PI / spikes.length;
+      var rr = i % 2 ? 6 : spikes[i / 2];
+      ctx[i ? 'lineTo' : 'moveTo'](cx + Math.cos(a) * rr, cy + Math.sin(a) * rr);
+    }
+    ctx.closePath();
+    ctx.fill();
   }
 
   function noArt(ctx, x, y, w, h) {
@@ -540,7 +582,6 @@
 
       var style = frameStyle(card);
       cover(ctx, bg, 0, 0, W, H);
-      shapedPanel(ctx, 116, 36, 595, 84, style);   // name bar
       panel(ctx, 44, 528, 667, 70);     // type line
       panel(ctx, 44, 596, 667, 404);    // text box
       ctx.save();
@@ -549,17 +590,25 @@
       if (art) cover(ctx, art, 46, 118, 663, 409);
       else noArt(ctx, 46, 118, 663, 409);
       ctx.restore();
+      // Outline the art window, but not the part tucked behind the banner.
+      ctx.save();
+      ctx.beginPath(); ctx.rect(0, 118, W, H); ctx.clip();
       ctx.lineWidth = 4; ctx.strokeStyle = '#000';
       artPathShape(ctx, 46, 118, 663, 409, style);
       ctx.stroke();
-      plaques(ctx, card, 375, 527);
+      ctx.restore();
+      // Name banner over the art's top edge, running behind the cost symbol.
+      nameBanner(ctx, 26, 36, 685, 84, style);
       ctx.lineWidth = 18;
       ctx.strokeRect(9, 9, W - 18, H - 18);   // outer border
 
       ctx.fillStyle = '#000';
-      line(ctx, card.name, HEAD, 44, 413, 92, 572, 'center');
+      // The Rival banner's hole sits at its right end, so its name stops short.
+      if (style === 'rival') line(ctx, card.name, HEAD, 44, 400, 92, 540, 'center');
+      else line(ctx, card.name, HEAD, 44, 413, 92, 572, 'center');
       line(ctx, card.type || '', HEAD, 38, 56, 577, 586, 'left');
-      rarity(ctx, card.rarity, 680, 563);
+      if (style === 'plain') rarity(ctx, card.rarity, 680, 563);
+      else markerSymbol(ctx, style, 680, 563);
       rulesText(ctx, card.text, 56, 602, 644, 320, glyphs);
 
       // Footer: set and number between the bloom and power icons, the

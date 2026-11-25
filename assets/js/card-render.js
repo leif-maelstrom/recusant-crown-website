@@ -244,67 +244,105 @@
   }
 
   var PANEL_FILL = 'rgba(235, 240, 245, 0.72)';
-  // The Rival banner's bites and hole, relative to the banner's right end
-  // and bottom edge: [dx from right, dy from bottom, radius].
-  var TATTERS = [[170, -12, 36], [124, -2, 20]];
-  var HOLE = [26, 40, 9];
+  // The name banner runs from behind the cost symbol (its left end, centred
+  // on the symbol, never shows) to the right edge of the art.
+  var BAN_L = 70, BAN_R = 711, BAN_T = 36, BAN_B = 120;
+  // Rival tatters near the banner's right end: two overlapping bites out of
+  // its bottom edge and a hole. [x, y, radius]
+  var TATTERS = [[606, 130, 34], [646, 121, 19], [688, 74, 9]];
 
-  // Outline of the Legendary banner: flat bottom, straight sides, and a top
-  // that swoops from each end up to a central peak.
-  function regalPath(ctx, x, y, w, h, inset) {
-    var i = inset || 0, l = x + i, r = x + w - i, b = y + h - i, side = y + 30 + i, peak = y - 14 + i, mid = x + w / 2;
+  // The banner's left end tucks behind the cost symbol, with its bottom
+  // corner rounded up into the symbol so no corner shows.
+  function hiddenLeftEnd(ctx, bottom) {
+    ctx.lineTo(BAN_L + 40, bottom);
+    ctx.quadraticCurveTo(BAN_L, bottom, BAN_L, bottom - 30);
+    ctx.lineTo(BAN_L, BAN_T);
+  }
+
+  // One swoop of the Legendary crest: an ogee from the base line up to a
+  // pointed peak and back down. Draws from (cx - hw, base) to (cx + hw, base).
+  function swoop(ctx, cx, hw, base, peak) {
+    ctx.bezierCurveTo(cx - hw * 0.45, base + 3, cx - hw * 0.35, peak + (base - peak) * 0.45, cx, peak);
+    ctx.bezierCurveTo(cx + hw * 0.35, peak + (base - peak) * 0.45, cx + hw * 0.45, base + 3, cx + hw, base);
+  }
+
+  function bannerPath(ctx, style) {
+    var L = BAN_L, R = BAN_R, b = BAN_B;
     ctx.beginPath();
-    ctx.moveTo(l, b);
-    ctx.lineTo(l, side);
-    // An ogee on each side: a shallow dip, then a sweep up to a pointed crest.
-    ctx.bezierCurveTo(l + w * 0.30, side + 6, mid - w * 0.10, peak + 18, mid, peak);
-    ctx.bezierCurveTo(mid + w * 0.10, peak + 18, r - w * 0.30, side + 6, r, side);
-    ctx.lineTo(r, b);
+    if (style !== 'legendary') {
+      ctx.moveTo(L, BAN_T);
+      ctx.lineTo(R, BAN_T);
+      ctx.lineTo(R, b);
+      hiddenLeftEnd(ctx, b);
+      ctx.closePath();
+      return;
+    }
+    // Legendary: a regal crest on top (one tall swoop in the middle and two
+    // smaller ones stepping down on each side), the same
+    // height as before so the name never runs into it; flat below, with
+    // each bottom corner curling down and in over the art like a breaking
+    // wave turned upside down.
+    var base = BAN_T + 12, mid = (L + 126 + R) / 2;
+    ctx.moveTo(L, base);
+    ctx.lineTo(mid - 250, base);
+    swoop(ctx, mid - 215, 35, base, base - 14);      // small, far left
+    swoop(ctx, mid - 140, 40, base, base - 22);      // small, left
+    ctx.lineTo(mid - 100, base);
+    swoop(ctx, mid, 100, base, BAN_T - 14);          // tall, centre
+    ctx.lineTo(mid + 100, base);
+    swoop(ctx, mid + 140, 40, base, base - 22);      // small, right
+    swoop(ctx, mid + 215, 35, base, base - 14);      // small, far right
+    ctx.lineTo(R, base);
+    ctx.lineTo(R, b);
+    // Right curl: sweeps down and in, and its tip hooks back up, like a
+    // breaking wave turned upside down.
+    ctx.bezierCurveTo(R, b + 26, R - 12, b + 44, R - 38, b + 46);
+    ctx.quadraticCurveTo(R - 30, b + 34, R - 44, b + 24);
+    ctx.quadraticCurveTo(R - 58, b + 10, R - 86, b);
+    // Left curl, the mirror image, just right of the cost symbol.
+    var lc = 108;
+    ctx.lineTo(lc + 86, b);
+    ctx.quadraticCurveTo(lc + 58, b + 10, lc + 44, b + 24);
+    ctx.quadraticCurveTo(lc + 30, b + 34, lc + 38, b + 46);
+    ctx.bezierCurveTo(lc + 12, b + 44, lc, b + 26, lc, b);
+    hiddenLeftEnd(ctx, b);
     ctx.closePath();
   }
 
-  // The Rival banner is drawn on its own canvas so the bites and hole can be
-  // cut out and outlined. grow > 0 widens the cuts (used for the outline).
-  function tatteredMask(x, y, w, h, inset, grow, color) {
-    var c = document.createElement('canvas');
-    c.width = W; c.height = H;
-    var g = c.getContext('2d');
-    g.fillStyle = color;
-    g.fillRect(x + inset, y + inset, w - inset * 2, h - inset * 2);
-    g.globalCompositeOperation = 'destination-out';
-    TATTERS.concat([HOLE]).forEach(function (t) {
-      g.beginPath();
-      g.arc(x + w - t[0], y + h - t[1], t[2] + grow, 0, Math.PI * 2);
+  // Fill the banner, cut the Rival tatters out of it, and outline it all
+  // with a 4px line on the inside of every edge, cuts included.
+  function nameBanner(ctx, style) {
+    var cuts = style === 'rival' ? TATTERS : [];
+    function layer(paint) {
+      var c = document.createElement('canvas');
+      c.width = W; c.height = H;
+      var g = c.getContext('2d');
+      paint(g);
+      g.globalCompositeOperation = 'destination-out';
+      cuts.forEach(function (t) { g.beginPath(); g.arc(t[0], t[1], t[2], 0, Math.PI * 2); g.fill(); });
+      ctx.drawImage(c, 0, 0);
+    }
+    layer(function (g) {
+      bannerPath(g, style);
+      // The Legendary banner covers the top of the art, so it's less see-through.
+      g.fillStyle = style === 'legendary' ? 'rgba(235, 240, 245, 0.88)' : PANEL_FILL;
       g.fill();
     });
-    return c;
-  }
-
-  function nameBanner(ctx, x, y, w, h, style) {
-    if (style === 'rival') {
-      var fill = tatteredMask(x, y, w, h, 0, 0, PANEL_FILL);
-      var line = tatteredMask(x, y, w, h, 0, 0, '#000');
-      var g = line.getContext('2d');
-      g.globalCompositeOperation = 'destination-out';
-      g.drawImage(tatteredMask(x, y, w, h, 4, 4, '#000'), 0, 0);
-      ctx.drawImage(fill, 0, 0);
-      ctx.drawImage(line, 0, 0);
-      return;
-    }
-    if (style === 'legendary') regalPath(ctx, x, y, w, h);
-    else { ctx.beginPath(); ctx.rect(x, y, w, h); }
-    // The Legendary banner covers the top of the art, so it's less see-through.
-    ctx.fillStyle = style === 'legendary' ? 'rgba(235, 240, 245, 0.88)' : PANEL_FILL;
-    ctx.fill();
-    if (style === 'legendary') regalPath(ctx, x, y, w, h, 2);
-    else { ctx.beginPath(); ctx.rect(x + 2, y + 2, w - 4, h - 4); }
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = '#000';
-    ctx.stroke();
+    layer(function (g) {
+      bannerPath(g, style);
+      g.clip();
+      g.lineWidth = 8;
+      g.strokeStyle = '#000';
+      bannerPath(g, style);
+      g.stroke();
+      cuts.forEach(function (t) { g.beginPath(); g.arc(t[0], t[1], t[2], 0, Math.PI * 2); g.stroke(); });
+    });
   }
 
   // The art window's outline. Legendary: its top tucks up behind the name
-  // banner, and its top corners curve up into it. Rival: clipped corners.
+  // banner, and its top corners curve up into it. Rival: its top also runs up
+  // behind the banner, so the art shows through the tatters; its bottom
+  // corners are clipped.
   function artPathShape(ctx, x, y, w, h, style) {
     ctx.beginPath();
     if (style === 'legendary') {
@@ -316,10 +354,10 @@
       ctx.quadraticCurveTo(x + w, top, x + w, top + r);
       ctx.lineTo(x + w, y + h);
     } else if (style === 'rival') {
-      var c = 40;
-      ctx.moveTo(x + c, y); ctx.lineTo(x + w - c, y); ctx.lineTo(x + w, y + c);
+      var c = 40, t = y - 30;
+      ctx.moveTo(x, t); ctx.lineTo(x + w, t);
       ctx.lineTo(x + w, y + h - c); ctx.lineTo(x + w - c, y + h); ctx.lineTo(x + c, y + h);
-      ctx.lineTo(x, y + h - c); ctx.lineTo(x, y + c);
+      ctx.lineTo(x, y + h - c);
     } else ctx.rect(x, y, w, h);
     ctx.closePath();
   }
@@ -599,7 +637,7 @@
       ctx.stroke();
       ctx.restore();
       // Name banner over the art's top edge, running behind the cost symbol.
-      nameBanner(ctx, 26, 36, 685, 84, style);
+      nameBanner(ctx, style);
       ctx.lineWidth = 18;
       ctx.strokeRect(9, 9, W - 18, H - 18);   // outer border
 

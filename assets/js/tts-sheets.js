@@ -515,7 +515,7 @@ window.RC_TTS = {
   "207": [
    1,
    31,
-   "Dawnedge Shadow"
+   "Dawnedge Razorshade"
   ],
   "208": [
    1,
